@@ -1,0 +1,24 @@
+Accra A0 är en generell räknarenhet med fem 5V kanaler som kan räkna upp i 32-bitar. Enheten finns i två varianter. 
+En som kan fästas på DIN skena och en variant som kan skruvas på vägg.
+
+Accea A0 modulens fem räknare kan räkna pulser på en av de fem ingångarna. Den inkommande pulsen uppdaterar en 32-räknare som kan
+lagras permanent om man så önskar så att värdet finns kvar efter ett späningsbortfall. Enheten kan ge alarm när mätaren rullar över
+och man kan nollställa mätaren när som helst.  
+
+Typisk användningsområde för enheten är att räkna pulser från en elmätare, vattenmätare eller gasmätare. Dessa värden kan sedan omvandlas till
+exempelvis ett energivärde.
+
+Accra A0 är en CAN4VSCP modul och följer VSCP standarden. Det betyder att den kan arbeta självständigt eller tillsammans med en server och 
+att alla programvaror och kodbibliotek som finns i VSCP projektet direkt fungerar tillsammans med den. Som alla CAN4VSCP moduler så 
+strömförsörjs enheten över bussen med en 9-30V strömkälla.  
+
+Accra A0 ansluts till bussen med en RJ45 kontakt. Lämpligen använder man CAT-5 eller bättre partvinnad kabel. Strömförsörjningen sker 
+också genom denna kabel så det finns inget behov för en separat strömkälla. Maximala kabellängden ligger på runt 500 meter med dropkabellängder 
+på max 24 meter. Som för all CAN4VSCP moduler används 125 kbps som kommunikationshastighet. 
+
+Alla VSCP enheter innehåller information om sin egen konfiguration, inställningar, manual, drivare, version, tillverkare etc. Man behöver bara 
+fråga modulen om den information man är intresserad av. När VSCP enheter startas upp har dom alltid en förprogrammerad standardfunktionalitet. 
+
+Programvaran i enheten kan uppdateras över nätet.
+
+Se produktsidan för fullständig information.

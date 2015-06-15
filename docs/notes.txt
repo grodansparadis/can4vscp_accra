@@ -1,0 +1,188 @@
+
+
+Accra notes
+===========
+
+http://www.best-microcontroller-projects.com/pic-frequency-counter.html
+http://www.best-microcontroller-projects.com/frequency-counter.html
+http://www.circuitvalley.com/2011/07/60-mhz-frequency-meter-counter.html
+
+Registers
+=========
+00	Zone
+01	Subzone
+02	Control register Counter 0
+		Bit 0 - Enable
+		Bit 1 - 
+		Bit 2 - 
+		Bit 3 - 
+		Bit 4 - 
+		Bit 5 - 
+		Bit 6 -
+		Bit 7 -  		
+03	Control register Counter 1
+04	Control register Counter 2
+05	Control register Counter 3
+06	Control register Counter 4
+
+07	Counter 0 MSB
+08	Counter 0 
+09	Counter 0 
+0A	Counter 0 LSB
+
+0B	Counter 1 MSB
+0C	Counter 1 
+0D	Counter 1 
+0E	Counter 1 LSB
+
+0F	Counter 2 MSB
+10	Counter 2 
+11	Counter 2 
+12	Counter 2 LSB
+
+13	Counter 3 MSB
+14	Counter 3 
+15	Counter 3 
+16	Counter 3 LSB
+
+17	Counter 4 MSB
+18	Counter 4 
+19	Counter 4 
+1A	Counter 4 LSB
+
+1B  Delta channel 0 MSB
+1C  Delta channel 0 LSB
+
+1B  Frequency channel 0 MSB
+1C  Frequency channel 0 
+1D  Frequency channel 0 
+1E  Frequency channel 0 LSB
+
+1B  Frequency channel 1 MSB
+1C  Frequency channel 1 
+1D  Frequency channel 1 
+1E  Frequency channel 1 LSB
+
+1B  Frequency channel 2 MSB
+1C  Frequency channel 2 
+1D  Frequency channel 2 
+1E  Frequency channel 2 LSB
+
+1B  Frequency channel 3 MSB
+1C  Frequency channel 3 
+1D  Frequency channel 3 
+1E  Frequency channel 3 LSB
+
+1B  Frequency channel 4 MSB
+1C  Frequency channel 4 
+1D  Frequency channel 4 
+1E  Frequency channel 4 LSB
+
+// y = k*x + m
+1F	Linear equation k constant double for channel 0 MSB
+20	Linear equation k constant double for channel 0 
+21	Linear equation k constant double for channel 0 
+22	Linear equation k constant double for channel 0 MSB
+
+23	Linear equation k constant double for channel 1 MSB
+24	Linear equation k constant double for channel 1 
+25	Linear equation k constant double for channel 1 
+26	Linear equation k constant double for channel 1 MSB
+
+27	Linear equation k constant double for channel 2 MSB
+28	Linear equation k constant double for channel 2 
+29	Linear equation k constant double for channel 2 
+2A	Linear equation k constant double for channel 2 MSB
+
+2B	Linear equation k constant double for channel 3 MSB
+2C	Linear equation k constant double for channel 3 
+2D	Linear equation k constant double for channel 3 
+2E	Linear equation k constant double for channel 3 MSB
+
+2F	Linear equation k constant double for channel 4 MSB
+30	Linear equation k constant double for channel 4 
+31	Linear equation k constant double for channel 4 
+32	Linear equation k constant double for channel 4 MSB
+
+
+
+33	Linear equation m constant double for channel 0 MSB
+34	Linear equation m constant double for channel 0 
+35	Linear equation m constant double for channel 0 
+36	Linear equation m constant double for channel 0 MSB
+
+37	Linear equation m constant double for channel 1 MSB
+38	Linear equation m constant double for channel 1 
+39	Linear equation m constant double for channel 1 
+3A	Linear equation m constant double for channel 1 MSB
+
+3B	Linear equation m constant double for channel 2 MSB
+3C	Linear equation m constant double for channel 2 
+3D	Linear equation m constant double for channel 2 
+3E	Linear equation m constant double for channel 2 MSB
+
+3F	Linear equation m constant double for channel 3 MSB
+40	Linear equation m constant double for channel 3 
+41	Linear equation m constant double for channel 3 
+42	Linear equation m constant double for channel 3 MSB
+
+43	Linear equation m constant double for channel 4 MSB
+44	Linear equation m constant double for channel 4 
+45	Linear equation m constant double for channel 4 
+46	Linear equation m constant double for channel 4 MSB
+
+1:00	Control for measurement event sensor 0
+		Bit 0 - Event selection
+		Bit 1 - Event selection
+		Bit 2 - Event selection
+		Bit 3 - 
+		Bit 4 - 
+		Bit 5 - 
+		Bit 6 -
+		Bit 7 - 
+		
+1:01	Control for measurement event sensor 1		
+1:02	Control for measurement event sensor 2
+1:03	Control for measurement event sensor 3
+1:04	Control for measurement event sensor 4
+
+1:05  	Zone for measurement event sensor 0
+1:06  	Zone for measurement event sensor 1
+1:07  	Zone for measurement event sensor 2
+1:08  	Zone for measurement event sensor 3
+1:09  	Zone for measurement event sensor 4
+
+1:0A  	Subzone for measurement event sensor 0
+1:0B  	Subzone for measurement event sensor 1
+1:0C  	Subzone for measurement event sensor 2
+1:0D  	Subzone for measurement event sensor 3
+1:0E  	Subzone for measurement event sensor 4
+
+1:0F  	Event class for measurement event sensor 0 MSB
+1:10  	Event class for measurement event sensor 0 LSB
+
+1:11  	Event class for measurement event sensor 0 MSB
+1:12  	Event class for measurement event sensor 0 LSB
+
+1:13  	Event class for measurement event sensor 0 MSB
+1:14  	Event class for measurement event sensor 0 LSB
+
+1:15  	Event class for measurement event sensor 0 MSB
+1:16  	Event class for measurement event sensor 0 LSB
+
+1:17 	Event class for measurement event sensor 0 MSB
+1:18  	Event class for measurement event sensor 0 LSB
+
+1:19  	Event type for measurement event sensor 0 MSB
+1:1A  	Event type for measurement event sensor 0 LSB
+
+1:1B	Data coding for measurement event sensor 0
+1:1C	Data coding for measurement event sensor 1
+1:1D	Data coding for measurement event sensor 2
+1:1E	Data coding for measurement event sensor 3
+1:1F	Data coding for measurement event sensor 4
+
+Actions
+=======
+0	NOOP
+1	Send state. (for sync)

@@ -1,0 +1,134 @@
+Accra - 5A
+===========
+
+0 - Zone for Accra module.
+1 - Subzone for module.
+
+
+
+2 - Status register for counter 0
+		bit 0 - Set to one to activate counter. 
+		bit 1 - Set to one for persistence.
+		bit 2 -
+		bit 3 -
+		bit 4 -
+		bit 5 -
+		bit 6 - 
+		bit 7 - Set to one to reset counter.
+3 - Status register for counter 1
+4 - Status register for counter 2
+5 - Status register for counter 3
+6 - Status register for counter 4
+
+Register 8 - Counter 0 MSB. Read/Write
+Register 9 - Counter 0. Read/Write
+Register 10 - Counter 0. Read/Write
+Register 11 - Counter 0. LSB. Read/Write
+
+Register 12 - Counter 1 MSB. Read/Write
+Register 13 - Counter 1. Read/Write
+Register 14 - Counter 1. Read/Write
+Register 15 - Counter 1. LSB. Read/Write
+
+Register 16 - Counter 2 MSB. Read/Write
+Register 17 - Counter 2. Read/Write
+Register 18 - Counter 2. Read/Write
+Register 19 - Counter 2. LSB. Read/Write
+
+Register 20 - Counter 3 MSB. Read/Write
+Register 21 - Counter 3. Read/Write
+Register 22 - Counter 3. Read/Write
+Register 23 - Counter 3. LSB. Read/Write
+
+Register 24 - Counter 4 MSB. Read/Write
+Register 25 - Counter 4. Read/Write
+Register 26 - Counter 4. Read/Write
+Register 27 - Counter 4. LSB. Read/Write
+
+Temperature sensor
+------------------
+
+55 - Control byte for temperature sensor
+	Bit 0,1 - Temperature unit
+		00 - Kelvin.
+		01 - Celsius (default).
+		10 - Fahrenheit.
+	Bit 2 - Reserved
+	Bit 3 - Enable low alarm.
+	Bit 4 - Enable high alarm.
+	Bit 5 - Send ON/OFF events instead of Alarm
+	Bit 6 - on/off event usage
+			0 - TurnOn event is sent when low temp is reached. TurnOff event
+				when high temp. is reached.
+			1 - TurnOff event is sent when low temp is reached. TurnOff event
+				is sent when high temp. is reached.
+	Bit 7 - Enable temperature events.
+56 - Temperature temperature sensor MSB (on board sensor)
+57 - Temperature temperature sensor LSB (on board sensor)	
+58 - Report interval for temperature sensor in seconds. (Set to zero for no report)
+59 - Low alarm temperature Sensor MSB
+60 - Low alarm temperature Sensor LSB
+61 - High alarm temperature Sensor MSB
+62 - High alarm temperature Sensor LSB
+63 - Hysteresis low temperature for temperature sensor.
+64 - Hysteresis high temperature for temperature sensor.
+65 - Zone form temperature sensor alarms.
+66 - Subzone for temperature sensor alarms.
+67 - Absolut low for temperature sensor MSB. Write to reset.
+68 - Absolut low for temperature sensor LSB. Write to reset.
+69 - Absolut high for temperature sensor MSB. Write to reset.
+70 - Absolut high for temperature sensor LSB. Write to reset.
+
+71 - 127 - Decision Matrix (Eight elements).
+
+
+Alarm register bits
+===================
+bit 0 - Overflow counter 0
+bit 1 - Overflow counter 1
+bit 2 - Overflow counter 2
+bit 3 - Overflow counter 3
+Bit 4 - Overflow counter 4
+bit 5 - Low temperature alarm
+bit 6 - High temperature alarm
+
+
+Events
+======
+
+Alarm
+-----
+
+Alarm is sent when counter overflows.
+
+Class: 0x001 
+Type: 0x02
+
+Package:
+
+Byte 0: index.
+Byte 1: Zone
+Byte 2: Subzone
+
+    Index is 0 - Counter overflow counter 0
+    Index is 1 - Counter overflow counter 1
+    Index is 2 - Counter overflow counter 2
+    Index is 3 - Counter overflow counter 3
+    Index is 4 - Counter overflow counter 4
+	
+Temperature measurement
+-----------------------
+Class=10, Type=6
+
+Alarm
+-----
+Class=1, Type=2 - Alarm occured
+Sensor index in byte 0 (0-5)
+
+TurnOn
+------
+Class=30, Type=5
+
+TurnOff
+-------
+Class=30, Type=6	

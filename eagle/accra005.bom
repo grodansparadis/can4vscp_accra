@@ -1,0 +1,22 @@
+Partlist exported from C:/Users/akhe/Documents/development/hardware_zeus/accra_counter/eagle/accra005.sch at 2011-09-09 13:27:19
+
+Qty Value      Device            Parts                     
+1              31-XX             S1                        
+1              520426-4          J2                        
+1              DO3316P           L1                        
+1              F09HP             X1                        
+1              LED3MM            LED1                      
+1              MA06-1            JP4                       
+1   0.1uF      C-EUC0805         C5                        
+1   1K         R-EU_R0805        R3                        
+7   10K        R-EU_R0805        R1, R2, R4, R5, R6, R7, R8
+1   10MHZ      CRYSTALHC49U-H    Q1                        
+2   15pF       C-EUC0805         C4, C6                    
+1   100nF      CNP-0805          C3                        
+1   100uF      CPOL-EUD          C1                        
+1   330uF      CPOL-EUD          C2                        
+1   LM2575S    LM2575S           IC4                       
+1   MCP2551SN  MCP2551SN         IC3                       
+1   NUP2105L   DIODE-2CA|ACSOT23 D2                        
+1   PIC18F2580 PIC18LF252-I/SO   IC1                       
+2   S1D        DIODE-SMB         1N5819, D1                
