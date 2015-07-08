@@ -1,4 +1,0 @@
-
-
-080507
-rev 0.3 is ground circuit and can be used for other modules.

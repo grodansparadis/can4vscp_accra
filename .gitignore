@@ -30,3 +30,23 @@
 
 # Debug files
 *.dSYM/
+/Accra.X/build/Debug/production/_ext/1472/*.p1
+/Accra.X/build/Debug/production/_ext/1472/*.d
+/Accra.X/build/Debug/production/_ext/1472/*.pre
+/Accra.X/build/Debug/production/_ext/1935753226/*.p1
+/Accra.X/build/Debug/production/_ext/1935753226/*.d
+/Accra.X/build/Debug/production/_ext/1935753226/*.pre
+/Accra.X/build/default/production/_ext/1472/*.p1
+/Accra.X/build/default/production/_ext/1472/*.d
+/Accra.X/build/default/production/_ext/1472/*.pre
+/Accra.X/dist/Debug/production/*.cmf
+/Accra.X/dist/Debug/production/*.hxl
+/Accra.X/dist/Debug/production/*.lst
+/Accra.X/dist/Debug/production/*.map
+/Accra.X/dist/Debug/production/*.rlf
+/Accra.X/dist/Debug/production/*.sdb
+/Accra.X/dist/Debug/production/*.sym
+/Accra.X/*
+/Accra.X/nbproject/*.mk
+/Accra.X/nbproject/*.bash
+/Accra.X/nbproject/private/*.xml
