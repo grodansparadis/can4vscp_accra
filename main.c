@@ -110,12 +110,6 @@ double frequency[4];    // Frequency calculations
 //      	- Services GP3 Pin Change
 //////////////////////////////////////////////////////////////////////////////
 
-#ifdef RELOCATE
-
-#else
-
-#endif
-
 void interrupt low_priority  interrupt_at_low_vector( void )
 {
     // Clock
@@ -127,6 +121,7 @@ void interrupt low_priority  interrupt_at_low_vector( void )
         vscp_timer++;
         vscp_configtimer++;
         measurement_clock_sec++;
+        sendTimer++;
 
         // Check for init. button
         if ( INIT_BUTTON ) {
@@ -165,6 +160,25 @@ void interrupt low_priority  interrupt_at_low_vector( void )
 
     }
 
+    return;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Isr() 	- Interrupt Service Routine
+//      	- External interrupt 
+//      	
+//////////////////////////////////////////////////////////////////////////////
+
+void interrupt high_priority  interrupt_at_high_vector( void )
+{
+    if ( INTCONbits.INT0IF ) {  // External interrupt 0
+        counter[ 0 ]++;
+        INTCONbits.INT0IF = 0;  // Clear flag
+    }
+    else if ( INTCON3bits.INT1IF ) { // External interrupt 1
+        INTCON3bits.INT1IF = 0;  // clear flag
+        counter[ 1 ]++;
+    }
     return;
 }
 
@@ -268,7 +282,6 @@ void main()
         if ( measurement_clock_sec > 1000 ) {
 
             measurement_clock_sec = 0;
-            sendTimer++;
  
             // Do VSCP one second jobs
             vscp_doOneSecondWork();
@@ -398,11 +411,25 @@ void init()
             }
 
      */
+
+    // Enable interrupt priority
+    RCONbits.IPEN = 1;
+    
+    // External interrupt 0 (counter 0)
+    INTCON2bits.INTEDG0 = 1; // Interrupt on rising edge
+    INTCONbits.INT0IE = 1;  // Enable external interrupt 0
+    
+    // External interrupt 1 (counter 1)
+    INTCON2bits.INTEDG1 = 1; // Interrupt on rising edge
+    INTCON3bits.INT1IE = 1;  // Enable external interrupt 0
     
     // Enable peripheral interrupt
     INTCONbits.PEIE = 1;
 
-    // Enable global interrupt
+    // Enable high priority interrupt
+    INTCONbits.GIE = 1;
+    
+    // Enable low priority interrupt
     INTCONbits.GIE = 1;
 
     return;
@@ -479,12 +506,6 @@ void init_app_eeprom(void)
         eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH3_MSB + i - REG0_MINUS,
                         FREQ_CTRL_ENABLE );
         
-        eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_HYSTERESIS_CH0_MSB + 2*i - REG0_MINUS,
-                        0 );
-        
-        eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_HYSTERESIS_CH0_LSB + 2*i - REG0_MINUS,
-                        FREQ_CTRL_ENABLE );
-        
         eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH0 + i - REG0_MINUS,
                         0 );
         
@@ -493,9 +514,49 @@ void init_app_eeprom(void)
         
         eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_MESURMENT_REPORT_INTERVAL_CH0 + i - REG0_MINUS,
                         0 );
-        
-        
     }
+    
+    // Counter hysteresis
+    eeprom_write( VSCP_EEPROM_END + 
+                    REG0_ACCRA_COUNTER_HYSTERESIS_CH0_MSB - 
+                    REG0_MINUS,
+                        ( DEFAULT_COUNTER0_HYSTERESIS >> 8 ) & 0xff );
+        
+    eeprom_write( VSCP_EEPROM_END + 
+                    REG0_ACCRA_COUNTER_HYSTERESIS_CH0_LSB - 
+                    REG0_MINUS,
+                        DEFAULT_COUNTER0_HYSTERESIS & 0xff );
+    
+    eeprom_write( VSCP_EEPROM_END + 
+                    REG0_ACCRA_COUNTER_HYSTERESIS_CH1_MSB - 
+                    REG0_MINUS,
+                        ( DEFAULT_COUNTER1_HYSTERESIS >> 8 ) & 0xff );
+        
+    eeprom_write( VSCP_EEPROM_END + 
+                    REG0_ACCRA_COUNTER_HYSTERESIS_CH1_LSB - 
+                    REG0_MINUS,
+                        DEFAULT_COUNTER1_HYSTERESIS & 0xff );
+    
+    eeprom_write( VSCP_EEPROM_END + 
+                    REG0_ACCRA_COUNTER_HYSTERESIS_CH2_MSB - 
+                    REG0_MINUS,
+                        ( DEFAULT_COUNTER2_HYSTERESIS >> 8 ) & 0xff );
+        
+    eeprom_write( VSCP_EEPROM_END + 
+                    REG0_ACCRA_COUNTER_HYSTERESIS_CH2_LSB - 
+                    REG0_MINUS,
+                        DEFAULT_COUNTER2_HYSTERESIS & 0xff );
+    
+    eeprom_write( VSCP_EEPROM_END + 
+                    REG0_ACCRA_COUNTER_HYSTERESIS_CH3_MSB - 
+                    REG0_MINUS,
+                        ( DEFAULT_COUNTER3_HYSTERESIS >> 8 ) & 0xff );
+        
+    eeprom_write( VSCP_EEPROM_END + 
+                    REG0_ACCRA_COUNTER_HYSTERESIS_CH3_LSB - 
+                    REG0_MINUS,
+                        DEFAULT_COUNTER0_HYSTERESIS & 0xff );
+    
         
     eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH0 - REG0_MINUS,
                         0 );
@@ -522,8 +583,83 @@ void init_app_eeprom(void)
     eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH3 - REG0_MINUS,
                         0 );
 
-
+    // Page 1
+    
+    // Frequency limits
+    for ( int i=0; i<(4*8); i++ ) {
+        eeprom_write( VSCP_EEPROM_END + 
+                        REG0_COUNT +
+                        REG1_ACCRA_CH0_FREQUENCY_LOW_MSB - 
+                        REG1_MINUS + i,
+                            0 );
+    }
+    
+    // Hysteresis channel 0
+    eeprom_write( VSCP_EEPROM_END + 
+                        REG0_COUNT +
+                        REG1_ACCRA_CH0_FREQ_HYSTERESIS_MSB - 
+                        REG1_MINUS,
+                            ( DEFAULT_FREQUENCY0_HYSTERESIS >> 8 ) & 0xff );
+    
+    eeprom_write( VSCP_EEPROM_END + 
+                        REG0_COUNT +
+                        REG1_ACCRA_CH0_FREQ_HYSTERESIS_LSB - 
+                        REG1_MINUS,
+                            DEFAULT_FREQUENCY0_HYSTERESIS & 0xff );
+    
+    // Hysteresis channel 1
+    eeprom_write( VSCP_EEPROM_END + 
+                        REG0_COUNT +
+                        REG1_ACCRA_CH1_FREQ_HYSTERESIS_MSB - 
+                        REG1_MINUS,
+                            ( DEFAULT_FREQUENCY1_HYSTERESIS >> 8 ) & 0xff  );
+    
+    eeprom_write( VSCP_EEPROM_END + 
+                        REG0_COUNT +
+                        REG1_ACCRA_CH1_FREQ_HYSTERESIS_LSB - 
+                        REG1_MINUS,
+                            DEFAULT_FREQUENCY1_HYSTERESIS & 0xff );
+    
+    // Hysteresis channel 2
+    eeprom_write( VSCP_EEPROM_END + 
+                        REG0_COUNT +
+                        REG1_ACCRA_CH2_FREQ_HYSTERESIS_MSB - 
+                        REG1_MINUS,
+                            ( DEFAULT_FREQUENCY2_HYSTERESIS >> 8 ) & 0xff  );
+    
+    eeprom_write( VSCP_EEPROM_END + 
+                        REG0_COUNT +
+                        REG1_ACCRA_CH2_FREQ_HYSTERESIS_LSB - 
+                        REG1_MINUS,
+                            DEFAULT_FREQUENCY2_HYSTERESIS & 0xff );
+    
+    // Hysteresis channel 3
+    eeprom_write( VSCP_EEPROM_END + 
+                        REG0_COUNT +
+                        REG1_ACCRA_CH3_FREQ_HYSTERESIS_MSB - 
+                        REG1_MINUS,
+                            ( DEFAULT_FREQUENCY3_HYSTERESIS >> 8 ) & 0xff  );
+    
+    eeprom_write( VSCP_EEPROM_END + 
+                        REG0_COUNT +
+                        REG1_ACCRA_CH3_FREQ_HYSTERESIS_LSB - 
+                        REG1_MINUS,
+                            DEFAULT_FREQUENCY3_HYSTERESIS & 0xff );
+    
+    
+    // * * *  Page 2 * * *
+    
+    for ( i=0; i<(4*8); i++ ) {
+        eeprom_write( VSCP_EEPROM_END + 
+                        REG0_COUNT + 
+                        REG1_COUNT +
+                        REG2_ACCRA_CH0_LINEARIZATION_K_MSB + 
+                        i,
+                            0 );
+    }
+    
     // * * * Decision Matrix * * *
+    
     // All elements disabled.
     for ( i = 0; i < DESCION_MATRIX_ROWS; i++ ) {
         for ( j = 0; j < 8; j++ ) {
@@ -1744,7 +1880,7 @@ int8_t sendCANFrame(uint32_t id, uint8_t dlc, uint8_t *pdata)
     uint8_t rv = FALSE;
     sendTimer = 0;
 
-    while ( sendTimer < 1 ) {
+    while ( sendTimer < 1000 ) {
         if ( ECANSendMessage( id, pdata, dlc, ECAN_TX_XTD_FRAME ) ) {
             rv = TRUE;
             break;

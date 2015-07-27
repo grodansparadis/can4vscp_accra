@@ -119,6 +119,19 @@
 
 // -----------------------------------------------
 
+// Defaults
+#define DEFAULT_COUNTER0_HYSTERESIS         200
+#define DEFAULT_COUNTER1_HYSTERESIS         200
+#define DEFAULT_COUNTER2_HYSTERESIS         200
+#define DEFAULT_COUNTER3_HYSTERESIS         200
+
+#define DEFAULT_FREQUENCY0_HYSTERESIS       50
+#define DEFAULT_FREQUENCY1_HYSTERESIS       50
+#define DEFAULT_FREQUENCY2_HYSTERESIS       50
+#define DEFAULT_FREQUENCY3_HYSTERESIS       50
+
+// -----------------------------------------------
+
 // * * *  Registers * * *
 
 // * * * * Page 0 * * * *
@@ -364,19 +377,19 @@
 #define REG1_ACCRA_CH3_FREQUENCY_HIGH_3     47
 #define REG1_ACCRA_CH3_FREQUENCY_HIGH_LSB   47
 
-#define REG1_ACCRA_CH0_HYSTERESIS_MSB       48
-#define REG1_ACCRA_CH0_HYSTERESIS_LSB       49
+#define REG1_ACCRA_CH0_FREQ_HYSTERESIS_MSB  48
+#define REG1_ACCRA_CH0_FREQ_HYSTERESIS_LSB  49
 
-#define REG1_ACCRA_CH1_HYSTERESIS_MSB       50
-#define REG1_ACCRA_CH1_HYSTERESIS_LSB       51
+#define REG1_ACCRA_CH1_FREQ_HYSTERESIS_MSB  50
+#define REG1_ACCRA_CH1_FREQ_HYSTERESIS_LSB  51
 
-#define REG1_ACCRA_CH2_HYSTERESIS_MSB       52
-#define REG1_ACCRA_CH2_HYSTERESIS_LSB       53
+#define REG1_ACCRA_CH2_FREQ_HYSTERESIS_MSB  52
+#define REG1_ACCRA_CH2_FREQ_HYSTERESIS_LSB  53
 
-#define REG1_ACCRA_CH3_HYSTERESIS_MSB       54
-#define REG1_ACCRA_CH3_HYSTERESIS_LSB       55
+#define REG1_ACCRA_CH3_FREQ_HYSTERESIS_MSB  54
+#define REG1_ACCRA_CH3_FREQ_HYSTERESIS_LSB  55
 
-#define REG1_MINUS                          20              // # registers not written to EEPROM
+#define REG1_MINUS                          16              // # registers not written to EEPROM
 #define REG1_COUNT                          (56-REG1_MINUS) // Needed for EEPROM writes
 
 
