@@ -1,4 +1,4 @@
 Accra counter module
 ====================
 
-2015-07-06 AKHE - Started development
+2015-11-15 AKHE - Started development

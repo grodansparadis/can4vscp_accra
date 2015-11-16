@@ -2,7 +2,7 @@
  * 	VSCP (Very Simple Control Protocol) 
  * 	http://www.vscp.org
  *
- *  Beijing I/O module
+ *  Accra I/O module
  * 	akhe@grodansparadis.com
  *
  *  Copyright (C) 1995-2015 Ake Hedman, Grodans Paradis AB
@@ -94,13 +94,19 @@ const uint8_t vscp_deviceURL[] = "www.eurosource.se/accra_1.xml";
 
 volatile unsigned long measurement_clock_sec;  // Clock for one second work
 
-uint8_t sendTimer;  // Timer for CAN send
+uint16_t sendTimer;  // Timer for CAN send
 uint8_t seconds;    // counter for seconds
 uint8_t minutes;    // counter for minutes
 uint8_t hours;      // Counter for hours
 
-uint32_t counter[4];    // Counters
-double frequency[4];    // Frequency calculations
+uint64_t counter[4];        // Counters
+uint64_t lastcounter[4];    // Counter values last second (for frequency)
+uint32_t frequency[4];      // Frequency calculations
+uint8_t counter2LastState;  // Last state for counter 2
+uint8_t counter3LastState;  // Last state for counter 3
+// This is a shadow of the EEPROM stored control register for each
+// counter
+uint8_t counter_control_shadow[ 4 ];
 
 //__EEPROM_DATA(0x11,0x22,0x33,0x44,0x55,0x66,0x77,0x88);
 
@@ -176,9 +182,10 @@ void interrupt high_priority  interrupt_at_high_vector( void )
         INTCONbits.INT0IF = 0;  // Clear flag
     }
     else if ( INTCON3bits.INT1IF ) { // External interrupt 1
-        INTCON3bits.INT1IF = 0;  // clear flag
         counter[ 1 ]++;
+        INTCON3bits.INT1IF = 0;  // clear flag
     }
+    
     return;
 }
 
@@ -190,7 +197,6 @@ void interrupt high_priority  interrupt_at_high_vector( void )
 
 void main()
 {
-
     init();         // Initialize Micro controller
     
     // Check VSCP persistent storage and
@@ -205,8 +211,17 @@ void main()
     // Initialize data
     init_app_ram();
     
+    // Set up counter shadow registers
+    counter_control_shadow[ 0 ] = eeprom_read( REG0_ACCRA_CONTROL_COUNTER_CH0 );
+    counter_control_shadow[ 1 ] = eeprom_read( REG0_ACCRA_CONTROL_COUNTER_CH1 );
+    counter_control_shadow[ 2 ] = eeprom_read( REG0_ACCRA_CONTROL_COUNTER_CH2 );
+    counter_control_shadow[ 3 ] = eeprom_read( REG0_ACCRA_CONTROL_COUNTER_CH3 );
+    
     // Initialize the VSCP functionality
     vscp_init();    
+    
+    // Set DM filters
+    calculateSetFilterMask();
             
     while ( 1 ) {   // Loop Forever
 
@@ -286,8 +301,6 @@ void main()
             // Do VSCP one second jobs
             vscp_doOneSecondWork();
 
-            // Temperature report timers are only updated if in active
-            // state GUID_reset
             if ( VSCP_STATE_ACTIVE == vscp_node_state ) {
                 // Do VSCP one second jobs
                 doApplicationOneSecondWork();
@@ -310,6 +323,7 @@ void main()
 
         }
 
+        // Do loop work
         doWork();
 
     } // while
@@ -412,25 +426,27 @@ void init()
 
      */
 
-    // Enable interrupt priority
-    RCONbits.IPEN = 1;
+    INTCON2bits.TMR0IP = 0;         // Timer 0 low priority
+    
+    RCONbits.IPEN = 1;          // Enable interrupt priority
+    
     
     // External interrupt 0 (counter 0)
-    INTCON2bits.INTEDG0 = 1; // Interrupt on rising edge
-    INTCONbits.INT0IE = 1;  // Enable external interrupt 0
+    INTCON2bits.INTEDG0 = 1;    // Interrupt on rising edge
+    INTCONbits.INT0IE = 1;      // Enable external interrupt 0
     
     // External interrupt 1 (counter 1)
-    INTCON2bits.INTEDG1 = 1; // Interrupt on rising edge
-    INTCON3bits.INT1IE = 1;  // Enable external interrupt 0
+    INTCON2bits.INTEDG1 = 1;    // Interrupt on rising edge
+    INTCON3bits.INT1IE = 1;     // Enable external interrupt 0
     
     // Enable peripheral interrupt
     INTCONbits.PEIE = 1;
-
-    // Enable high priority interrupt
-    INTCONbits.GIE = 1;
     
     // Enable low priority interrupt
-    INTCONbits.GIE = 1;
+    //INTCONbits.GIE = 1;
+    
+    INTCONbits.GIE_GIEH = 1;    // high priority interrupts are enabled
+    INTCONbits.PEIE_GIEL = 1;   // low priority interrupts are enabled
 
     return;
 }
@@ -449,11 +465,14 @@ void init_app_ram( void )
     minutes = 0;
     hours = 0;
     
+    counter2LastState = 0;          // Expect signal to be low
+    counter3LastState = 0;          // Expect signal to be low
+    
     for ( i=0; i<4; i++ ) {
         counter[ i ] = 0;
         frequency[ i ] = 0;
     }
-    
+   
 }
 
 
@@ -668,7 +687,49 @@ void init_app_eeprom(void)
                             REG_DESCION_MATRIX + i * 8 + j, 0 );
         }
     }
+    
+    // Set DM filters
+    calculateSetFilterMask();
 
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// doWork
+//
+// The actual work is done here.
+//
+
+void doWork(void)
+{
+    // Check if counter2 channel changed state
+    if ( PORTCbits.RC2 != counter2LastState ) {
+        
+        // Save new value
+        counter2LastState = PORTCbits.RC2;
+        
+        // If high we count
+        if ( PORTCbits.RC2 ) {
+            counter[ 2 ]++;
+        }
+    }
+    
+    // Check if counter3 channel changed state
+    if ( PORTCbits.RC3 != counter3LastState ) {
+        
+        // Save new value
+        counter3LastState = PORTCbits.RC3;
+        
+        // If high we count
+        if ( PORTCbits.RC3 ) {
+            counter[ 3 ]++;
+        }
+    }
+    
+    
+    if ( VSCP_STATE_ACTIVE == vscp_node_state ) {
+		;
+    }
+    
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -677,411 +738,11 @@ void init_app_eeprom(void)
 
 void doApplicationOneSecondWork(void)
 {
-    /*
-    uint8_t i;
-    uint16_t iodirections;  // Directions fro I/O channels
-    uint8_t ctrlreg;        // Control register
-    BOOL bOn = FALSE;
-    BOOL bInput;            // State of input
-
-    // Get direction for channels
-    iodirections = ( eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_IO_DIRECTION_MSB ) << 8 ) +
-                    eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_IO_DIRECTION_LSB );
-    
-    for ( i = 0; i < 10; i++ ) {
-        
-        if (  iodirections & ( 1 << i ) ) {
-            
-            // * * * Input * * *
-            
-            // Get input control register for this channel
-            ctrlreg = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_CH0_INPUT_CTRL + i );
-            
-            // If not enabled check next
-            if ( !( ctrlreg & INPUT_CTRL_ENABLE ) ) continue;
-            
-            switch ( i ) {
-                    
-                case 0:
-                    bInput = CHANNEL0;
-                    break;
-                        
-                case 1:
-                    bInput = CHANNEL1;
-                    break;
-                        
-                case 2:
-                    bInput = CHANNEL2;
-                    break;
-                        
-                case 3:
-                    bInput = CHANNEL3;
-                    break;
-
-                case 4:
-                    bInput = CHANNEL4;
-                    break;
-
-                case 5:
-                    bInput = CHANNEL5;
-                    break;
-
-                case 6:
-                    bInput = CHANNEL6;
-                    break;
-
-                case 7:
-                    bInput = CHANNEL7;
-                    break;
-
-                case 8:
-                    bInput = CHANNEL8;
-                    break;
-
-                case 9:
-                    bInput = CHANNEL9;
-                    break;                        
-                }
-            
-            // Should change ON event be sent?
-            if (  ctrlreg & INPUT_CTRL_EVENT_ON ) {
-                                
-                if ( bInput ) {
-                    
-                    // Yes if last state was zero
-                    if ( !( current_iostate & ( 1 << i ) ) ) {
-                        if ( ctrlreg &  INPUT_CTRL_EVENT_SELECT ) {
-                            SendInformationEvent( i, 
-                                                    VSCP_CLASS1_CONTROL,
-                                                    VSCP_TYPE_CONTROL_TURNON );
-                        }   
-                        else {
-                            SendInformationEvent( i, 
-                                                    VSCP_CLASS1_INFORMATION,
-                                                    VSCP_TYPE_INFORMATION_ON );
-                        }
-                    }
-                }
-            }
-            
-            // Should change OFF event be sent?
-            if (  ctrlreg & INPUT_CTRL_EVENT_OFF ) {
-                
-                if ( !bInput ) {
-                    
-                    // Yes if last state was one
-                    if ( current_iostate & ( 1 << i ) ) {
-                        if ( ctrlreg &  INPUT_CTRL_EVENT_SELECT ) {
-                            SendInformationEvent( i, 
-                                                    VSCP_CLASS1_CONTROL,
-                                                    VSCP_TYPE_CONTROL_TURNOFF );
-                        }
-                        else {
-                            SendInformationEvent( i, 
-                                                    VSCP_CLASS1_INFORMATION,
-                                                    VSCP_TYPE_INFORMATION_OFF );
-                        }
-                    }
-                }
-            }
-            
-            // Should alarm high event be sent?
-            if ( ctrlreg & INPUT_CTRL_ALARM_HIGH ) {
-                
-                if ( bInput ) {
-                    
-                    // Yes if last state was zero
-                    if ( !( current_iostate & ( 1 << i ) ) || 
-                            ( ctrlreg & INPUT_CTRL_ALARM_CONTINIOUS ) ) {
-                        SendInformationEvent( i, 
-                                                VSCP_CLASS1_ALARM,
-                                                VSCP_TYPE_ALARM_ALARM );
-                        vscp_alarmstatus |= ALARM_INPUT_HIGH;
-                    }
-                    
-                }
-                
-            }
-            
-            // Should alarm low event be sent?
-            if ( ctrlreg & INPUT_CTRL_ALARM_LOW ) {
-                
-                if (!bInput ) {
-                    
-                    // Yes if last state was one
-                    if ( current_iostate & ( 1 << i ) ||
-                            ( ctrlreg & INPUT_CTRL_ALARM_CONTINIOUS ) ) {
-                        SendInformationEvent( i, 
-                                                VSCP_CLASS1_ALARM,
-                                                VSCP_TYPE_ALARM_ALARM );
-                        vscp_alarmstatus |= ALARM_INPUT_LOW;
-                    }
-                    
-                }
-                
-            }
-            
-        }
-        else {
-            
-            // * * * Output * * *
-            
-            // Get output control register for this channel
-            ctrlreg = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_CH0_OUTPUT_CTRL + i );
-
-            // If not enabled check next
-            if ( !( ctrlreg & OUTPUT_CTRL_ENABLED ) ) continue;
-
-            // * * * Protection timer * * *
-
-            if ( channel_protection_timer[ i ] ) {
-
-                channel_protection_timer[ i ]--;
-
-                // Check if its time to act on protection time
-                if (!channel_protection_timer[ i ] &&
-                        ( eeprom_read(VSCP_EEPROM_END + REG0_ACCRA_CH0_OUTPUT_CTRL + i ) &
-                        OUTPUT_CTRL_PROTECTION ) ) {
-
-                    // Yes - its time to protect this channel
-                    doActionOff(0, (1 << i));
-
-                    // Should alarm be sent?
-                    if (ctrlreg & OUTPUT_CTRL_ALARM) {
-                        SendInformationEvent( i, 
-                                                VSCP_CLASS1_ALARM,
-                                                VSCP_TYPE_ALARM_ALARM);
-                    }
-                    
-                    vscp_alarmstatus |= ALARM_STATE_PROTECTION;
-
-                }
-            } 
-            else {
-                // Reload protection timer
-                channel_protection_timer[ i ] =
-                        eeprom_read(VSCP_EEPROM_END + REG0_COUNT +
-                                    REG1_ACCRA_CH0_TIMING_PROTECT_MSB + i) * 256 +
-                                    eeprom_read(VSCP_EEPROM_END + REG0_COUNT +
-                                    REG1_ACCRA_CH0_TIMING_PROTECT_LSB + i);
-            }
-
-            // * * * Pulsed channels * * *
-            if ( channel_pulse_flags & (1 << i) ) {
-
-                if ( channel_pulse_timer[ i ] ) {
-
-                    channel_pulse_timer[ i ]--;
-
-                    // If zero its time for state change
-                    if ( !channel_pulse_timer[ i ] ) {
-
-                        switch (i) {
-
-                            case 0:
-                                if ( CHANNEL0 ) {
-                                    CHANNEL0 = 0;
-                                    bOn = FALSE;
-                                } 
-                                else {
-                                    CHANNEL0 = 1;
-                                    bOn = TRUE;
-                                }
-                                break;
-
-                            case 1:
-                                if ( CHANNEL1 ) {
-                                    CHANNEL1 = 0;
-                                    bOn = FALSE;
-                                } 
-                                else {
-                                    CHANNEL1 = 1;
-                                    bOn = TRUE;
-                                }
-                                break;
-
-                            case 2:
-                                if ( CHANNEL2 ) {
-                                    CHANNEL2 = 0;
-                                    bOn = FALSE;
-                                } 
-                                else {
-                                    CHANNEL2 = 1;
-                                    bOn = TRUE;
-                                }
-                                break;
-
-                            case 3:
-                                if ( CHANNEL3 ) {
-                                    CHANNEL3 = 0;
-                                    bOn = FALSE;
-                                } 
-                                else {
-                                    CHANNEL3 = 1;
-                                    bOn = TRUE;
-                                }
-                                break;
-
-                            case 4:
-                                if ( CHANNEL4 ) {
-                                    CHANNEL4 = 0;
-                                    bOn = FALSE;
-                                } 
-                                else {
-                                    CHANNEL4 = 1;
-                                    bOn = TRUE;
-                                }
-                                break;
-
-                            case 5:
-                                if ( CHANNEL5 ) {
-                                    CHANNEL5 = 0;
-                                    bOn = FALSE;
-                                } 
-                                else {
-                                    CHANNEL5 = 1;
-                                    bOn = TRUE;
-                                }
-                                break;
-
-                            case 6:
-                                if ( CHANNEL6 ) {
-                                    CHANNEL6 = 0;
-                                    bOn = FALSE;
-                                } 
-                                else {
-                                    CHANNEL6 = 1;
-                                    bOn = TRUE;
-                                }
-                                break;
-                               
-                            case 7:
-                                if ( CHANNEL7 ) {
-                                    CHANNEL7 = 0;
-                                    bOn = FALSE;
-                                } 
-                                else {
-                                    CHANNEL7 = 1;
-                                    bOn = TRUE;
-                                }
-                                break;
-                                
-                            case 8:
-                                if ( CHANNEL8 ) {
-                                    CHANNEL8 = 0;
-                                    bOn = FALSE;
-                                } 
-                                else {
-                                    CHANNEL8 = 1;
-                                    bOn = TRUE;
-                                }
-                                break;
-                                
-                            case 9:
-                                if ( CHANNEL9 ) {
-                                    CHANNEL9 = 0;
-                                    bOn = FALSE;
-                                } 
-                                else {
-                                    CHANNEL9 = 1;
-                                    bOn = TRUE;
-                                }
-                                break;    
-                        }
-
-                        // Reload pulse timer
-                        channel_pulse_timer[ i ] =
-                                eeprom_read( VSCP_EEPROM_END + REG0_COUNT +
-                                                REG1_ACCRA_CH0_TIMING_PULSE_MSB + 2 * i ) * 256 +
-                                                eeprom_read( VSCP_EEPROM_END + REG0_COUNT +
-                                                REG1_ACCRA_CH0_TIMING_PULSE_MSB + 2 * i );
-
-                        if ( bOn ) {
-
-                            // Reload protection timer
-                            if ( eeprom_read(VSCP_EEPROM_END + REG0_ACCRA_CH0_OUTPUT_CTRL + i) & 
-                                                OUTPUT_CTRL_PROTECTION) {
-                                channel_protection_timer[ i ] =
-                                        eeprom_read( VSCP_EEPROM_END + REG0_COUNT +
-                                                        REG1_ACCRA_CH0_TIMING_PROTECT_MSB + 2 * i) * 256 +
-                                                        eeprom_read(VSCP_EEPROM_END + REG0_COUNT +
-                                                        REG1_ACCRA_CH0_TIMING_PROTECT_LSB + 2 * i);
-                            }
-
-                            if ( ctrlreg & OUTPUT_CTRL_ONEVENT ) {
-                                SendInformationEvent( i, 
-                                                        VSCP_CLASS1_INFORMATION,
-                                                        VSCP_TYPE_INFORMATION_ON);
-                            }
-
-
-                        } 
-                        else {
-
-                            if ( ctrlreg & OUTPUT_CTRL_OFFEVENT ) {
-                                SendInformationEvent( i, VSCP_CLASS1_INFORMATION,
-                                                        VSCP_TYPE_INFORMATION_OFF);
-                            }
-
-                        }
-
-                    } // State change
-
-                } // Something to count down
-                else {
-                    // Reload the pulse timer
-                    channel_pulse_timer[ i ] =
-                            eeprom_read(VSCP_EEPROM_END + REG0_COUNT +
-                                        REG1_ACCRA_CH0_TIMING_PULSE_MSB + 2 * i) * 256 +
-                                        eeprom_read(VSCP_EEPROM_END + REG0_COUNT +
-                                        REG1_ACCRA_CH0_TIMING_PULSE_LSB + 2 * i);
-                }
-
-            } // Pulse bit
-
-        }
-
-    } // for all channels
-    
-    
-    // Check if stream event should be sent
-    if ( eeprom_read(VSCP_EEPROM_END + REG0_ACCRA_STREAM_TIMING ) ) {
-    
-        uint8_t data[ 3 ]; 
-        
-        data[ 0 ] = 0;  // Data coding (coding=0(bits), unit=0, sensor=0)
-        data[ 1 ] = ( CHANNEL9 << 1 ) + 
-                        CHANNEL8;
-        data[ 2 ] = ( CHANNEL7 << 7 ) + 
-                        ( CHANNEL6 << 6 ) +
-                        ( CHANNEL5 << 5 ) +
-                        ( CHANNEL4 << 4 ) +
-                        ( CHANNEL3 << 3 ) +
-                        ( CHANNEL2 << 2 ) +
-                        ( CHANNEL1 << 1 ) +
-                        CHANNEL0;
-
-        // Send event
-        sendVSCPFrame( VSCP_CLASS1_DATA,
-                        VSCP_TYPE_DATA_IO,
-                        vscp_nickname,
-                        VSCP_PRIORITY_MEDIUM,
-                        3,
-                        data );
+    // calculate frequency
+    for ( int i=0; i<4; i++ ) {
+        frequency[ i ] = counter[ i ] - lastcounter[ i ];
+        lastcounter[ i ] = counter[ i ];
     }
-    
-    // Save the current I/O state
-    current_iostate = ( CHANNEL9 << 9 ) +
-                        ( CHANNEL8 << 8 ) +
-                        ( CHANNEL7 << 7 ) +
-                        ( CHANNEL6 << 6 ) +
-                        ( CHANNEL5 << 5 ) +
-                        ( CHANNEL4 << 4 ) +
-                        ( CHANNEL3 << 3 ) +
-                        ( CHANNEL2 << 2 ) +
-                        ( CHANNEL1 << 1 ) +
-                        CHANNEL0;
-    */
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1190,19 +851,6 @@ uint8_t vscp_getSubzone(void)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// doWork
-//
-// The actual work is done here.
-//
-
-void doWork(void)
-{
-    if ( VSCP_STATE_ACTIVE == vscp_node_state ) {
-		;
-    }
-}
-
-///////////////////////////////////////////////////////////////////////////////
 // vscp_readAppReg
 //
 
@@ -1221,7 +869,7 @@ uint8_t vscp_readAppReg(uint8_t reg)
         }            // SubZone
         else if ( reg == REG0_ACCRA_SUBZONE ) {
             rv = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_SUBZONE );
-        }
+        }        
         else if ( ( reg >= REG0_ACCRA_CH0_SUBZONE ) && 
                     ( reg <= REG0_ACCRA_CH3_SUBZONE ) ) {
             rv = eeprom_read( VSCP_EEPROM_END + 
@@ -1287,35 +935,106 @@ uint8_t vscp_writeAppReg( uint8_t reg, uint8_t val )
                                 REG0_ACCRA_CH0_SUBZONE + 
                                 ( reg - REG0_ACCRA_CH0_SUBZONE ) );
         }
-        
+        // channel control registers
+        else if ( ( reg >= REG0_ACCRA_CONTROL_COUNTER_CH0 ) && 
+                       ( reg <= REG0_ACCRA_CONTROL_COUNTER_CH3 ) ) {
+            eeprom_write( VSCP_EEPROM_END + 
+                                REG0_ACCRA_CONTROL_COUNTER_CH0 + 
+                                ( reg - REG0_ACCRA_CONTROL_COUNTER_CH0 ), val );
+            rv = eeprom_read( VSCP_EEPROM_END + 
+                                REG0_ACCRA_CONTROL_COUNTER_CH0 + 
+                                ( reg - REG0_ACCRA_CONTROL_COUNTER_CH0 ) );
+            // Also update counter shadow control register
+            counter_control_shadow[ reg - REG0_ACCRA_CONTROL_COUNTER_CH0 ] = val;
+        }
+        // Frequency control register
+        else if ( ( reg >= REG0_ACCRA_CONTROL_FREQ_CH0 ) && 
+                       ( reg <= REG0_ACCRA_CONTROL_FREQ_CH3 ) ) {
+            eeprom_write( VSCP_EEPROM_END + 
+                                REG0_ACCRA_CONTROL_FREQ_CH0 + 
+                                ( reg - REG0_ACCRA_CONTROL_FREQ_CH0 ), val );
+            rv = eeprom_read( VSCP_EEPROM_END + 
+                                REG0_ACCRA_CONTROL_FREQ_CH0 + 
+                                ( reg - REG0_ACCRA_CONTROL_FREQ_CH0 ) );
+        }
+        // The rest...
+        else if ( ( reg >= REG0_ACCRA_COUNTER_ALARM_CH0_MSB ) && 
+                       ( reg <= REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH3 ) ) {
+            eeprom_write( VSCP_EEPROM_END + 
+                                REG0_ACCRA_COUNTER_ALARM_CH0_MSB -
+                                REG0_MINUS +
+                                ( reg - REG0_ACCRA_COUNTER_ALARM_CH0_MSB ), val );
+            rv = eeprom_read( VSCP_EEPROM_END + 
+                                REG0_ACCRA_COUNTER_ALARM_CH0_MSB -
+                                REG0_MINUS +
+                                ( reg - REG0_ACCRA_COUNTER_ALARM_CH0_MSB ) );
+        }
         
     } // page 0
     
     // * * *  Page 1  * * *
     else if ( 1 == vscp_page_select ) {
     
-        
+        if ( ( reg >= REG1_ACCRA_CH0_FREQUENCY_LOW_MSB ) && 
+                       ( reg <= REG1_ACCRA_CH3_FREQ_HYSTERESIS_LSB ) ) {
+            eeprom_write( VSCP_EEPROM_END + 
+                                REG1_ACCRA_CH0_FREQUENCY_LOW_MSB +
+                                REG0_COUNT - 
+                                REG1_MINUS +
+                                ( reg - REG1_ACCRA_CH0_FREQUENCY_LOW_MSB ), val );
+            rv = eeprom_read( VSCP_EEPROM_END + 
+                                REG1_ACCRA_CH0_FREQUENCY_LOW_MSB +
+                                REG0_COUNT - 
+                                REG1_MINUS +
+                                ( reg - REG1_ACCRA_CH0_FREQUENCY_LOW_MSB ) );
+        }
         
     } // page 1
     
     // * * *  Page 2  * * *
     else if ( 2 == vscp_page_select ) {
     
+        if ( ( reg >= REG2_ACCRA_CH0_LINEARIZATION_K_MSB ) && 
+                       ( reg <= REG2_ACCRA_CH3_LINEARIZATION_M_LSB ) ) {
+            eeprom_write( VSCP_EEPROM_END +
+                                REG0_COUNT + 
+                                REG1_COUNT +
+                                reg, val );
+            rv = eeprom_read( VSCP_EEPROM_END + 
+                                REG0_COUNT + 
+                                REG1_COUNT +
+                                reg );
+        }
+        
+    } // page 2
+    
+    // * * *  Page 3  * * *
+    else if ( 2 == vscp_page_select ) {
+    
+        // Nothing to write
+        
+    } // page 3
+    
+    // * * *  Page 4  * * *
+    else if ( 4 == vscp_page_select ) {
+    
         if ( reg < (REG_DESCION_MATRIX + DESCION_MATRIX_ROWS * 8) ) {
             eeprom_write( VSCP_EEPROM_END + 
                             REG_DESCION_MATRIX +
                             REG0_COUNT + 
                             REG1_COUNT + 
+                            REG3_COUNT +
                             reg, val );
             calculateSetFilterMask();  // Calculate new hardware filter
             rv = eeprom_read( VSCP_EEPROM_END + 
-                            REG_DESCION_MATRIX + 
-                            REG0_COUNT + 
-                            REG1_COUNT + 
-                            reg );
+                                REG_DESCION_MATRIX + 
+                                REG0_COUNT + 
+                                REG1_COUNT +
+                                REG3_COUNT +
+                                reg );
         }
         
-    } // page 2
+    } // page 4
         
     // --------------------------------------------------------------------------
 
@@ -1935,43 +1654,45 @@ void calculateSetFilterMask( void )
 
     // Reset filter masks
     uint32_t mask = 0xffffffff; // Just id 0x00000000 will come true
-    uint32_t filter = 0;
+    uint32_t filter = 0x00000000;
 
     // Go through all DM rows
     for ( i=0; i < DESCION_MATRIX_ROWS; i++ ) {
 
         // No need to check not active DM rows
-        if ( eeprom_read( VSCP_EEPROM_END + 8*i + 1 ) & 0x80 ) {
+        if ( eeprom_read( VSCP_EEPROM_END + 8*i + VSCP_DM_POS_FLAGS ) & VSCP_DM_FLAG_ENABLED ) {
 
             // build the mask
             // ==============
             // We receive
             //  - all priorities
-            //  - hard coded and not hard coded
+            //  - hardcoded and not hardcoded
             //  - from all nodes
 
             rowmask =
                     // Bit 9 of class mask
-                    ( (uint32_t)( eeprom_read( VSCP_EEPROM_END + 8*i + 1 ) & 2 ) << 23 ) |
+                    ( (uint32_t)( eeprom_read( VSCP_EEPROM_END + 8*i + VSCP_DM_POS_FLAGS ) & VSCP_DM_FLAG_CLASS_MASK ) << 23 ) |
                     // Rest of class mask
-                    ( (uint32_t)eeprom_read( VSCP_EEPROM_END + 8*i + 2 ) << 16 ) |
+                    ( (uint32_t)eeprom_read( VSCP_EEPROM_END + 8*i + VSCP_DM_POS_CLASSMASK ) << 16 ) |
                     // Type mask
-                    ( (uint32_t)eeprom_read( VSCP_EEPROM_END + 8*i + 4 ) << 8 ) |
+                    ( (uint32_t)eeprom_read( VSCP_EEPROM_END + 8*i + VSCP_DM_POS_TYPEMASK ) << 8 ) |
+                    // Hardcoded bit
+                    //( ( eeprom_read( VSCP_EEPROM_END + 8*i + VSCP_DM_POS_FLAGS ) & VSCP_DM_FLAG_HARDCODED ) << 20 ) |   
 					// OID  - handle later
 					0xff;
-                    /*( ( eeprom_read( VSCP_EEPROM_END + 8*i + 1 ) & 0x20 ) << 20 )*/;   // Hardcoded bit
+                    
 
             // build the filter
             // ================
 
             rowfilter =
                     // Bit 9 of class filter
-                    ( (uint32_t)( eeprom_read( VSCP_EEPROM_END + 8*i + 1 ) & 1 ) << 24 ) |
+                    ( (uint32_t)( eeprom_read( VSCP_EEPROM_END + 8*i + VSCP_DM_POS_FLAGS ) & VSCP_DM_FLAG_CLASS_FILTER ) << 24 ) |
                     // Rest of class filter
-                    ( (uint32_t)eeprom_read( VSCP_EEPROM_END + 8*i + 3 ) << 16 ) |
+                    ( (uint32_t)eeprom_read( VSCP_EEPROM_END + 8*i + VSCP_DM_POS_CLASSFILTER ) << 16 ) |
                     // Type filter
-                    ( (uint32_t)eeprom_read( VSCP_EEPROM_END + 8*i + 5 ) << 8 ) |
-                    // OID Mask cleard if not same OID for all or one or more
+                    ( (uint32_t)eeprom_read( VSCP_EEPROM_END + 8*i + VSCP_DM_POS_TYPEFILTER ) << 8 ) |
+                    // OID Mask cleared if not same OID for all or one or more
                     // rows don't have OID check flag set.
                     eeprom_read( VSCP_EEPROM_END + 8*i );
 
@@ -1998,35 +1719,35 @@ void calculateSetFilterMask( void )
             filter &= rowfilter;
 
             // Not check OID?
-            if ( !eeprom_read( VSCP_EEPROM_END + 8*i + 1 ) & 0x40 ) {
+            if ( !eeprom_read( VSCP_EEPROM_END + 8*i + VSCP_DM_POS_FLAGS ) & VSCP_DM_FLAG_CHECK_OADDR ) {
                 // No should not be checked for this position
                 // This mean that we can't filter on a specific OID
                 // so mask must be a don't care
                 mask &= ~0xff;
             }
 
-            if (i) {
+            if ( i ) {
                 // If the current OID is different than the previous
                 // we accept all
                 for (j = 0; j < 8; j++) {
                     if ((lastOID >> i & 1)
-                            != (eeprom_read(VSCP_EEPROM_END + 8 * i) >> i & 1)) {
+                            != (eeprom_read(VSCP_EEPROM_END + 8*i ) >> i & 1)) {
                         mask &= (1 << i);
                     }
                 }
 
-                lastOID = eeprom_read(VSCP_EEPROM_END + 8 * i);
+                lastOID = eeprom_read(VSCP_EEPROM_END + 8*i );
 
             } 
             else {
                 // First round we just store the OID
-                lastOID = eeprom_read(VSCP_EEPROM_END + 8 * i);
+                lastOID = eeprom_read(VSCP_EEPROM_END + 8*i );
             }
 
         }
     }
     
-    // Must be in config. mode to change settings.
+    // Must be in Config mode to change settings.
     ECANSetOperationMode( ECAN_OP_MODE_CONFIG );
 
     //Set mask 1
@@ -2037,6 +1758,6 @@ void calculateSetFilterMask( void )
 
     // Return to Normal mode to communicate.
     ECANSetOperationMode( ECAN_OP_MODE_NORMAL );
-
+  
 }
 

@@ -37,21 +37,6 @@
 #define FIRMWARE_SUB_MINOR_VERSION	0
 
 
-// * * * History * * *
-
-/*
-
- History updated in HISTORY.txt instead.
-
-Version 1.0.1 2015-03-15 - Relocated version.
-Version 0.1.5 2007-02-27 - Fixed register write offset problem.
-						   Added zone/subzone data.
-						   Temp. interval was at same EEPROM index - fixed.
-Version 0.1.4 2006-05-07 - Cleaned up VSCP sub system.
-Version 0.0.2 2005-01-31
-
-*/
-
 
 
 
