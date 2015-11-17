@@ -99,8 +99,8 @@ uint8_t seconds;    // counter for seconds
 uint8_t minutes;    // counter for minutes
 uint8_t hours;      // Counter for hours
 
-uint64_t counter[4];        // Counters
-uint64_t lastcounter[4];    // Counter values last second (for frequency)
+uint32_t counter[4];        // Counters
+uint32_t lastcounter[4];    // Counter values last second (for frequency)
 uint32_t frequency[4];      // Frequency calculations
 uint8_t counter2LastState;  // Last state for counter 2
 uint8_t counter3LastState;  // Last state for counter 3
@@ -866,35 +866,128 @@ uint8_t vscp_readAppReg(uint8_t reg)
         // Zone
         if ( reg == REG0_ACCRA_ZONE ) {
             rv = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_ZONE );
-        }            // SubZone
+        }            
+        // SubZone
         else if ( reg == REG0_ACCRA_SUBZONE ) {
             rv = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_SUBZONE );
-        }        
+        }
+        // Channel subzones & control registers
         else if ( ( reg >= REG0_ACCRA_CH0_SUBZONE ) && 
-                    ( reg <= REG0_ACCRA_CH3_SUBZONE ) ) {
+                    ( reg <= REG0_ACCRA_CONTROL_FREQ_CH3 ) ) {
             rv = eeprom_read( VSCP_EEPROM_END + 
                                 REG0_ACCRA_CH0_SUBZONE + 
                                 ( reg - REG0_ACCRA_CH0_SUBZONE ) );
+        }
+        // Reset counter locations
+        else if ( ( reg >= REG0_ACCRA_RESET_COUNTER_CH0 ) && 
+                    ( reg <= REG0_ACCRA_RESET_COUNTER_CH3 ) ) {
+            rv = 0x00;
+        }
+        // Counter 0
+        else if ( ( reg >= REG0_ACCRA_COUNTER_CH0_MSB ) && 
+                    ( reg <= REG0_ACCRA_COUNTER_CH0_LSB ) ) {
+            uint8_t *p = (uint8_t *)&counter[ 0 ];
+            rv = p[ 3 - ( reg - REG0_ACCRA_COUNTER_CH0_MSB ) ];    // Byte order in PIC is little endian
+        }
+        // Counter 1
+        else if ( ( reg >= REG0_ACCRA_COUNTER_CH1_MSB ) && 
+                    ( reg <= REG0_ACCRA_COUNTER_CH1_LSB ) ) {
+            uint8_t *p = (uint8_t *)&counter[ 1 ];
+            rv = p[ 3 - ( reg - REG0_ACCRA_COUNTER_CH1_MSB ) ];    // Byte order in PIC is little endian
+        }
+        // Counter 2
+        else if ( ( reg >= REG0_ACCRA_COUNTER_CH2_MSB ) && 
+                    ( reg <= REG0_ACCRA_COUNTER_CH2_LSB ) ) {
+            uint8_t *p = (uint8_t *)&counter[ 2 ];
+            rv = p[ 3 - ( reg - REG0_ACCRA_COUNTER_CH2_MSB ) ];    // Byte order in PIC is little endian
+        }
+        // Counter 3
+        else if ( ( reg >= REG0_ACCRA_COUNTER_CH3_MSB ) && 
+                    ( reg <= REG0_ACCRA_COUNTER_CH3_LSB ) ) {
+            uint8_t *p = (uint8_t *)&counter[ 3 ];
+            rv = p[ 3 - ( reg - REG0_ACCRA_COUNTER_CH3_MSB ) ];    // Byte order in PIC is little endian
+        }
+        // The rest
+        else if ( ( reg >= REG0_ACCRA_COUNTER_ALARM_CH0_MSB ) && 
+                    ( reg <= REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH3 ) ) {
+            rv = eeprom_read( VSCP_EEPROM_END + ( reg - REG0_ACCRA_COUNTER_ALARM_CH0_MSB ) );
         }
         
     } // page 0
     
     // * * *  Page 1  * * *
     else if ( 1 == vscp_page_select ) {
-        if ( reg < REG1_COUNT ) {
-            //v = eeprom_read( VSCP_EEPROM_END + REG0_COUNT + reg );
+        
+        // Frequency for counter 0
+        if ( ( reg >= REG1_ACCRA_CH0_FREQUENCY_MSB ) && 
+                    ( reg <= REG1_ACCRA_CH0_FREQUENCY_LSB ) ) {
+            uint8_t *p = (uint8_t *)&frequency[ 0 ];
+            rv = p[ 3 - ( reg - REG1_ACCRA_CH0_FREQUENCY_MSB ) ];    // Byte order in PIC is little endian
         }
-    }
+        // Frequency for counter 1
+        else if ( ( reg >= REG1_ACCRA_CH1_FREQUENCY_MSB ) && 
+                    ( reg <= REG1_ACCRA_CH1_FREQUENCY_LSB ) ) {
+            
+            uint8_t *p = (uint8_t *)&frequency[ 1 ];
+            rv = p[ 3 - ( reg - REG1_ACCRA_CH1_FREQUENCY_MSB ) ];    // Byte order in PIC is little endian
+            
+        }
+        // Frequency for counter 2
+        else if ( ( reg >= REG1_ACCRA_CH2_FREQUENCY_MSB ) && 
+                    ( reg <= REG1_ACCRA_CH2_FREQUENCY_LSB ) ) {
+            
+            uint8_t *p = (uint8_t *)&frequency[ 2 ];
+            rv = p[ 3 - ( reg - REG1_ACCRA_CH2_FREQUENCY_MSB ) ];    // Byte order in PIC is little endian
+            
+        }
+        // Frequency for counter 3
+        else if ( ( reg >= REG1_ACCRA_CH3_FREQUENCY_MSB ) && 
+                    ( reg <= REG1_ACCRA_CH3_FREQUENCY_LSB ) ) {
+            
+            uint8_t *p = (uint8_t *)&frequency[ 3 ];
+            rv = p[ 3 - ( reg - REG1_ACCRA_CH3_FREQUENCY_MSB ) ];    // Byte order in PIC is little endian
+            
+        }    
+        else if ( ( reg >= REG1_ACCRA_CH0_FREQUENCY_LOW_MSB ) && 
+                    ( reg <= REG1_ACCRA_CH3_FREQ_HYSTERESIS_LSB ) ) {
+            
+            rv = eeprom_read( VSCP_EEPROM_END + 
+                                REG0_COUNT + 
+                                ( reg - REG1_ACCRA_CH0_FREQUENCY_LOW_MSB ) );
+            
+        }
+        
+    } // page 1
+    
     // * * *  Page 2  * * *
     else if ( 2 == vscp_page_select ) {
+        
+        if ( ( reg >= REG2_ACCRA_CH0_LINEARIZATION_K_MSB ) && 
+                    ( reg <= REG2_ACCRA_CH3_LINEARIZATION_M_LSB ) ) {
+            
+            rv = eeprom_read( VSCP_EEPROM_END + 
+                                REG0_COUNT +
+                                REG1_COUNT +
+                                ( reg - REG2_ACCRA_CH0_LINEARIZATION_K_MSB ) );
+            
+        }
+        
+    } // page 2
+    
+ 
+    // * * *  Page 3  * * *
+    else if ( 3 == vscp_page_select ) {
+        
         if ( reg < ( REG_DESCION_MATRIX + 8*DESCION_MATRIX_ROWS ) ) {
             rv = eeprom_read( VSCP_EEPROM_END + 
                                 REG_DESCION_MATRIX + 
                                 REG0_COUNT + 
-                                REG1_COUNT + 
+                                REG1_COUNT +
+                                REG2_COUNT +
                                 reg );
         }
-    }
+        
+    } // page 3
     
     return rv;
 
@@ -925,6 +1018,7 @@ uint8_t vscp_writeAppReg( uint8_t reg, uint8_t val )
             eeprom_write(VSCP_EEPROM_END + REG0_ACCRA_SUBZONE, val);
             rv = eeprom_read(VSCP_EEPROM_END + REG0_ACCRA_SUBZONE);
         }
+        
         // Channel sub zones
         else if ( ( reg >= REG0_ACCRA_CH0_SUBZONE ) && 
                        ( reg <= REG0_ACCRA_CH3_SUBZONE ) ) {
@@ -935,6 +1029,7 @@ uint8_t vscp_writeAppReg( uint8_t reg, uint8_t val )
                                 REG0_ACCRA_CH0_SUBZONE + 
                                 ( reg - REG0_ACCRA_CH0_SUBZONE ) );
         }
+        
         // channel control registers
         else if ( ( reg >= REG0_ACCRA_CONTROL_COUNTER_CH0 ) && 
                        ( reg <= REG0_ACCRA_CONTROL_COUNTER_CH3 ) ) {
@@ -947,6 +1042,7 @@ uint8_t vscp_writeAppReg( uint8_t reg, uint8_t val )
             // Also update counter shadow control register
             counter_control_shadow[ reg - REG0_ACCRA_CONTROL_COUNTER_CH0 ] = val;
         }
+        
         // Frequency control register
         else if ( ( reg >= REG0_ACCRA_CONTROL_FREQ_CH0 ) && 
                        ( reg <= REG0_ACCRA_CONTROL_FREQ_CH3 ) ) {
@@ -957,6 +1053,59 @@ uint8_t vscp_writeAppReg( uint8_t reg, uint8_t val )
                                 REG0_ACCRA_CONTROL_FREQ_CH0 + 
                                 ( reg - REG0_ACCRA_CONTROL_FREQ_CH0 ) );
         }
+        
+        // Reset counter 0
+        else if ( ( reg == REG0_ACCRA_RESET_COUNTER_CH0 ) ) {
+            
+            if ( 0x55 == val ) {
+                counter[ 0 ] = 0;
+                rv = 0x55;
+            }
+            else {
+                rv = 0;
+            }
+       
+        }
+        
+        // Reset counter 1
+        else if ( ( reg == REG0_ACCRA_RESET_COUNTER_CH1 ) ) {
+            
+            if ( 0x55 == val ) {
+                counter[ 1 ] = 0;
+                rv = 0x55;
+            }
+            else {
+                rv = 0;
+            }
+       
+        }
+        
+        // Reset counter 2
+        else if ( ( reg == REG0_ACCRA_RESET_COUNTER_CH2 ) ) {
+            
+            if ( 0x55 == val ) {
+                counter[ 2 ] = 0;
+                rv = 0x55;
+            }
+            else {
+                rv = 0;
+            }
+       
+        }
+        
+        // Reset counter 3
+        else if ( ( reg == REG0_ACCRA_RESET_COUNTER_CH3 ) ) {
+            
+            if ( 0x55 == val ) {
+                counter[ 3 ] = 0;
+                rv = 0x55;
+            }
+            else {
+                rv = 0;
+            }
+       
+        }
+        
         // The rest...
         else if ( ( reg >= REG0_ACCRA_COUNTER_ALARM_CH0_MSB ) && 
                        ( reg <= REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH3 ) ) {
@@ -1023,14 +1172,14 @@ uint8_t vscp_writeAppReg( uint8_t reg, uint8_t val )
                             REG_DESCION_MATRIX +
                             REG0_COUNT + 
                             REG1_COUNT + 
-                            REG3_COUNT +
+                            REG2_COUNT +
                             reg, val );
             calculateSetFilterMask();  // Calculate new hardware filter
             rv = eeprom_read( VSCP_EEPROM_END + 
                                 REG_DESCION_MATRIX + 
                                 REG0_COUNT + 
                                 REG1_COUNT +
-                                REG3_COUNT +
+                                REG2_COUNT +
                                 reg );
         }
         
@@ -1494,14 +1643,13 @@ void vscp_getMatrixInfo(char *pData)
 {
     uint8_t i;
 
-    vscp_omsg.data[ 0 ] = 7; // Matrix is seven rows
-    vscp_omsg.data[ 1 ] = 72; // Matrix start offset
-
-    // The rest set to zero no paging
-    for ( i = 2; i < 8; i++ ) {
-        vscp_omsg.data[ i ] = 0;
-    }
-
+    vscp_omsg.data[ 0 ] = DESCION_MATRIX_ROWS;  // Matrix is seven rows
+    vscp_omsg.data[ 1 ] = REG_DESCION_MATRIX;   // Matrix start offset
+    vscp_omsg.data[ 2 ] = 0;                    // Matrix start page
+    vscp_omsg.data[ 3 ] = DESCION_MATRIX_PAGE;
+    vscp_omsg.data[ 4 ] = 0;                    // Matrix end page
+    vscp_omsg.data[ 5 ] = DESCION_MATRIX_PAGE;
+    vscp_omsg.data[ 6 ] = 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1537,7 +1685,7 @@ void vscp_restoreDefaults() {
 
 uint8_t vscp_getRegisterPagesUsed( void )
 {
-    return 3; // One pae used
+    return NUMBER_OF_REGISTER_PAGES; // One pages used
 }
 
 ///////////////////////////////////////////////////////////////////////////////

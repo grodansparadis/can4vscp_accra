@@ -454,40 +454,11 @@
 
 //      Page 3
 
-#define REG2_ACCRA_CH0_HIGH_COUNT_MSB           0
-#define REG2_ACCRA_CH0_HIGH_COUNT_0             0
-#define REG2_ACCRA_CH0_HIGH_COUNT_1             1
-#define REG2_ACCRA_CH0_HIGH_COUNT_2             2
-#define REG2_ACCRA_CH0_HIGH_COUNT_3             3
-#define REG2_ACCRA_CH0_HIGH_COUNT_LSB           3
-
-#define REG2_ACCRA_CH1_HIGH_COUNT_MSB           4
-#define REG2_ACCRA_CH1_HIGH_COUNT_0             4
-#define REG2_ACCRA_CH1_HIGH_COUNT_1             5
-#define REG2_ACCRA_CH1_HIGH_COUNT_2             6
-#define REG2_ACCRA_CH1_HIGH_COUNT_3             7
-#define REG2_ACCRA_CH1_HIGH_COUNT_LSB           7
-
-#define REG2_ACCRA_CH2_HIGH_COUNT_MSB           8
-#define REG2_ACCRA_CH2_HIGH_COUNT_0             8
-#define REG2_ACCRA_CH2_HIGH_COUNT_1             9
-#define REG2_ACCRA_CH2_HIGH_COUNT_2             10
-#define REG2_ACCRA_CH2_HIGH_COUNT_3             11
-#define REG2_ACCRA_CH2_HIGH_COUNT_LSB           11
-
-#define REG2_ACCRA_CH3_HIGH_COUNT_MSB           12
-#define REG2_ACCRA_CH3_HIGH_COUNT_0             12
-#define REG2_ACCRA_CH3_HIGH_COUNT_1             13
-#define REG2_ACCRA_CH3_HIGH_COUNT_2             14
-#define REG2_ACCRA_CH3_HIGH_COUNT_3             15
-#define REG2_ACCRA_CH3_HIGH_COUNT_LSB           15
-
-#define REG3_COUNT                              16  // Needed for EEPROM write
-
-//      Page 4
-
+#define DESCION_MATRIX_PAGE                     3
 #define DESCION_MATRIX_ROWS                     4
 #define REG_DESCION_MATRIX                      0    // Start of matrix
+
+#define NUMBER_OF_REGISTER_PAGES                5
 
 // * * * Persistent storage
 

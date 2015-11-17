@@ -2,12 +2,13 @@
 <!-- Ake Hedman, Grodans Paradis AB -->
 <vscp>
 <module>
-	<name>Accra counter</name>
+	<name>Accra counter module</name>
 	<model>B</model>
 	<version>1.0.0</version>
 	<changed>2015-11-14</changed>
 	<description lang="en">
-		With this VSCP module it is possible to count signals on four channels.
+		With this VSCP module it is possible to count pulses and measure frequency 
+        on four channels.
 	</description>
 	<infourl>http://www.grodansparadis.com/accra/accra.html</infourl>
 	<buffersize>8</buffersize>
@@ -123,7 +124,7 @@
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="6" default="0" bgcolor="0xB2F0FF">
+		<reg page="0" offset="6" default="0" bgcolor="0xD8F2F5">
 			<name lang="en">Counter 0 control register</name>
 			<description lang="en">
 			Control  register for counter 0 
@@ -172,7 +173,7 @@
         	</bit>
 		</reg>
 		
-		<reg page="0" offset="7" default="0" bgcolor="0xB2F0FF">
+		<reg page="0" offset="7" default="0" bgcolor="0xD8F2F5">
 			<name lang="en">Counter 1 control register</name>
 			<description lang="en">
 			Control  register for counter 1 
@@ -221,7 +222,7 @@
         	</bit>
 		</reg>
 		
-		<reg page="0" offset="8" default="0" bgcolor="0xB2F0FF">
+		<reg page="0" offset="8" default="0" bgcolor="0xD8F2F5">
 			<name lang="en">Counter 2 control register</name>
 			<description lang="en">
 			Control  register for counter 2 
@@ -270,7 +271,7 @@
         	</bit>
 		</reg>
 		
-		<reg page="0" offset="9" default="0" bgcolor="0xB2F0FF">
+		<reg page="0" offset="9" default="0" bgcolor="0xD8F2F5">
 			<name lang="en">Counter 3 control register</name>
 			<description lang="en">
 			Control  register for counter 3 
@@ -319,7 +320,7 @@
         	</bit>
 		</reg>
 		
-		<reg page="0" offset="10" default="0" bgcolor="0xB2F0FF">
+		<reg page="0" offset="10" default="0" bgcolor="0xE3F6E7">
 			<name lang="en">Frequency 0 control register</name>
 			<description lang="en">
 			Control register for frequency 0 
@@ -368,7 +369,7 @@
         	</bit>
 		</reg>
 		
-		<reg page="0" offset="11" default="0" bgcolor="0xB2F0FF">
+		<reg page="0" offset="11" default="0" bgcolor="0xE3F6E7">
 			<name lang="en">Frequency 1 control register</name>
 			<description lang="en">
 			Control register for frequency 1 
@@ -417,7 +418,7 @@
         	</bit>
 		</reg>
 		
-		<reg page="0" offset="12" default="0" bgcolor="0xB2F0FF">
+		<reg page="0" offset="12" default="0" bgcolor="0xE3F6E7">
 			<name lang="en">Frequency 2 control register</name>
 			<description lang="en">
 			Control register for frequency 2 
@@ -466,7 +467,7 @@
         	</bit>
 		</reg>
 		
-		<reg page="0" offset="13" default="0" bgcolor="0xB2F0FF">
+		<reg page="0" offset="13" default="0" bgcolor="0xE3F6E7">
 			<name lang="en">Frequency 3 control register</name>
 			<description lang="en">
 			Control register for frequency 3 
@@ -549,97 +550,97 @@
 		
 		<!-- Counters -->
 		
-		<reg page="0" offset="18" bgcolor="0xebd69d">
+		<reg page="0" offset="18" bgcolor="0xF9EAE3">
 			<name lang="en">Counter 0 (MSB)</name>
 			<description lang="en">32-bit counter 0 MSB byte.</description>
 			<access>r</access>
 		</reg>
 		
-		<reg page="0" offset="19" bgcolor="0xebd69d">
+		<reg page="0" offset="19" bgcolor="0xF9EAE3">
 			<name lang="en">Counter 0</name>
 			<description lang="en">32-bit counter 0.</description>
 			<access>r</access>
 		</reg>
 		
-		<reg page="0" offset="20" bgcolor="0xebd69d">
+		<reg page="0" offset="20" bgcolor="0xF9EAE3">
 			<name lang="en">Counter 0</name>
 			<description lang="en">32-bit counter 0.</description>
 			<access>r</access>
 		</reg>
 		
-		<reg page="0" offset="21" bgcolor="0xebd69d">
+		<reg page="0" offset="21" bgcolor="0xF9EAE3">
 			<name lang="en">Counter 0 (LSB)</name>
 			<description lang="en">32-bit counter 0 LSB byte.</description>
 			<access>r</access>
 		</reg>
 		
-		<reg page="0" offset="22" bgcolor="0xebd69d">
+		<reg page="0" offset="22" bgcolor="0xFAEDC8">
 			<name lang="en">Counter 1 (MSB)</name>
 			<description lang="en">32-bit counter 1 MSB byte.</description>
 			<access>r</access>
 		</reg>
 		
-		<reg page="0" offset="23" bgcolor="0xebd69d">
+		<reg page="0" offset="23" bgcolor="0xFAEDC8">
 			<name lang="en">Counter 1</name>
 			<description lang="en">32-bit counter 1.</description>
 			<access>r</access>
 		</reg>
 		
-		<reg page="0" offset="24" bgcolor="0xebd69d">
+		<reg page="0" offset="24" bgcolor="0xFAEDC8">
 			<name lang="en">Counter 1</name>
 			<description lang="en">32-bit counter 1.</description>
 			<access>r</access>
 		</reg>
 		
-		<reg page="0" offset="25" bgcolor="0xebd69d">
+		<reg page="0" offset="25" bgcolor="0xFAEDC8">
 			<name lang="en">Counter 1 (LSB)</name>
 			<description lang="en">32-bit counter 1 LSB byte.</description>
 			<access>r</access>
 		</reg>
 		
-		<reg page="0" offset="26" bgcolor="0xebd69d">
+		<reg page="0" offset="26" bgcolor="0xF9EAE3">
 			<name lang="en">Counter 2 (MSB)</name>
 			<description lang="en">32-bit counter 2 MSB byte.</description>
 			<access>r</access>
 		</reg>
 		
-		<reg page="0" offset="27" bgcolor="0xebd69d">
+		<reg page="0" offset="27" bgcolor="0xF9EAE3">
 			<name lang="en">Counter 2</name>
 			<description lang="en">32-bit counter 2.</description>
 			<access>r</access>
 		</reg>
 		
-		<reg page="0" offset="28" bgcolor="0xebd69d">
+		<reg page="0" offset="28" bgcolor="0xF9EAE3">
 			<name lang="en">Counter 2</name>
 			<description lang="en">32-bit counter 2.</description>
 			<access>r</access>
 		</reg>
 		
-		<reg page="0" offset="29" bgcolor="0xebd69d">
+		<reg page="0" offset="29" bgcolor="0xF9EAE3">
 			<name lang="en">Counter 2 (LSB)</name>
 			<description lang="en">32-bit counter 2 LSB byte.</description>
 			<access>r</access>
 		</reg>
 		
-		<reg page="0" offset="30" bgcolor="0xebd69d">
+		<reg page="0" offset="30" bgcolor="0xFAEDC8">
 			<name lang="en">Counter 3 (MSB)</name>
 			<description lang="en">32-bit counter 3 MSB byte.</description>
 			<access>r</access>
 		</reg>
 		
-		<reg page="0" offset="31" bgcolor="0xebd69d">
+		<reg page="0" offset="31" bgcolor="0xFAEDC8">
 			<name lang="en">Counter 3</name>
 			<description lang="en">32-bit counter 3.</description>
 			<access>r</access>
 		</reg>
 		
-		<reg page="0" offset="32" bgcolor="0xebd69d">
+		<reg page="0" offset="32" bgcolor="0xFAEDC8">
 			<name lang="en">Counter 3</name>
 			<description lang="en">32-bit counter 3.</description>
 			<access>r</access>
 		</reg>
 		
-		<reg page="0" offset="33" bgcolor="0xebd69d">
+		<reg page="0" offset="33" bgcolor="0xFAEDC8">
 			<name lang="en">Counter 3 (LSB)</name>
 			<description lang="en">32-bit counter 3 LSB byte.</description>
 			<access>r</access>
@@ -745,97 +746,97 @@
 		
 		<!-- Counter reload value -->
 		
-		<reg page="0" offset="50" default="2" bgcolor="0xebd69d">
+		<reg page="0" offset="50" default="2" bgcolor="0xF9EAE3">
 			<name lang="en">Counter reload value 0 (MSB)</name>
 			<description lang="en">32-bit counter 0 reload value MSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="51" default="2" bgcolor="0xebd69d">
+		<reg page="0" offset="51" default="2" bgcolor="0xF9EAE3">
 			<name lang="en">Counter reload value 0</name>
 			<description lang="en">32-bit counter 0 reload value.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="52" default="2" bgcolor="0xebd69d">
+		<reg page="0" offset="52" default="2" bgcolor="0xF9EAE3">
 			<name lang="en">Counter reload value 0</name>
 			<description lang="en">32-bit counter 0 reload value.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="53" default="2" bgcolor="0xebd69d">
+		<reg page="0" offset="53" default="2" bgcolor="0xF9EAE3">
 			<name lang="en">Counter reload value 0 (LSB)</name>
 			<description lang="en">32-bit counter 0 reload value LSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="54" default="2" bgcolor="0xebd69d">
+		<reg page="0" offset="54" default="2" bgcolor="0xF9EAE3">
 			<name lang="en">Counter reload value 1 (MSB)</name>
 			<description lang="en">32-bit counter 1 reload value MSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="55" default="2" bgcolor="0xebd69d">
+		<reg page="0" offset="55" default="2" bgcolor="0xF9EAE3">
 			<name lang="en">Counter reload value 1</name>
 			<description lang="en">32-bit counter 1 reload value.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="56" default="2" bgcolor="0xebd69d">
+		<reg page="0" offset="56" default="2" bgcolor="0xF9EAE3">
 			<name lang="en">Counter reload value 1</name>
 			<description lang="en">32-bit counter 1 reload value.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="57" default="2" bgcolor="0xebd69d">
+		<reg page="0" offset="57" default="2" bgcolor="0xF9EAE3">
 			<name lang="en">Counter reload value 1 (LSB)</name>
 			<description lang="en">32-bit counter 1 reload value LSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="58" default="2" bgcolor="0xebd69d">
+		<reg page="0" offset="58" default="2" bgcolor="0xF9EAE3">
 			<name lang="en">Counter reload value 2 (MSB)</name>
 			<description lang="en">32-bit counter 2 reload value MSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="59" default="2" bgcolor="0xebd69d">
+		<reg page="0" offset="59" default="2" bgcolor="0xF9EAE3">
 			<name lang="en">Counter reload value 2</name>
 			<description lang="en">32-bit counter 2 reload value.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="60" default="2" bgcolor="0xebd69d">
+		<reg page="0" offset="60" default="2" bgcolor="0xF9EAE3">
 			<name lang="en">Counter reload value 2</name>
 			<description lang="en">32-bit counter 2 reload value.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="61" default="2" bgcolor="0xebd69d">
+		<reg page="0" offset="61" default="2" bgcolor="0xF9EAE3">
 			<name lang="en">Counter reload value 2 (LSB)</name>
 			<description lang="en">32-bit counter 2 reload value LSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="62" default="2" bgcolor="0xebd69d">
+		<reg page="0" offset="62" default="2" bgcolor="0xF9EAE3">
 			<name lang="en">Counter reload value 3 (MSB)</name>
 			<description lang="en">32-bit counter 3 reload value MSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="63" default="2" bgcolor="0xebd69d">
+		<reg page="0" offset="63" default="2" bgcolor="0xF9EAE3">
 			<name lang="en">Counter reload value 3</name>
 			<description lang="en">32-bit counter 3 reload value.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="64" default="2" bgcolor="0xebd69d">
+		<reg page="0" offset="64" default="2" bgcolor="0xF9EAE3">
 			<name lang="en">Counter reload value 3</name>
 			<description lang="en">32-bit counter 3 reload value.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="65" default="2" bgcolor="0xebd69d">
+		<reg page="0" offset="65" default="2" bgcolor="0xF9EAE3">
 			<name lang="en">Counter reload value 3 (LSB)</name>
 			<description lang="en">32-bit counter 3 reload value LSB byte.</description>
 			<access>rw</access>
@@ -891,79 +892,79 @@
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="74" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="74" default="0" bgcolor="0xF9EAE3">
 			<name lang="en">Report interval for counter 0.</name>
 			<description lang="en">Report interval for counter 0 in seconds. Set to zero to turn of reporting.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="75" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="75" default="0" bgcolor="0xF9EAE3">
 			<name lang="en">Report interval for counter 1.</name>
 			<description lang="en">Report interval for counter 1 in seconds. Set to zero to turn of reporting.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="76" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="76" default="0" bgcolor="0xF9EAE3">
 			<name lang="en">Report interval for counter 2.</name>
 			<description lang="en">Report interval for counter 2 in seconds. Set to zero to turn of reporting.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="77" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="77" default="0" bgcolor="0xF9EAE3">
 			<name lang="en">Report interval for counter 3.</name>
 			<description lang="en">Report interval for counter 3 in seconds. Set to zero to turn of reporting.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="78" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="78" default="0" bgcolor="0xD8F2F5">
 			<name lang="en">Report interval for frequency 0.</name>
 			<description lang="en">Report interval for frequency 0 in seconds. Set to zero to turn of reporting.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="79" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="79" default="0" bgcolor="0xD8F2F5">
 			<name lang="en">Report interval for frequency 1.</name>
 			<description lang="en">Report interval for frequency 1 in seconds. Set to zero to turn of reporting.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="80" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="80" default="0" bgcolor="0xD8F2F5">
 			<name lang="en">Report interval for frequency 2.</name>
 			<description lang="en">Report interval for frequency 2 in seconds. Set to zero to turn of reporting.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="81" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="81" default="0" bgcolor="0xD8F2F5">
 			<name lang="en">Report interval for frequency 3.</name>
 			<description lang="en">Report interval for frequency 3 in seconds. Set to zero to turn of reporting.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="82" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="82" default="0" bgcolor="0xF9F7E3">
 			<name lang="en">Report interval for measurement 0.</name>
 			<description lang="en">Report interval for measurement 0 in seconds. Set to zero to turn of reporting.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="83" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="83" default="0" bgcolor="0xF9F7E3">
 			<name lang="en">Report interval for measurement 1.</name>
 			<description lang="en">Report interval for measurement 1 in seconds. Set to zero to turn of reporting.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="84" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="84" default="0" bgcolor="0xF9F7E3">
 			<name lang="en">Report interval for measurement 2.</name>
 			<description lang="en">Report interval for measurement 2 in seconds. Set to zero to turn of reporting.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="85" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="85" default="0" bgcolor="0xF9F7E3">
 			<name lang="en">Report interval for measurement 3.</name>
 			<description lang="en">Report interval for measurement 3 in seconds. Set to zero to turn of reporting.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="86" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="86" default="0" bgcolor="0xFAF1FA">
 			<name lang="en">VSCP event information counter 0.</name>
 			<description lang="en">
             VSCP event information for linearization counter 0.
@@ -1011,7 +1012,7 @@
         	</bit>
 		</reg>
 		
-		<reg page="0" offset="87" default="10" bgcolor="0xebd69d">
+		<reg page="0" offset="87" default="10" bgcolor="0xFAF1FA">
 			<name lang="en">VSCP event information class counter 0.</name>
 			<description lang="en">VSCP event information for linearization counter 0, VSCP Class low eight bits. 
             Must currently be set to 10, CLASS1.MEASUREMENT.\n
@@ -1019,13 +1020,13 @@
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="88" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="88" default="0" bgcolor="0xFAF1FA">
 			<name lang="en">VSCP event information type counter 0.</name>
 			<description lang="en">VSCP event information for linearization counter 0, VSCP Type.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="89" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="89" default="0" bgcolor="0xFAF1FA">
 			<name lang="en">VSCP event information counter 1.</name>
 			<description lang="en">
             VSCP event information for linearization counter 1.
@@ -1073,19 +1074,19 @@
         	</bit>
 		</reg>
 		
-		<reg page="0" offset="90" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="90" default="0" bgcolor="0xFAF1FA">
 			<name lang="en">VSCP event information class counter 1.</name>
 			<description lang="en">VSCP event information for linearization counter 1, VSCP Class low eight bits.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="91" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="91" default="0" bgcolor="0xFAF1FA">
 			<name lang="en">VSCP event information type counter 1.</name>
 			<description lang="en">VSCP event information for linearization counter 1, VSCP Type .</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="92" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="92" default="0" bgcolor="0xFAF1FA">
 			<name lang="en">VSCP event information counter 2.</name>
 			<description lang="en">
             VSCP event information for linearization counter 2.
@@ -1133,19 +1134,19 @@
         	</bit>
 		</reg>
 		
-		<reg page="0" offset="93" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="93" default="0" bgcolor="0xFAF1FA">
 			<name lang="en">VSCP event information class counter 2.</name>
 			<description lang="en">VSCP event information for linearization counter 2, VSCP Class low eight bits.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="94" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="94" default="0" bgcolor="0xFAF1FA">
 			<name lang="en">VSCP event information type counter 2.</name>
 			<description lang="en">VSCP event information for linearization counter 2, VSCP Type.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="95" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="95" default="0" bgcolor="0xFAF1FA">
 			<name lang="en">VSCP event information counter 3.</name>
 			<description lang="en">
             VSCP event information for linearization counter 3.
@@ -1193,13 +1194,13 @@
         	</bit>
 		</reg>
 		
-		<reg page="0" offset="96" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="96" default="0" bgcolor="0xFAF1FA">
 			<name lang="en">VSCP event information class counter 3.</name>
 			<description lang="en">VSCP event information for linearization counter 3, VSCP Class low eight bits.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="0" offset="97" default="0" bgcolor="0xebd69d">
+		<reg page="0" offset="97" default="0" bgcolor="0xFAF1FA">
 			<name lang="en">VSCP event information type counter 3.</name>
 			<description lang="en">VSCP event information for linearization counter 3, VSCP Type.</description>
 			<access>rw</access>
@@ -1214,289 +1215,289 @@
 		
 		
 		
-		<reg page="1" offset="0" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="0" default="2" bgcolor="0xE8F5FA">
 			<name lang="en">Frequency channel 0(MSB)</name>
 			<description lang="en">Frequency for channel 0 MSB byte.</description>
-			<access>rw</access>
+			<access>r</access>
 		</reg>
 		
-		<reg page="1" offset="1" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="1" default="2" bgcolor="0xE8F5FA">
 			<name lang="en">Frequency channel 0</name>
 			<description lang="en">Frequency for channel 0 byte.</description>
-			<access>rw</access>
+			<access>r</access>
 		</reg>
 		
-		<reg page="1" offset="2" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="2" default="2" bgcolor="0xE8F5FA">
 			<name lang="en">Frequency channel 0</name>
 			<description lang="en">Frequency for channel 0 byte.</description>
-			<access>rw</access>
+			<access>r</access>
 		</reg>
 		
-		<reg page="1" offset="3" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="3" default="2" bgcolor="0xE8F5FA">
 			<name lang="en">Frequency channel 0(LSB)</name>
 			<description lang="en">Frequency for channel 0 LSB byte.</description>
-			<access>rw</access>
+			<access>r</access>
 		</reg>
 		
-		<reg page="1" offset="4" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="4" default="2" bgcolor="0xE8F5FA">
 			<name lang="en">Frequency channel 1(MSB)</name>
 			<description lang="en">Frequency for channel 1 MSB byte.</description>
-			<access>rw</access>
+			<access>r</access>
 		</reg>
 		
-		<reg page="1" offset="5" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="5" default="2" bgcolor="0xE8F5FA">
 			<name lang="en">Frequency channel 1</name>
 			<description lang="en">Frequency for channel 1 byte.</description>
-			<access>rw</access>
+			<access>r</access>
 		</reg>
 		
-		<reg page="1" offset="6" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="6" default="2" bgcolor="0xE8F5FA">
 			<name lang="en">Frequency channel 1</name>
 			<description lang="en">Frequency for channel 1 byte.</description>
-			<access>rw</access>
+			<access>r</access>
 		</reg>
 		
-		<reg page="1" offset="7" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="7" default="2" bgcolor="0xE8F5FA">
 			<name lang="en">Frequency channel 1(LSB)</name>
 			<description lang="en">Frequency for channel 1 LSB byte.</description>
-			<access>rw</access>
+			<access>r</access>
 		</reg>
 		
-		<reg page="1" offset="8" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="8" default="2" bgcolor="0xE8F5FA">
 			<name lang="en">Frequency channel 2(MSB)</name>
 			<description lang="en">Frequency for channel 2 MSB byte.</description>
-			<access>rw</access>
+			<access>r</access>
 		</reg>
 		
-		<reg page="1" offset="9" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="9" default="2" bgcolor="0xE8F5FA">
 			<name lang="en">Frequency channel 2</name>
 			<description lang="en">Frequency for channel 2 byte.</description>
-			<access>rw</access>
+			<access>r</access>
 		</reg>
 		
-		<reg page="1" offset="10" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="10" default="2" bgcolor="0xE8F5FA">
 			<name lang="en">Frequency channel 2</name>
 			<description lang="en">Frequency for channel 2 byte.</description>
-			<access>rw</access>
+			<access>r</access>
 		</reg>
 		
-		<reg page="1" offset="11" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="11" default="2" bgcolor="0xE8F5FA">
 			<name lang="en">Frequency channel 2(LSB)</name>
 			<description lang="en">Frequency for channel 2 LSB byte.</description>
-			<access>rw</access>
+			<access>r</access>
 		</reg>
 		
-		<reg page="1" offset="12" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="12" default="2" bgcolor="0xE8F5FA">
 			<name lang="en">Frequency channel 3(MSB)</name>
 			<description lang="en">Frequency for channel 3 MSB byte.</description>
-			<access>rw</access>
+			<access>r</access>
 		</reg>
 		
-		<reg page="1" offset="13" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="13" default="2" bgcolor="0xE8F5FA">
 			<name lang="en">Frequency channel 3</name>
 			<description lang="en">Frequency for channel 3 byte.</description>
-			<access>rw</access>
+			<access>r</access>
 		</reg>
 		
-		<reg page="1" offset="14" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="14" default="2" bgcolor="0xE8F5FA">
 			<name lang="en">Frequency channel 3</name>
 			<description lang="en">Frequency for channel 3 byte.</description>
-			<access>rw</access>
+			<access>r</access>
 		</reg>
 		
-		<reg page="1" offset="15" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="15" default="2" bgcolor="0xE8F5FA">
 			<name lang="en">Frequency channel 3(LSB)</name>
 			<description lang="en">Frequency for channel 3 LSB byte.</description>
-			<access>rw</access>
+			<access>r</access>
 		</reg>
 		
-		<reg page="1" offset="16" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="16" default="2" bgcolor="0xCCEDFA">
 			<name lang="en">Frequency low channel 0(MSB)</name>
 			<description lang="en">Frequency low level for channel 0 MSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="17" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="17" default="2" bgcolor="0xCCEDFA">
 			<name lang="en">Frequency low channel 0</name>
 			<description lang="en">Frequency low level for channel 0 byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="18" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="18" default="2" bgcolor="0xCCEDFA">
 			<name lang="en">Frequency low channel 0</name>
 			<description lang="en">Frequency low level for channel 0 byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="19" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="19" default="2" bgcolor="0xCCEDFA">
 			<name lang="en">Frequency low channel 0(LSB)</name>
 			<description lang="en">Frequency low level for channel 0 LSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="20" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="20" default="2" bgcolor="0xCCEDFA">
 			<name lang="en">Frequency low channel 1(MSB)</name>
 			<description lang="en">Frequency low level for channel 1 MSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="21" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="21" default="2" bgcolor="0xCCEDFA">
 			<name lang="en">Frequency low channel 1</name>
 			<description lang="en">Frequency low level for channel 1 byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="22" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="22" default="2" bgcolor="0xCCEDFA">
 			<name lang="en">Frequency low channel 1</name>
 			<description lang="en">Frequency low level for channel 1 byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="23" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="23" default="2" bgcolor="0xCCEDFA">
 			<name lang="en">Frequency low channel 1(LSB)</name>
 			<description lang="en">Frequency low level for channel 1 LSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="24" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="24" default="2" bgcolor="0xCCEDFA">
 			<name lang="en">Frequency low channel 2(MSB)</name>
 			<description lang="en">Frequency low level for channel 2 MSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="25" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="25" default="2" bgcolor="0xCCEDFA">
 			<name lang="en">Frequency low channel 2</name>
 			<description lang="en">Frequency low level for channel 2 byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="26" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="26" default="2" bgcolor="0xCCEDFA">
 			<name lang="en">Frequency low channel 2</name>
 			<description lang="en">Frequency low level for channel 2 byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="27" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="27" default="2" bgcolor="0xCCEDFA">
 			<name lang="en">Frequency low channel 2(LSB)</name>
 			<description lang="en">Frequency low level for channel 2 LSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="28" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="28" default="2" bgcolor="0xCCEDFA">
 			<name lang="en">Frequency low channel 3(MSB)</name>
 			<description lang="en">Frequency low level for channel 3 MSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="29" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="29" default="2" bgcolor="0xCCEDFA">
 			<name lang="en">Frequency low channel 3</name>
 			<description lang="en">Frequency low level for channel 3 byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="30" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="30" default="2" bgcolor="0xCCEDFA">
 			<name lang="en">Frequency low channel 3</name>
 			<description lang="en">Frequency low level for channel 3 byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="31" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="31" default="2" bgcolor="0xCCEDFA">
 			<name lang="en">Frequency low channel 3(LSB)</name>
 			<description lang="en">Frequency low level for channel 3 LSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="32" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="32" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">Frequency high channel 0(MSB)</name>
 			<description lang="en">Frequency high level for channel 0 MSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="33" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="33" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">Frequency high channel 0</name>
 			<description lang="en">Frequency high level for channel 0 byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="34" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="34" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">Frequency high channel 0</name>
 			<description lang="en">Frequency high level for channel 0 byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="35" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="35" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">Frequency high channel 0(LSB)</name>
 			<description lang="en">Frequency high level for channel 0 LSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="36" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="36" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">Frequency high channel 1(MSB)</name>
 			<description lang="en">Frequency high level for channel 1 MSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="37" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="37" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">Frequency high channel 1</name>
 			<description lang="en">Frequency high level for channel 1 byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="38" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="38" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">Frequency high channel 1</name>
 			<description lang="en">Frequency high level for channel 1 byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="39" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="39" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">Frequency high channel 1(LSB)</name>
 			<description lang="en">Frequency high level for channel 1 LSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="40" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="40" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">Frequency high channel 2(MSB)</name>
 			<description lang="en">Frequency high level for channel 2 MSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="41" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="41" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">Frequency high channel 2</name>
 			<description lang="en">Frequency high level for channel 2 byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="42" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="42" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">Frequency high channel 2</name>
 			<description lang="en">Frequency high level for channel 2 byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="43" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="43" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">Frequency high channel 2(LSB)</name>
 			<description lang="en">Frequency high level for channel 2 LSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="44" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="44" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">Frequency high channel 3(MSB)</name>
 			<description lang="en">Frequency high level for channel 3 MSB byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="45" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="45" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">Frequency high channel 3</name>
 			<description lang="en">Frequency high level for channel 3 byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="46" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="46" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">Frequency high channel 3</name>
 			<description lang="en">Frequency high level for channel 3 byte.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="1" offset="47" default="2" bgcolor="0xebd69d">
+		<reg page="1" offset="47" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">Frequency high channel 3(LSB)</name>
 			<description lang="en">Frequency high level for channel 3 LSB byte.</description>
 			<access>rw</access>
@@ -1558,25 +1559,25 @@
 		-->
 		
 		
-		<reg page="2" offset="0" default="2" bgcolor="0xebd69d">
+		<reg page="2" offset="0" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">k constant for channel 0 (MSB)</name>
 			<description lang="en">k constant for channel 0 linear transformation (MSB).</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="2" offset="1" default="2" bgcolor="0xebd69d">
+		<reg page="2" offset="1" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">k constant for channel 0</name>
 			<description lang="en">k constant for channel 0 linear transformation.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="2" offset="2" default="2" bgcolor="0xebd69d">
+		<reg page="2" offset="2" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">k constant for channel 0</name>
 			<description lang="en">k constant for channel 0 linear transformation.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="2" offset="3" default="2" bgcolor="0xebd69d">
+		<reg page="2" offset="3" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">k constant for channel 0 (LSB)</name>
 			<description lang="en">k constant for channel 0 linear transformation (LSB).</description>
 			<access>rw</access>
@@ -1606,25 +1607,25 @@
 			<access>rw</access>
 		</reg>
 		
-		<reg page="2" offset="8" default="2" bgcolor="0xebd69d">
+		<reg page="2" offset="8" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">k constant for channel 2 (MSB)</name>
 			<description lang="en">k constant for channel 2 linear transformation (MSB).</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="2" offset="9" default="2" bgcolor="0xebd69d">
+		<reg page="2" offset="9" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">k constant for channel 2</name>
 			<description lang="en">k constant for channel 2 linear transformation.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="2" offset="10" default="2" bgcolor="0xebd69d">
+		<reg page="2" offset="10" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">k constant for channel 2</name>
 			<description lang="en">k constant for channel 2 linear transformation.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="2" offset="11" default="2" bgcolor="0xebd69d">
+		<reg page="2" offset="11" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">k constant for channel 2 (LSB)</name>
 			<description lang="en">k constant for channel 2 linear transformation (LSB).</description>
 			<access>rw</access>
@@ -1654,25 +1655,25 @@
 			<access>rw</access>
 		</reg>
 		
-		<reg page="2" offset="16" default="2" bgcolor="0xebd69d">
+		<reg page="2" offset="16" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">m constant for channel 0 (MSB)</name>
 			<description lang="en">m constant for channel 0 linear transformation (MSB).</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="2" offset="17" default="2" bgcolor="0xebd69d">
+		<reg page="2" offset="17" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">m constant for channel 0</name>
 			<description lang="en">m constant for channel 0 linear transformation.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="2" offset="18" default="2" bgcolor="0xebd69d">
+		<reg page="2" offset="18" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">m constant for channel 0</name>
 			<description lang="en">m constant for channel 0 linear transformation.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="2" offset="19" default="2" bgcolor="0xebd69d">
+		<reg page="2" offset="19" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">m constant for channel 0 (LSB)</name>
 			<description lang="en">m constant for channel 0 linear transformation (LSB).</description>
 			<access>rw</access>
@@ -1702,25 +1703,25 @@
 			<access>rw</access>
 		</reg>
 		
-		<reg page="2" offset="24" default="2" bgcolor="0xebd69d">
+		<reg page="2" offset="24" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">m constant for channel 2 (MSB)</name>
 			<description lang="en">m constant for channel 2 linear transformation (MSB).</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="2" offset="25" default="2" bgcolor="0xebd69d">
+		<reg page="2" offset="25" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">m constant for channel 2</name>
 			<description lang="en">m constant for channel 2 linear transformation.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="2" offset="26" default="2" bgcolor="0xebd69d">
+		<reg page="2" offset="26" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">m constant for channel 2</name>
 			<description lang="en">m constant for channel 2 linear transformation.</description>
 			<access>rw</access>
 		</reg>
 		
-		<reg page="2" offset="27" default="2" bgcolor="0xebd69d">
+		<reg page="2" offset="27" default="2" bgcolor="0xDBE7EC">
 			<name lang="en">m constant for channel 2 (LSB)</name>
 			<description lang="en">m constant for channel 2 linear transformation (LSB).</description>
 			<access>rw</access>
@@ -1751,107 +1752,6 @@
 		</reg>
 		
         
-        <!--
-		///////////////////////////////////////////////////////////////////////
-		// Register Page 3 - Counter high values
-		///////////////////////////////////////////////////////////////////////
-		-->
-        
-        <reg page="3" offset="0" bgcolor="0xebd69d">
-			<name lang="en">Counter 0 high part (MSB)</name>
-			<description lang="en">Counter 0 32-bit high part of 64-bit counter value.</description>
-			<access>r</access>
-		</reg>
-        
-        <reg page="3" offset="1" bgcolor="0xebd69d">
-			<name lang="en">Counter 0 high part</name>
-			<description lang="en">Counter 0 32-bit high part of 64-bit counter value.</description>
-			<access>r</access>
-		</reg>
-        
-        <reg page="3" offset="2" bgcolor="0xebd69d">
-			<name lang="en">Counter 0 high part</name>
-			<description lang="en">Counter 0 32-bit high part of 64-bit counter value.</description>
-			<access>r</access>
-		</reg>
-        
-        <reg page="3" offset="3" bgcolor="0xebd69d">
-			<name lang="en">Counter 0 high part (LSB)</name>
-			<description lang="en">Counter 0 32-bit high part of 64-bit counter value (LSB).</description>
-			<access>r</access>
-		</reg>
-
-        <reg page="3" offset="4" bgcolor="0xebd69d">
-			<name lang="en">Counter 1 high part (MSB)</name>
-			<description lang="en">Counter 1 32-bit high part of 64-bit counter value.</description>
-			<access>r</access>
-		</reg>
-        
-        <reg page="3" offset="5" bgcolor="0xebd69d">
-			<name lang="en">Counter 1 high part</name>
-			<description lang="en">Counter 1 32-bit high part of 64-bit counter value.</description>
-			<access>r</access>
-		</reg>
-        
-        <reg page="3" offset="6" bgcolor="0xebd69d">
-			<name lang="en">Counter 1 high part (LSB)</name>
-			<description lang="en">Counter 1 32-bit high part of 64-bit counter value (LSB).</description>
-			<access>r</access>
-		</reg>
-        
-        <reg page="3" offset="7" bgcolor="0xebd69d">
-			<name lang="en">Counter 1 high part (MSB)</name>
-			<description lang="en">Counter 1 32-bit high part of 64-bit counter value (MSB).</description>
-			<access>r</access>
-		</reg>
-        
-        <reg page="3" offset="8" bgcolor="0xebd69d">
-			<name lang="en">Counter 2 high part (MSB)</name>
-			<description lang="en">Counter 2 32-bit high part of 64-bit counter value.</description>
-			<access>r</access>
-		</reg>
-        
-        <reg page="3" offset="9" bgcolor="0xebd69d">
-			<name lang="en">Counter 2 high part</name>
-			<description lang="en">Counter 2 32-bit high part of 64-bit counter value.</description>
-			<access>r</access>
-		</reg>
-        
-        <reg page="3" offset="10" bgcolor="0xebd69d">
-			<name lang="en">Counter 2 high part</name>
-			<description lang="en">Counter 2 32-bit high part of 64-bit counter value.</description>
-			<access>r</access>
-		</reg>
-        
-        <reg page="3" offset="11" bgcolor="0xebd69d">
-			<name lang="en">Counter 2 high part (LSB)</name>
-			<description lang="en">Counter 2 32-bit high part of 64-bit counter value (LSB).</description>
-			<access>r</access>
-		</reg>
-        
-        <reg page="3" offset="12" bgcolor="0xebd69d">
-			<name lang="en">Counter 3 high part (MSB)</name>
-			<description lang="en">Counter 3 32-bit high part of 64-bit counter value.</description>
-			<access>r</access>
-		</reg>
-        
-        <reg page="3" offset="13" bgcolor="0xebd69d">
-			<name lang="en">Counter 3 high part</name>
-			<description lang="en">Counter 3 32-bit high part of 64-bit counter value.</description>
-			<access>r</access>
-		</reg>
-        
-        <reg page="3" offset="14" bgcolor="0xebd69d">
-			<name lang="en">Counter 3 high part</name>
-			<description lang="en">Counter 3 32-bit high part of 64-bit counter value.</description>
-			<access>r</access>
-		</reg>
-        
-        <reg page="3" offset="15" bgcolor="0xebd69d">
-			<name lang="en">Counter 3 high part (LSB)</name>
-			<description lang="en">Counter 3 32-bit high part of 64-bit counter value (LSB).</description>
-			<access>r</access>
-		</reg>
 		
         <!--
 		///////////////////////////////////////////////////////////////////////
@@ -1859,7 +1759,7 @@
 		///////////////////////////////////////////////////////////////////////		
 		-->
 
-		<reg page="4" offset="0" type="dmatrix1" size="4" 
+		<reg page="3" offset="0" type="dmatrix1" size="32" 
                 oddfg="0x000000" evenfg="0x000000" oddbg="0xCCCCCC" evenbg="0xE6E6E6" >
 			<name lang="en">Decision matrix</name>
 			<description lang="en">Decision matrix for Accra</description> 
@@ -1872,71 +1772,39 @@
 	
 	<abstractions>
 
-		<abstraction type="ulong"  
+		<abstraction type="uint32_t"  
 							page = "0" offset = "18" 
 							bgcolor="0xE0E0FF" >
    		<name lang="en">Counter for channel 0</name>
       	<description lang="en">A 32-bit counter value for channel 0.\n</description>
       	<access>r</access>
 		</abstraction>
-        
-        <abstraction type="ulong"  
-							page = "3" offset = "0" 
-							bgcolor="0xE0E0FF" >
-   		<name lang="en">High end counter value for channel 0</name>
-      	<description lang="en">A 32-bit high end counter value for 64-bit channel 0.\n</description>
-      	<access>r</access>
-		</abstraction>
 		
-		<abstraction type="ulong"  
+		<abstraction type="uint32_t"  
 							page = "0" offset = "22" 
 							bgcolor="0xE0E0FF" >
    		<name lang="en">Counter for channel 1</name>
       	<description lang="en">A 32-bit counter value for channel 1.\n</description>
       	<access>r</access>
 		</abstraction>
-        
-        <abstraction type="ulong"  
-							page = "3" offset = "4" 
-							bgcolor="0xE0E0FF" >
-   		<name lang="en">High end counter value for channel 1</name>
-      	<description lang="en">A 32-bit high end counter value for 64-bit channel 1.\n</description>
-      	<access>r</access>
-		</abstraction>
-		
-		<abstraction type="ulong" 
+
+		<abstraction type="uint32_t" 
 							page = "0" offset = "26" 
 							bgcolor="0xE0E0FF" >
    		<name lang="en">Counter for channel 2</name>
       	<description lang="en">A 32-bit counter value for channel 2.\n</description>
       	<access>r</access>
 		</abstraction>
-        
-        <abstraction type="ulong"  
-							page = "3" offset = "8" 
-							bgcolor="0xE0E0FF" >
-   		<name lang="en">High end counter value for channel 2</name>
-      	<description lang="en">A 32-bit high end counter value for 64-bit channel 2.\n</description>
-      	<access>r</access>
-		</abstraction>
 		
-		<abstraction type="ulong"  
+		<abstraction type="uint32_t"  
 							page = "0" offset = "30" 
 							bgcolor="0xE0E0FF" >
    		<name lang="en">Counter for channel 3</name>
       	<description lang="en">A 32-bit counter value for channel 3.\n</description>
       	<access>r</access>
 		</abstraction>
-		
-        <abstraction type="ulong"  
-							page = "3" offset = "12" 
-							bgcolor="0xE0E0FF" >
-   		<name lang="en">High end counter value for channel 3</name>
-      	<description lang="en">A 32-bit high end counter value for 64-bit channel 3.\n</description>
-      	<access>r</access>
-		</abstraction>
         
-		<abstraction type="ulong"   
+		<abstraction type="uint32_t"   
 							page = "1" offset = "0" 
 							bgcolor="0xE0E0FF" >
    		<name lang="en">Frequency for channel 0</name>
@@ -1944,7 +1812,7 @@
       	<access>r</access>
 		</abstraction>
 		
-		<abstraction type="ulong"   
+		<abstraction type="uint32_t"   
 							page = "1" offset = "4" 
 							bgcolor="0xE0E0FF" >
    		<name lang="en">Frequency for channel 1</name>
@@ -1952,7 +1820,7 @@
       	<access>r</access>
 		</abstraction>
 		
-		<abstraction type="ulong"   
+		<abstraction type="uint32_t"   
 							page = "1" offset = "8" 
 							bgcolor="0xE0E0FF" >
    		<name lang="en">Frequency for channel 2</name>
@@ -1960,7 +1828,7 @@
       	<access>r</access>
 		</abstraction>
 		
-		<abstraction type="ulong"   
+		<abstraction type="uint32_t"   
 							page = "1" offset = "12" 
 							bgcolor="0xE0E0FF" >
    		<name lang="en">Frequency for channel 3</name>
@@ -2100,8 +1968,8 @@
 	<dmatrix>
   
 		<level>1</level>					
-		<start page="2" offset="0"/> 	
-		<rowcnt>8</rowcnt>			 
+		<start page="3" offset="0"/> 	
+		<rowcnt>4</rowcnt>			 
 				
 		<action code="0x00">				
       	<name lang="en">NOOP</name>
