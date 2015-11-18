@@ -968,19 +968,19 @@
 			<name lang="en">VSCP event information counter 0.</name>
 			<description lang="en">
             VSCP event information for linearization counter 0.
-            Bit 7 - Class bit 8 (must currently always be set to zero).\n
-			Bit 6 - Reserved.\n
+            Bit 7 - Enable.\n
+			Bit 6 - Class bit 8 (must currently always be set to zero).\n
 			Bit 5 - Reserved.\n
 			Bit 4 - Unit.\n
 			Bit 3 - Unit.\n
 			Bit 2 - Reserved.\n
 			Bit 1 - Reserved.\n
-			Bit 0 - Reserved.\n
+			Bit 0 - Calculate using counter if zero, frequency if one.\n
             </description>
 			<access>rw</access>
             <bit pos="0" default="false" >
-				<name lang="en">Reserved</name>
-				<description lang="en">Reserved.</description> 
+				<name lang="en">Source</name>
+				<description lang="en">Calculate using counter if zero, frequency if one.</description> 
         	</bit>
             <bit pos="1" default="false" >
 				<name lang="en">Reserved</name>
@@ -1003,12 +1003,12 @@
 				<description lang="en">Reserved.</description> 
         	</bit>
             <bit pos="6" default="false" >
-				<name lang="en">Reserved</name>
-				<description lang="en">Reserved.</description> 
-        	</bit>
-            <bit pos="7" default="false" >
 				<name lang="en">Class bit 8</name>
 				<description lang="en">Class bit 8. Must be zero at the moment.</description> 
+        	</bit>
+            <bit pos="7" default="false" >
+				<name lang="en">Enable</name>
+				<description lang="en">Enable calculations.</description> 
         	</bit>
 		</reg>
 		
@@ -1030,19 +1030,19 @@
 			<name lang="en">VSCP event information counter 1.</name>
 			<description lang="en">
             VSCP event information for linearization counter 1.
-            Bit 7 - Class bit 8 (must currently always be set to zero).\n
-			Bit 6 - Reserved.\n
+            Bit 7 - Enable.\n
+			Bit 6 - Class bit 8 (must currently always be set to zero).\n
 			Bit 5 - Reserved.\n
 			Bit 4 - Unit.\n
 			Bit 3 - Unit.\n
 			Bit 2 - Reserved.\n
 			Bit 1 - Reserved.\n
-			Bit 0 - Reserved.\n
+			Bit 0 - Calculate using counter if zero, frequency if one.\n
             </description>
 			<access>rw</access>
             <bit pos="0" default="false" >
-				<name lang="en">Reserved</name>
-				<description lang="en">Reserved.</description> 
+				<name lang="en">Source</name>
+				<description lang="en">Calculate using counter if zero, frequency if one.</description> 
         	</bit>
             <bit pos="1" default="false" >
 				<name lang="en">Reserved</name>
@@ -1065,12 +1065,12 @@
 				<description lang="en">Reserved.</description> 
         	</bit>
             <bit pos="6" default="false" >
-				<name lang="en">Reserved</name>
-				<description lang="en">Reserved.</description> 
-        	</bit>
-            <bit pos="7" default="false" >
 				<name lang="en">Class bit 8</name>
 				<description lang="en">Class bit 8. Must be zero at the moment.</description> 
+        	</bit>
+            <bit pos="7" default="false" >
+				<name lang="en">Enable</name>
+				<description lang="en">Enable calculations.</description> 
         	</bit>
 		</reg>
 		
@@ -1090,19 +1090,19 @@
 			<name lang="en">VSCP event information counter 2.</name>
 			<description lang="en">
             VSCP event information for linearization counter 2.
-            Bit 7 - Class bit 8 (must currently always be set to zero).\n
-			Bit 6 - Reserved.\n
+            Bit 7 - Enable.\n
+			Bit 6 - Class bit 8 (must currently always be set to zero).\n
 			Bit 5 - Reserved.\n
 			Bit 4 - Unit.\n
 			Bit 3 - Unit.\n
 			Bit 2 - Reserved.\n
 			Bit 1 - Reserved.\n
-			Bit 0 - Reserved.\n
+			Bit 0 - Calculate using counter if zero, frequency if one.\n
             </description>
 			<access>rw</access>
             <bit pos="0" default="false" >
-				<name lang="en">Reserved</name>
-				<description lang="en">Reserved.</description> 
+				<name lang="en">Source</name>
+				<description lang="en">Calculate using counter if zero, frequency if one.</description> 
         	</bit>
             <bit pos="1" default="false" >
 				<name lang="en">Reserved</name>
@@ -1125,12 +1125,12 @@
 				<description lang="en">Reserved.</description> 
         	</bit>
             <bit pos="6" default="false" >
-				<name lang="en">Reserved</name>
-				<description lang="en">Reserved.</description> 
-        	</bit>
-            <bit pos="7" default="false" >
 				<name lang="en">Class bit 8</name>
 				<description lang="en">Class bit 8. Must be zero at the moment.</description> 
+        	</bit>
+            <bit pos="7" default="false" >
+				<name lang="en">Enable</name>
+				<description lang="en">Enable calculations.</description> 
         	</bit>
 		</reg>
 		
@@ -1150,19 +1150,19 @@
 			<name lang="en">VSCP event information counter 3.</name>
 			<description lang="en">
             VSCP event information for linearization counter 3.
-            Bit 7 - Class bit 8 (must currently always be set to zero).\n
-			Bit 6 - Reserved.\n
+            Bit 7 - Enable.\n
+			Bit 6 - Class bit 8 (must currently always be set to zero).\n
 			Bit 5 - Reserved.\n
 			Bit 4 - Unit.\n
 			Bit 3 - Unit.\n
 			Bit 2 - Reserved.\n
 			Bit 1 - Reserved.\n
-			Bit 0 - Reserved.\n
+			Bit 0 - Calculate using counter if zero, frequency if one.\n
             </description>
 			<access>rw</access>
             <bit pos="0" default="false" >
-				<name lang="en">Reserved</name>
-				<description lang="en">Reserved.</description> 
+				<name lang="en">Source</name>
+				<description lang="en">Calculate using counter if zero, frequency if one.</description> 
         	</bit>
             <bit pos="1" default="false" >
 				<name lang="en">Reserved</name>
@@ -1185,12 +1185,12 @@
 				<description lang="en">Reserved.</description> 
         	</bit>
             <bit pos="6" default="false" >
-				<name lang="en">Reserved</name>
-				<description lang="en">Reserved.</description> 
-        	</bit>
-            <bit pos="7" default="false" >
 				<name lang="en">Class bit 8</name>
 				<description lang="en">Class bit 8. Must be zero at the moment.</description> 
+        	</bit>
+            <bit pos="7" default="false" >
+				<name lang="en">Enable</name>
+				<description lang="en">Enable calculations.</description> 
         	</bit>
 		</reg>
 		

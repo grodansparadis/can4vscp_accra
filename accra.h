@@ -97,15 +97,23 @@
 // Bits for counter control register
 #define COUNTER_CTRL_DIRECTION              0x01    // Counting direction
 #define COUNTER_CTRL_ALARM                  0x02    // Enable alarm level
-#define COUNTER_CTRL_RELOAD_ZERO            0x04 	// Reload on zero
-#define COUNTER_CTRL_RELOAD_OVERFLOW        0x08 	// Reload overflow            
+#define COUNTER_CTRL_RELOAD_ZERO            0x04 	// Reload on zero          
 #define COUNTER_CTRL_ENABLED                0x80 	// Relay enabled
 
 // Bits for frequency control registers
-#define FREQ_CTRL_LOW                       0x01    // Enable frequency low alarm
-#define FREQ_CTRL_HIGH                      0x02    // Enable frequency high alarm  
+#define FREQ_CTRL_LOW_ALARM                 0x01    // Enable frequency low alarm
+#define FREQ_CTRL_HIGH_ALARM                0x02    // Enable frequency high alarm  
 #define FREQ_CTRL_STREAM                    0x10    // Enable stream events
 #define FREQ_CTRL_ENABLE                    0x80    // Enable Input.
+
+// Bits for measurement control registers
+#define MEASUREMENT_CTRL_CALCULATION        0x01    // 0 use counter, 1 use frequency
+#define MEASUREMENT_CTRL_UNIT0              0x08    // Unit low bit
+#define MEASUREMENT_CTRL_UNIT1              0x10    // Unit high bit
+#define MEASUREMENT_CTRL_CLASS_BIT_8        0x40    // Bit 8 of the class
+#define MEASUREMENT_CTRL_ENABLED            0x80    // Enable measuement calculations
+
+#define MEASUREMENT_CTRL_UNIT_MASK          0b00011000
         
 // Alarm bits
 #define ALARM_COUNTER0                      0x01    // Counter 0 alarm
@@ -159,88 +167,88 @@
 #define REG0_ACCRA_RESET_COUNTER_CH2                16  // Not stored in EEPROM
 #define REG0_ACCRA_RESET_COUNTER_CH3                17  // Not stored in EEPROM
 
-#define REG0_ACCRA_COUNTER_CH0_MSB                  18  // Not stored in EEPROM
-#define REG0_ACCRA_COUNTER_CH0_1                    18  // Not stored in EEPROM
-#define REG0_ACCRA_COUNTER_CH0_2                    19  // Not stored in EEPROM
-#define REG0_ACCRA_COUNTER_CH0_3                    20  // Not stored in EEPROM
-#define REG0_ACCRA_COUNTER_CH0_4                    21  // Not stored in EEPROM
+#define REG0_ACCRA_COUNTER_CH0_MSB                  18  // Not stored in EEPROM  *
+#define REG0_ACCRA_COUNTER_CH0_0                    18  // Not stored in EEPROM
+#define REG0_ACCRA_COUNTER_CH0_1                    19  // Not stored in EEPROM
+#define REG0_ACCRA_COUNTER_CH0_2                    20  // Not stored in EEPROM
+#define REG0_ACCRA_COUNTER_CH0_3                    21  // Not stored in EEPROM
 #define REG0_ACCRA_COUNTER_CH0_LSB                  21  // Not stored in EEPROM
 
 #define REG0_ACCRA_COUNTER_CH1_MSB                  22  // Not stored in EEPROM
-#define REG0_ACCRA_COUNTER_CH1_1                    22  // Not stored in EEPROM
-#define REG0_ACCRA_COUNTER_CH1_2                    23  // Not stored in EEPROM
-#define REG0_ACCRA_COUNTER_CH1_3                    24  // Not stored in EEPROM
-#define REG0_ACCRA_COUNTER_CH1_4                    25  // Not stored in EEPROM
+#define REG0_ACCRA_COUNTER_CH1_0                    22  // Not stored in EEPROM
+#define REG0_ACCRA_COUNTER_CH1_1                    23  // Not stored in EEPROM
+#define REG0_ACCRA_COUNTER_CH1_2                    24  // Not stored in EEPROM
+#define REG0_ACCRA_COUNTER_CH1_3                    25  // Not stored in EEPROM
 #define REG0_ACCRA_COUNTER_CH1_LSB                  25  // Not stored in EEPROM
 
 #define REG0_ACCRA_COUNTER_CH2_MSB                  26  // Not stored in EEPROM
-#define REG0_ACCRA_COUNTER_CH2_1                    26  // Not stored in EEPROM
-#define REG0_ACCRA_COUNTER_CH2_2                    27  // Not stored in EEPROM
-#define REG0_ACCRA_COUNTER_CH2_3                    28  // Not stored in EEPROM
-#define REG0_ACCRA_COUNTER_CH2_4                    29  // Not stored in EEPROM
+#define REG0_ACCRA_COUNTER_CH2_0                    26  // Not stored in EEPROM
+#define REG0_ACCRA_COUNTER_CH2_1                    27  // Not stored in EEPROM
+#define REG0_ACCRA_COUNTER_CH2_2                    28  // Not stored in EEPROM
+#define REG0_ACCRA_COUNTER_CH2_3                    29  // Not stored in EEPROM
 #define REG0_ACCRA_COUNTER_CH2_LSB                  29  // Not stored in EEPROM
 
 #define REG0_ACCRA_COUNTER_CH3_MSB                  30  // Not stored in EEPROM
-#define REG0_ACCRA_COUNTER_CH3_1                    30  // Not stored in EEPROM
-#define REG0_ACCRA_COUNTER_CH3_2                    31  // Not stored in EEPROM
-#define REG0_ACCRA_COUNTER_CH3_3                    32  // Not stored in EEPROM
-#define REG0_ACCRA_COUNTER_CH3_4                    33  // Not stored in EEPROM
+#define REG0_ACCRA_COUNTER_CH3_0                    30  // Not stored in EEPROM
+#define REG0_ACCRA_COUNTER_CH3_1                    31  // Not stored in EEPROM
+#define REG0_ACCRA_COUNTER_CH3_2                    32  // Not stored in EEPROM
+#define REG0_ACCRA_COUNTER_CH3_3                    33  // Not stored in EEPROM
 #define REG0_ACCRA_COUNTER_CH3_LSB                  33  // Not stored in EEPROM
 
-#define REG0_ACCRA_COUNTER_ALARM_CH0_MSB            34
-#define REG0_ACCRA_COUNTER_ALARM_CH0_1              34
-#define REG0_ACCRA_COUNTER_ALARM_CH0_2              35
-#define REG0_ACCRA_COUNTER_ALARM_CH0_3              36
-#define REG0_ACCRA_COUNTER_ALARM_CH0_4              37
+#define REG0_ACCRA_COUNTER_ALARM_CH0_MSB            34  // *
+#define REG0_ACCRA_COUNTER_ALARM_CH0_0              34
+#define REG0_ACCRA_COUNTER_ALARM_CH0_1              35
+#define REG0_ACCRA_COUNTER_ALARM_CH0_2              36
+#define REG0_ACCRA_COUNTER_ALARM_CH0_3              37
 #define REG0_ACCRA_COUNTER_ALARM_CH0_LSB            37
 
 #define REG0_ACCRA_COUNTER_ALARM_CH1_MSB            38
-#define REG0_ACCRA_COUNTER_ALARM_CH1_1              38
-#define REG0_ACCRA_COUNTER_ALARM_CH1_2              39
-#define REG0_ACCRA_COUNTER_ALARM_CH1_3              40
-#define REG0_ACCRA_COUNTER_ALARM_CH1_4              41
+#define REG0_ACCRA_COUNTER_ALARM_CH1_0              38
+#define REG0_ACCRA_COUNTER_ALARM_CH1_1              39
+#define REG0_ACCRA_COUNTER_ALARM_CH1_2              40
+#define REG0_ACCRA_COUNTER_ALARM_CH1_3              41
 #define REG0_ACCRA_COUNTER_ALARM_CH1_LSB            41
 
 #define REG0_ACCRA_COUNTER_ALARM_CH2_MSB            42
-#define REG0_ACCRA_COUNTER_ALARM_CH2_1              42
-#define REG0_ACCRA_COUNTER_ALARM_CH2_2              43
-#define REG0_ACCRA_COUNTER_ALARM_CH2_3              44
-#define REG0_ACCRA_COUNTER_ALARM_CH2_4              45
+#define REG0_ACCRA_COUNTER_ALARM_CH2_0              42
+#define REG0_ACCRA_COUNTER_ALARM_CH2_1              43
+#define REG0_ACCRA_COUNTER_ALARM_CH2_2              44
+#define REG0_ACCRA_COUNTER_ALARM_CH2_3              45
 #define REG0_ACCRA_COUNTER_ALARM_CH2_LSB            45
 
 #define REG0_ACCRA_COUNTER_ALARM_CH3_MSB            46
-#define REG0_ACCRA_COUNTER_ALARM_CH3_1              46
-#define REG0_ACCRA_COUNTER_ALARM_CH3_2              47
-#define REG0_ACCRA_COUNTER_ALARM_CH3_3              48
-#define REG0_ACCRA_COUNTER_ALARM_CH3_4              49
+#define REG0_ACCRA_COUNTER_ALARM_CH3_0              46
+#define REG0_ACCRA_COUNTER_ALARM_CH3_1              47
+#define REG0_ACCRA_COUNTER_ALARM_CH3_2              48
+#define REG0_ACCRA_COUNTER_ALARM_CH3_3              49
 #define REG0_ACCRA_COUNTER_ALARM_CH3_LSB            49
 
-#define REG0_ACCRA_COUNTER_RELOAD_CH0_MSB           50
-#define REG0_ACCRA_COUNTER_RELOAD_CH0_1             50
-#define REG0_ACCRA_COUNTER_RELOAD_CH0_2             51
-#define REG0_ACCRA_COUNTER_RELOAD_CH0_3             52
-#define REG0_ACCRA_COUNTER_RELOAD_CH0_4             53
+#define REG0_ACCRA_COUNTER_RELOAD_CH0_MSB           50  // *
+#define REG0_ACCRA_COUNTER_RELOAD_CH0_0             50
+#define REG0_ACCRA_COUNTER_RELOAD_CH0_1             51
+#define REG0_ACCRA_COUNTER_RELOAD_CH0_2             52
+#define REG0_ACCRA_COUNTER_RELOAD_CH0_3             53
 #define REG0_ACCRA_COUNTER_RELOAD_CH0_LSB           53
 
 #define REG0_ACCRA_COUNTER_RELOAD_CH1_MSB           54
-#define REG0_ACCRA_COUNTER_RELOAD_CH1_1             54
-#define REG0_ACCRA_COUNTER_RELOAD_CH1_2             55
-#define REG0_ACCRA_COUNTER_RELOAD_CH1_3             56
-#define REG0_ACCRA_COUNTER_RELOAD_CH1_4             57
+#define REG0_ACCRA_COUNTER_RELOAD_CH1_0             54
+#define REG0_ACCRA_COUNTER_RELOAD_CH1_1             55
+#define REG0_ACCRA_COUNTER_RELOAD_CH1_2             56
+#define REG0_ACCRA_COUNTER_RELOAD_CH1_3             57
 #define REG0_ACCRA_COUNTER_RELOAD_CH1_LSB           57
 
 #define REG0_ACCRA_COUNTER_RELOAD_CH2_MSB           58
-#define REG0_ACCRA_COUNTER_RELOAD_CH2_1             58
-#define REG0_ACCRA_COUNTER_RELOAD_CH2_2             59
-#define REG0_ACCRA_COUNTER_RELOAD_CH2_3             60
-#define REG0_ACCRA_COUNTER_RELOAD_CH2_4             61
+#define REG0_ACCRA_COUNTER_RELOAD_CH2_0             58
+#define REG0_ACCRA_COUNTER_RELOAD_CH2_1             59
+#define REG0_ACCRA_COUNTER_RELOAD_CH2_2             60
+#define REG0_ACCRA_COUNTER_RELOAD_CH2_3             61
 #define REG0_ACCRA_COUNTER_RELOAD_CH2_LSB           61
 
 #define REG0_ACCRA_COUNTER_RELOAD_CH3_MSB           62
-#define REG0_ACCRA_COUNTER_RELOAD_CH3_1             62
-#define REG0_ACCRA_COUNTER_RELOAD_CH3_2             63
-#define REG0_ACCRA_COUNTER_RELOAD_CH3_3             64
-#define REG0_ACCRA_COUNTER_RELOAD_CH3_4             65
+#define REG0_ACCRA_COUNTER_RELOAD_CH3_0             62
+#define REG0_ACCRA_COUNTER_RELOAD_CH3_1             63
+#define REG0_ACCRA_COUNTER_RELOAD_CH3_2             64
+#define REG0_ACCRA_COUNTER_RELOAD_CH3_3             65
 #define REG0_ACCRA_COUNTER_RELOAD_CH3_LSB           65
 
 #define REG0_ACCRA_COUNTER_HYSTERESIS_CH0_MSB       66
@@ -520,7 +528,8 @@ void init_app_eeprom(void);
 void read_app_register(unsigned char reg);
 void write_app_register(unsigned char reg, unsigned char val);
 void sendDMatrixInfo(void);
-void SendInformationEvent(unsigned char idx, unsigned char eventClass, unsigned char eventTypeId);
+void SendInformationEvent(unsigned char channel, unsigned char eventClass, unsigned char eventTypeId);
+void SendAlarmEvent( uint8_t channel  );
 
 // Handle DM
 void doDM(void);

@@ -104,9 +104,26 @@ uint32_t lastcounter[4];    // Counter values last second (for frequency)
 uint32_t frequency[4];      // Frequency calculations
 uint8_t counter2LastState;  // Last state for counter 2
 uint8_t counter3LastState;  // Last state for counter 3
+
 // This is a shadow of the EEPROM stored control register for each
 // counter
 uint8_t counter_control_shadow[ 4 ];
+
+// Flags to reload counters when they reach zero. The IRQ flags this
+// and let the main routine do the eeprom read
+BOOL bReloadCounter0;
+BOOL bReloadCounter1;
+
+// Set to true when an alarm condition is met. Will be reseted
+// when alarmcondition is not met.
+BOOL bCounterAlarm[ 4 ];
+BOOL bFreqLowAlarm[ 4 ];
+BOOL bFreqHighAlarm[ 4 ];
+
+// Report interval counters
+uint8_t counterReports[ 4 ];
+uint8_t frequencyReports[ 4 ];
+uint8_t measurementReports[ 4 ];
 
 //__EEPROM_DATA(0x11,0x22,0x33,0x44,0x55,0x66,0x77,0x88);
 
@@ -178,11 +195,37 @@ void interrupt low_priority  interrupt_at_low_vector( void )
 void interrupt high_priority  interrupt_at_high_vector( void )
 {
     if ( INTCONbits.INT0IF ) {  // External interrupt 0
-        counter[ 0 ]++;
+        if ( counter_control_shadow[ 0 ] & COUNTER_CTRL_ENABLED ) {
+            if ( counter_control_shadow[ 0 ] & COUNTER_CTRL_DIRECTION ) {
+                counter[ 0 ]++;
+                if ( !counter[ 0 ] ) {
+                    bReloadCounter0 = TRUE;
+                }
+            }
+            else {
+                counter[ 0 ]--;
+                if ( !counter[ 0 ] ) {
+                    bReloadCounter0 = TRUE;
+                }
+            }
+        }
         INTCONbits.INT0IF = 0;  // Clear flag
     }
     else if ( INTCON3bits.INT1IF ) { // External interrupt 1
-        counter[ 1 ]++;
+        if ( counter_control_shadow[ 1 ] & COUNTER_CTRL_ENABLED ) {
+            if ( counter_control_shadow[ 1 ] & COUNTER_CTRL_DIRECTION  ) {
+                counter[ 1 ]++;
+                if ( !counter[ 1 ] ) {
+                    bReloadCounter1 = TRUE;
+                }
+            }
+            else {
+                counter[ 1 ]--;
+                if ( !counter[ 1 ] ) {
+                    bReloadCounter1 = TRUE;
+                }
+            }
+        }
         INTCON3bits.INT1IF = 0;  // clear flag
     }
     
@@ -473,6 +516,20 @@ void init_app_ram( void )
         frequency[ i ] = 0;
     }
    
+    // No counter reloads yet
+    bReloadCounter0 = FALSE;
+    bReloadCounter1 = FALSE;
+    
+    // Reset alarm flags
+    memset( bCounterAlarm, 0, sizeof( bCounterAlarm ) );
+    memset( bFreqLowAlarm, 0,  sizeof( bFreqLowAlarm ) );
+    memset( bFreqHighAlarm, 0,  sizeof( bFreqHighAlarm ) );
+    
+    // Reset report counters
+    memset( counterReports, 0, sizeof( counterReports ) );
+    memset( frequencyReports, 0,  sizeof( frequencyReports ) );
+    memset( measurementReports, 0,  sizeof( measurementReports ) );
+    
 }
 
 
@@ -683,7 +740,9 @@ void init_app_eeprom(void)
     for ( i = 0; i < DESCION_MATRIX_ROWS; i++ ) {
         for ( j = 0; j < 8; j++ ) {
             eeprom_write( VSCP_EEPROM_END + 
-                            REG0_COUNT + REG1_COUNT +
+                            REG0_COUNT + 
+                            REG1_COUNT +
+                            REG2_COUNT +
                             REG_DESCION_MATRIX + i * 8 + j, 0 );
         }
     }
@@ -701,6 +760,25 @@ void init_app_eeprom(void)
 
 void doWork(void)
 {
+    // Check for zero and if a reload is needed
+    if ( bReloadCounter0 && 
+            ( counter_control_shadow[ 0 ] & COUNTER_CTRL_RELOAD_ZERO ) ) {
+        counter[ 0 ] = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH0_0 ) << 24 +
+                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH0_1 ) << 16 +
+                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH0_2 ) << 8 +
+                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH0_3 );
+        bReloadCounter0 = 0;
+    }
+    
+    // Check for zero and if a reload is needed
+    if ( bReloadCounter1 && 
+            ( counter_control_shadow[ 1 ] & COUNTER_CTRL_RELOAD_ZERO ) ) {
+        counter[ 1 ] = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH1_0 ) << 24 +
+                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH1_1 ) << 16 +
+                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH1_2 ) << 8 +
+                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH1_3 );
+        bReloadCounter1 = 0;
+    }
     // Check if counter2 channel changed state
     if ( PORTCbits.RC2 != counter2LastState ) {
         
@@ -708,8 +786,24 @@ void doWork(void)
         counter2LastState = PORTCbits.RC2;
         
         // If high we count
-        if ( PORTCbits.RC2 ) {
-            counter[ 2 ]++;
+        if ( PORTCbits.RC2 && ( counter_control_shadow[ 2 ] & COUNTER_CTRL_ENABLED ) ) {
+            
+            if ( counter_control_shadow[ 2 ] & COUNTER_CTRL_DIRECTION  ) {
+                counter[ 2 ]++;
+            }
+            else {
+                counter[ 2 ]--;
+            }
+            
+            // Check for zero and if a reload is needed
+            if ( !counter[ 2 ] && 
+                        ( counter_control_shadow[ 2 ] & COUNTER_CTRL_RELOAD_ZERO ) ) {
+                    counter[ 2 ] = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH2_0 ) << 24 +
+                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH2_1 ) << 16 +
+                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH2_2 ) << 8 +
+                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH2_3 );
+                }
+            
         }
     }
     
@@ -720,8 +814,23 @@ void doWork(void)
         counter3LastState = PORTCbits.RC3;
         
         // If high we count
-        if ( PORTCbits.RC3 ) {
-            counter[ 3 ]++;
+        if ( PORTCbits.RC3 && ( counter_control_shadow[ 3 ] & COUNTER_CTRL_ENABLED ) ) {
+            if ( counter_control_shadow[ 3 ] & COUNTER_CTRL_DIRECTION  ) {
+                counter[ 3 ]++;                
+            }
+            else {
+                counter[ 3 ]--;
+            }
+            
+            // Check for zero and if a reload is needed
+            if ( !counter[ 3 ] && 
+                        ( counter_control_shadow[ 3 ] & COUNTER_CTRL_RELOAD_ZERO ) ) {
+                    counter[ 3 ] = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH3_0 ) << 24 +
+                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH3_1 ) << 16 +
+                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH3_2 ) << 8 +
+                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH3_3 );
+                }
+            
         }
     }
     
@@ -738,11 +847,289 @@ void doWork(void)
 
 void doApplicationOneSecondWork(void)
 {
+    uint8_t data[8];
+    uint32_t alarmvalue;
+    uint16_t hysteresis;
+    double val;
+    
+    //memset( bFreqLowAlarm, 0,  sizeof( bFreqLowAlarm ) );
+    //memset( bFreqHighAlarm, 0,  sizeof( bFreqHighAlarm ) );
+    
     // calculate frequency
     for ( int i=0; i<4; i++ ) {
         frequency[ i ] = counter[ i ] - lastcounter[ i ];
         lastcounter[ i ] = counter[ i ];
     }
+    
+    // Check for counter alarm
+    for ( int i=0; i<4; i++ ) {
+        
+        // Must be enabled
+        if ( !( counter_control_shadow[ i ] & COUNTER_CTRL_ENABLED ) ) continue;
+        
+        if ( counter_control_shadow[ i ] & COUNTER_CTRL_ALARM ) {    
+        
+            alarmvalue = ( (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_ALARM_CH0_0 + (4*i) ) << 24 ) +
+                            ( (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_ALARM_CH0_1 + (4*i) ) << 16 ) +
+                            ( (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_ALARM_CH0_2 + (4*i) ) << 8 ) +
+                            (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_ALARM_CH0_3 + (4*i) );
+            hysteresis = ( eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_HYSTERESIS_CH0_MSB + (4*i) ) << 8 ) +
+                            eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_HYSTERESIS_CH0_LSB + (4*i) );
+        
+            // if value is over limit and no alarm yet
+            if ( ( counter[ i ] > alarmvalue ) && !bCounterAlarm[ i ] ) {
+            
+                vscp_alarmstatus |= ALARM_COUNTER0 + i; // Flag that alarm occurred
+                bCounterAlarm[ i ] = TRUE;
+            
+                // Send alarm event
+                SendAlarmEvent( i );
+            
+            }
+        
+        }
+        
+        // Check if alarm condition is over
+        if ( bCounterAlarm[ i ] && ( counter[ i ] < ( alarmvalue - hysteresis ) ) ) {
+            bCounterAlarm[ i ] = FALSE;
+        }
+        
+    }
+    
+    // Check for low frequency alarm 
+    for ( int i=0; i<4; i++ ) {
+    
+        // Must be enabled
+        if ( !( eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_CONTROL_FREQ_CH0 + i ) & FREQ_CTRL_ENABLE ) ) continue;
+        
+        if ( eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_CONTROL_FREQ_CH0 + i ) & FREQ_CTRL_LOW_ALARM ) {
+        
+            alarmvalue = ( (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQUENCY_LOW_0 + (4*i) ) << 24 ) +
+                            ( (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQUENCY_LOW_1 + (4*i) ) << 16 ) +
+                            ( (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQUENCY_LOW_2 + (4*i) ) << 8 ) +
+                            (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQUENCY_LOW_3 + (4*i) );
+            hysteresis = ( eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQ_HYSTERESIS_MSB + (4*i) ) << 8 ) +
+                            eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQ_HYSTERESIS_LSB + (4*i) );
+        
+            // if value is over limit and no alarm yet
+            if ( ( frequency[ i ] < alarmvalue ) && !bFreqLowAlarm[ i ] ) {
+            
+                vscp_alarmstatus |= ALARM_COUNTER0 + i; // Flag that alarm occurred
+                bFreqLowAlarm[ i ] = TRUE;
+            
+                // Send alarm event
+                SendAlarmEvent( i + 3 );
+            
+            }
+        
+        }
+        
+        // Check if alarm condition is over
+        if ( bFreqLowAlarm[ i ] && ( frequency[ i ] > ( alarmvalue + hysteresis ) ) ) {
+            bFreqLowAlarm[ i ] = FALSE;
+        }
+        
+    }
+    
+    // Check for high frequency alarm 
+    for ( int i=0; i<4; i++ ) {
+    
+        // Must be enabled
+        if ( !( eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_CONTROL_FREQ_CH0 + i ) & FREQ_CTRL_ENABLE ) ) continue;
+        
+        if ( eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_CONTROL_FREQ_CH0 + i ) & FREQ_CTRL_HIGH_ALARM ) {
+        
+            alarmvalue = ( (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQUENCY_HIGH_0 + (4*i) ) << 24 ) +
+                            ( (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQUENCY_HIGH_1 + (4*i) ) << 16 ) +
+                            ( (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQUENCY_HIGH_2 + (4*i) ) << 8 ) +
+                            (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQUENCY_HIGH_3 + (4*i) );
+            hysteresis = ( eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQ_HYSTERESIS_MSB + (4*i) ) << 8 ) +
+                            eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQ_HYSTERESIS_LSB + (4*i) );
+        
+            // if value is over limit and no alarm yet
+            if ( ( frequency[ i ] > alarmvalue ) && !bFreqHighAlarm[ i ] ) {
+            
+                vscp_alarmstatus |= ALARM_FREQUENCY0 + i; // Flag that alarm occurred
+                bFreqHighAlarm[ i ] = TRUE;
+            
+                // Send alarm event
+                SendAlarmEvent( i + 6 );
+            
+            }
+        
+        }
+        
+        // Check if alarm condition is over
+        if ( bFreqHighAlarm[ i ] && ( frequency[ i ] < ( alarmvalue - hysteresis ) ) ) {
+            bFreqHighAlarm[ i ] = FALSE;
+        }
+        
+    }
+    
+    
+    // Check if counter stream event should be sent 
+    for ( int i=0; i<4; i++ ) {
+        
+        // Must be enabled
+        if ( !( counter_control_shadow[ i ] & COUNTER_CTRL_ENABLED ) ) continue;
+        
+        // Interval must be non zero
+        if ( !eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH0 + i ) ) continue;
+
+        counterReports[ i ]++;
+        
+        if ( counterReports[ i ] > eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH0 + i ) ) {
+            
+            counterReports[ i ] = 0;
+            
+            // Send counter report
+            
+            data[ 0 ] = 0b01100000 + i; // Data coding: Integer, no unit, channel as index
+            
+            // Send counter
+            data[ 1 ] = counter[ i ] & 0xff;
+            data[ 2 ] = ( counter[ i ] >> 8 ) & 0xff;
+            data[ 3 ] = ( counter[ i ] >> 16 ) & 0xff;
+            data[ 4 ] = ( counter[ i ] >> 24 ) & 0xff;    
+            
+            sendVSCPFrame( VSCP_CLASS1_DATA,
+                                VSCP_TYPE_DATA_COUNT,
+                                vscp_nickname,
+                                VSCP_PRIORITY_NORMAL,
+                                5,
+                                data );
+            
+        }
+        
+    }
+    
+    
+    // Check if frequency stream event should be sent 
+    for ( int i=0; i<4; i++ ) {
+        
+        // Must be enabled
+        if ( !( eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_CONTROL_FREQ_CH0 + i ) & COUNTER_CTRL_ENABLED ) ) continue;
+        
+        // Interval must be non zero
+        if ( !eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_FREQ_REPORT_INTERVAL_CH0 + i ) ) continue;
+        
+        frequencyReports[ i ]++;
+        
+        if ( frequencyReports[ i ] > eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_FREQ_REPORT_INTERVAL_CH0 + i ) ) {
+            
+            frequencyReports[ i ] = 0;
+            
+            // Send frequency report
+            
+            data[ 0 ] = 0b01100000 + i; // Data coding: Integer, unit = Hz, channel as index
+            
+            // Send counter
+            data[ 1 ] = frequency[ i ] & 0xff;
+            data[ 2 ] = ( frequency[ i ] >> 8 ) & 0xff;
+            data[ 3 ] = ( frequency[ i ] >> 16 ) & 0xff;
+            data[ 4 ] = ( frequency[ i ] >> 24 ) & 0xff;    
+            
+            sendVSCPFrame( VSCP_CLASS1_MEASUREMENT,
+                                VSCP_TYPE_MEASUREMENT_FREQUENCY,
+                                vscp_nickname,
+                                VSCP_PRIORITY_NORMAL,
+                                5,
+                                data );
+            
+        }
+        
+    }
+    
+    
+    // Check if measurement stream event should be sent 
+    for ( int i=0; i<4; i++ ) {
+        
+        // Must be enabled
+        if ( !( eeprom_read( VSCP_EEPROM_END + 
+                REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH0 + i ) & MEASUREMENT_CTRL_ENABLED ) ) continue;
+        
+        // Interval must be non zero
+        if ( !eeprom_read( VSCP_EEPROM_END + 
+                REG0_ACCRA_MESURMENT_REPORT_INTERVAL_CH0 + i ) ) continue;
+        
+        measurementReports[ i ]++;
+        
+        if ( measurementReports[ i ] > eeprom_read( VSCP_EEPROM_END + 
+                                                        REG0_ACCRA_MESURMENT_REPORT_INTERVAL_CH0 + i ) ) {
+            
+            measurementReports[ i ] = 0;
+            
+            double k = (double)eeprom_read( VSCP_EEPROM_END + 
+                                                    REG2_ACCRA_CH0_LINEARIZATION_K_0 + 4*i ) +
+                            (double)( (uint32_t)eeprom_read( VSCP_EEPROM_END + 
+                                                    REG2_ACCRA_CH0_LINEARIZATION_K_1 + 4*i ) << 8 ) +
+                            (double)( (uint32_t)eeprom_read( VSCP_EEPROM_END + 
+                                                    REG2_ACCRA_CH0_LINEARIZATION_K_2 + 4*i ) << 16 ) +
+                            (double)( (uint32_t)eeprom_read( VSCP_EEPROM_END + 
+                                                    REG2_ACCRA_CH0_LINEARIZATION_K_3 + 4*i ) << 24 );
+            double m = (double)eeprom_read( VSCP_EEPROM_END + 
+                                                    REG2_ACCRA_CH0_LINEARIZATION_M_MSB + 4*i ) +
+                            (double)( (uint32_t)eeprom_read( VSCP_EEPROM_END + 
+                                                    REG2_ACCRA_CH0_LINEARIZATION_M_MSB + 4*i ) << 8 ) +
+                            (double)( (uint32_t)eeprom_read( VSCP_EEPROM_END + 
+                                                    REG2_ACCRA_CH0_LINEARIZATION_M_MSB + 4*i ) << 16 ) +
+                            (double)( (uint32_t)eeprom_read( VSCP_EEPROM_END + 
+                                                    REG2_ACCRA_CH0_LINEARIZATION_M_MSB + 4*i ) << 24 );
+            
+            // Send measurement report
+            if ( eeprom_read( VSCP_EEPROM_END + 
+                    REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH0 + i ) & MEASUREMENT_CTRL_CALCULATION ) {
+            
+                // use frequency for the calculation
+                
+                // Floating point value 0v10100000
+                // unit from control settings (bits 3,4)
+                // Channel as index
+                data[ 0 ] = 
+                    ( 0b10100000 | ( eeprom_read( VSCP_EEPROM_END + 
+                                                    REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH0 + i ) & 
+                                                        MEASUREMENT_CTRL_UNIT_MASK ) ) + i; 
+                
+                // Do calculation
+                
+                val =  k*frequency[ i ] + m;
+                
+                   
+            
+            }
+            else {
+                
+                // use the counter for the calculation
+                
+                data[ 0 ] = 
+                    ( 0b10100000 | ( eeprom_read( VSCP_EEPROM_END + 
+                                                    REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH0 + i ) & 
+                                                        MEASUREMENT_CTRL_UNIT_MASK ) ) + i; 
+                
+                // Do calculation
+                
+                val =  k*counter[ i ] + m;
+                
+            }
+            
+            // Set data
+            char *p = (char *)&val;
+            data[ 1 ] = p[ 0 ] & 0xff;
+            data[ 2 ] = ( (uint32_t)p[ 1 ] >> 8 ) & 0xff;
+            data[ 3 ] = ( (uint32_t)p[ 2 ] >> 16 ) & 0xff;
+            data[ 4 ] = ( (uint32_t)p[ 3 ] >> 24 ) & 0xff; 
+            
+            sendVSCPFrame( VSCP_CLASS1_MEASUREMENT,
+                                VSCP_TYPE_MEASUREMENT_FREQUENCY,
+                                vscp_nickname,
+                                VSCP_PRIORITY_NORMAL,
+                                5,
+                                data );
+            
+        }
+        
+    }
+    
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1242,15 +1629,15 @@ void sendDMatrixInfo(void)
 // SendInformationEvent
 //
 
-void SendInformationEvent( unsigned char idx,
+void SendInformationEvent( unsigned char channel,
                             unsigned char eventClass,
                             unsigned char eventTypeId )
 {
     uint8_t data[3];
 
-    data[ 0 ] = idx; // Register
+    data[ 0 ] = channel; // Register
     data[ 1 ] = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_ZONE );
-    data[ 2 ] = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_CH0_SUBZONE + idx );
+    data[ 2 ] = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_CH0_SUBZONE + channel );
     sendVSCPFrame( eventClass,
                     eventTypeId,
                     vscp_nickname,
@@ -1258,6 +1645,28 @@ void SendInformationEvent( unsigned char idx,
                     3,
                     data );
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// SendAlarmEvent
+//
+
+void SendAlarmEvent( uint8_t channel  )
+{
+    uint8_t data[3];
+
+    data[ 0 ] = channel;    // Channel 0-3 for counter, channel 4-6 for frequency low, channel 7-9 for 
+                            // frequency high
+    data[ 1 ] = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_ZONE );
+    data[ 2 ] = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_CH0_SUBZONE + ( channel & 0x03 ) );
+    sendVSCPFrame( VSCP_CLASS1_ALARM,
+                    VSCP_TYPE_ALARM_ALARM,
+                    vscp_nickname,
+                    VSCP_PRIORITY_HIGH,
+                    3,
+                    data );
+}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Do decision Matrix handling
