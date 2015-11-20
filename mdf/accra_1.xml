@@ -129,14 +129,14 @@
 			<description lang="en">
 			Control  register for counter 0 
 			Functionality for counter 0.\n\n
+            Bit 0 - Counting direction.\n
+            Bit 1 - Enable alarm level.\n
+            Bit 2 - Reload value on zero.\n
+            Bit 3 - Reload value on overflow.\n
+            Bit 4 - Reserved.\n
+            Bit 5 - Reserved.\n
+            Bit 6 - Reserved.\n
 			Bit 7 - Enable counter.\n
-			Bit 6 - Reserved.\n
-			Bit 5 - Reserved.\n
-			Bit 4 - Enable stream events.\n
-			Bit 3 - Reload value on overflow.\n
-			Bit 2 - Reload value on zero.\n
-			Bit 1 - Enable alarm level.\n
-			Bit 0 - Counting direction.\n
 			</description>
 			<access>rw</access>
 			<bit pos="0" default="false" >
@@ -156,8 +156,8 @@
 				<description lang="en">Enable reload value on overflow.</description> 
         	</bit>
 			<bit pos="4" default="false" >
-				<name lang="en">Enable stream events</name>
-				<description lang="en">Enable stream events.</description> 
+				<name lang="en">Reserved</name>
+				<description lang="en">Reserved.</description> 
         	</bit>
 			<bit pos="5" default="false" >
 				<name lang="en">Reserved</name>
@@ -178,14 +178,14 @@
 			<description lang="en">
 			Control  register for counter 1 
 			Functionality for counter 1.\n\n
-			Bit 7 - Enable counter.\n
-			Bit 6 - Reserved.\n
-			Bit 5 - Reserved.\n
-			Bit 4 - Enable stream events.\n
-			Bit 3 - Reload value on overflow.\n
-			Bit 2 - Reload value on zero.\n
-			Bit 1 - Enable alarm level.\n
 			Bit 0 - Counting direction.\n
+            Bit 1 - Enable alarm level.\n
+            Bit 2 - Reload value on zero.\n
+            Bit 3 - Reload value on overflow.\n
+            Bit 4 - Reserved.\n
+            Bit 5 - Reserved.\n
+            Bit 6 - Reserved.\n
+            Bit 7 - Enable counter.\n
 			</description>
 			<access>rw</access>
 			<bit pos="0" default="false" >
@@ -205,8 +205,8 @@
 				<description lang="en">Enable reload value on overflow.</description> 
         	</bit>
 			<bit pos="4" default="false" >
-				<name lang="en">Enable stream events</name>
-				<description lang="en">Enable stream events.</description> 
+				<name lang="en">Reserved</name>
+				<description lang="en">Reserved.</description> 
         	</bit>
 			<bit pos="5" default="false" >
 				<name lang="en">Reserved</name>
@@ -227,14 +227,14 @@
 			<description lang="en">
 			Control  register for counter 2 
 			Functionality for counter 2.\n\n
-			Bit 7 - Enable counter.\n
-			Bit 6 - Reserved.\n
-			Bit 5 - Reserved.\n
-			Bit 4 - Enable stream events.\n
-			Bit 3 - Reload value on overflow.\n
-			Bit 2 - Reload value on zero.\n
-			Bit 1 - Enable alarm level.\n
 			Bit 0 - Counting direction.\n
+            Bit 1 - Enable alarm level.\n
+            Bit 2 - Reload value on zero.\n
+            Bit 3 - Reload value on overflow.\n
+            Bit 4 - Reserved.\n
+            Bit 5 - Reserved.\n
+            Bit 6 - Reserved.\n
+            Bit 7 - Enable counter.\n
 			</description>
 			<access>rw</access>
 			<bit pos="0" default="false" >
@@ -254,8 +254,8 @@
 				<description lang="en">Enable reload value on overflow.</description> 
         	</bit>
 			<bit pos="4" default="false" >
-				<name lang="en">Enable stream events</name>
-				<description lang="en">Enable stream events.</description> 
+				<name lang="en">Reserved</name>
+				<description lang="en">Reserved.</description> 
         	</bit>
 			<bit pos="5" default="false" >
 				<name lang="en">Reserved</name>
@@ -276,14 +276,14 @@
 			<description lang="en">
 			Control  register for counter 3 
 			Functionality for counter 3.\n\n
-			Bit 7 - Enable counter.\n
-			Bit 6 - Reserved.\n
-			Bit 5 - Reserved.\n
-			Bit 4 - Enable stream events.\n
-			Bit 3 - Reload value on overflow.\n
-			Bit 2 - Reload value on zero.\n
-			Bit 1 - Enable alarm level.\n
 			Bit 0 - Counting direction.\n
+            Bit 1 - Enable alarm level.\n
+            Bit 2 - Reload value on zero.\n
+            Bit 3 - Reload value on overflow.\n
+            Bit 4 - Reserved.\n
+            Bit 5 - Reserved.\n
+            Bit 6 - Reserved.\n
+            Bit 7 - Enable counter.\n
 			</description>
 			<access>rw</access>
 			<bit pos="0" default="false" >
@@ -303,8 +303,8 @@
 				<description lang="en">Enable reload value on overflow.</description> 
         	</bit>
 			<bit pos="4" default="false" >
-				<name lang="en">Enable stream events</name>
-				<description lang="en">Enable stream events.</description> 
+				<name lang="en">Reserved</name>
+				<description lang="en">Reserved.</description> 
         	</bit>
 			<bit pos="5" default="false" >
 				<name lang="en">Reserved</name>
@@ -325,14 +325,14 @@
 			<description lang="en">
 			Control register for frequency 0 
 			Functionality for frequency 0.\n\n
-			Bit 7 - Enable frequency measurements.\n
-			Bit 6 - Reserved.\n
-			Bit 5 - Reserved.\n
-			Bit 4 - Enable stream events.\n
-			Bit 3 - Reserved.\n
-			Bit 2 - Reserved.\n
-			Bit 1 - Enable frequency high alarm.\n
-			Bit 0 - Enable frequency low alarm.\n
+            Bit 0 - Enable frequency low alarm.\n
+            Bit 1 - Enable frequency high alarm.\n
+            Bit 2 - Reserved.\n
+            Bit 3 - Reserved.\n
+            Bit 4 - Reserved.\n
+            Bit 5 - Reserved.\n
+            Bit 6 - Reserved.\n
+            Bit 7 - Enable frequency measurements.\n
 			</description>
 			<access>rw</access>
 			<bit pos="0" default="false" >
@@ -352,8 +352,8 @@
 				<description lang="en">Reserved.</description> 
         	</bit>
 			<bit pos="4" default="false" >
-				<name lang="en">Enable stream events</name>
-				<description lang="en">Enable stream events.</description> 
+				<name lang="en">Reserved</name>
+				<description lang="en">Reserved.</description> 
         	</bit>
 			<bit pos="5" default="false" >
 				<name lang="en">Reserved</name>
@@ -374,14 +374,14 @@
 			<description lang="en">
 			Control register for frequency 1 
 			Functionality for frequency 1.\n\n
-			Bit 7 - Enable frequency measurements.\n
-			Bit 6 - Reserved.\n
-			Bit 5 - Reserved.\n
-			Bit 4 - Enable stream events.\n
-			Bit 3 - Reserved.\n
-			Bit 2 - Reserved.\n
-			Bit 1 - Enable frequency high alarm.\n
 			Bit 0 - Enable frequency low alarm.\n
+            Bit 1 - Enable frequency high alarm.\n
+            Bit 2 - Reserved.\n
+            Bit 3 - Reserved.\n
+            Bit 4 - Reserved.\n
+            Bit 5 - Reserved.\n
+            Bit 6 - Reserved.\n
+            Bit 7 - Enable frequency measurements.\n
 			</description>
 			<access>rw</access>
 			<bit pos="0" default="false" >
@@ -401,8 +401,8 @@
 				<description lang="en">Reserved.</description> 
         	</bit>
 			<bit pos="4" default="false" >
-				<name lang="en">Enable stream events</name>
-				<description lang="en">Enable stream events.</description> 
+				<name lang="en">Reserved</name>
+				<description lang="en">Reserved.</description> 
         	</bit>
 			<bit pos="5" default="false" >
 				<name lang="en">Reserved</name>
@@ -423,14 +423,14 @@
 			<description lang="en">
 			Control register for frequency 2 
 			Functionality for frequency 2.\n\n
-			Bit 7 - Enable frequency measurements.\n
-			Bit 6 - Reserved.\n
-			Bit 5 - Reserved.\n
-			Bit 4 - Enable stream events.\n
-			Bit 3 - Reserved.\n
-			Bit 2 - Reserved.\n
-			Bit 1 - Enable frequency high alarm.\n
 			Bit 0 - Enable frequency low alarm.\n
+            Bit 1 - Enable frequency high alarm.\n
+            Bit 2 - Reserved.\n
+            Bit 3 - Reserved.\n
+            Bit 4 - Reserved.\n
+            Bit 5 - Reserved.\n
+            Bit 6 - Reserved.\n
+            Bit 7 - Enable frequency measurements.\n
 			</description>
 			<access>rw</access>
 			<bit pos="0" default="false" >
@@ -450,8 +450,8 @@
 				<description lang="en">Reserved.</description> 
         	</bit>
 			<bit pos="4" default="false" >
-				<name lang="en">Enable stream events</name>
-				<description lang="en">Enable stream events.</description> 
+				<name lang="en">Reserved</name>
+				<description lang="en">Reserved.</description> 
         	</bit>
 			<bit pos="5" default="false" >
 				<name lang="en">Reserved</name>
@@ -472,14 +472,14 @@
 			<description lang="en">
 			Control register for frequency 3 
 			Functionality for frequency 3.\n\n
-			Bit 7 - Enable frequency measurements.\n
-			Bit 6 - Reserved.\n
-			Bit 5 - Reserved.\n
-			Bit 4 - Enable stream events.\n
-			Bit 3 - Reserved.\n
-			Bit 2 - Reserved.\n
-			Bit 1 - Enable frequency high alarm.\n
 			Bit 0 - Enable frequency low alarm.\n
+            Bit 1 - Enable frequency high alarm.\n
+            Bit 2 - Reserved.\n
+            Bit 3 - Reserved.\n
+            Bit 4 - Enable stream events.\n
+            Bit 5 - Reserved.\n
+            Bit 6 - Reserved.\n
+            Bit 7 - Enable frequency measurements.\n
 			</description>
 			<access>rw</access>
 			<bit pos="0" default="false" >
@@ -967,15 +967,15 @@
 		<reg page="0" offset="86" default="0" bgcolor="0xFAF1FA">
 			<name lang="en">VSCP event information counter 0.</name>
 			<description lang="en">
-            VSCP event information for linearization counter 0.
+            VSCP event information for linearization counter 0.\n\n
+            Bit 0 - Calculate using counter if zero, frequency if one.\n
+            Bit 1 - Reserved.\n
+            Bit 2 - Reserved.\n
+            Bit 3 - Unit.\n
+            Bit 4 - Unit.\n
+            Bit 5 - Reserved.\n
+            Bit 6 - Class bit 8 (must currently always be set to zero).\n
             Bit 7 - Enable.\n
-			Bit 6 - Class bit 8 (must currently always be set to zero).\n
-			Bit 5 - Reserved.\n
-			Bit 4 - Unit.\n
-			Bit 3 - Unit.\n
-			Bit 2 - Reserved.\n
-			Bit 1 - Reserved.\n
-			Bit 0 - Calculate using counter if zero, frequency if one.\n
             </description>
 			<access>rw</access>
             <bit pos="0" default="false" >
@@ -1029,15 +1029,15 @@
 		<reg page="0" offset="89" default="0" bgcolor="0xFAF1FA">
 			<name lang="en">VSCP event information counter 1.</name>
 			<description lang="en">
-            VSCP event information for linearization counter 1.
+            VSCP event information for linearization counter 1.\n\n
+            Bit 0 - Calculate using counter if zero, frequency if one.\n
+            Bit 1 - Reserved.\n
+            Bit 2 - Reserved.\n
+            Bit 3 - Unit.\n
+            Bit 4 - Unit.\n
+            Bit 5 - Reserved.\n
+            Bit 6 - Class bit 8 (must currently always be set to zero).\n
             Bit 7 - Enable.\n
-			Bit 6 - Class bit 8 (must currently always be set to zero).\n
-			Bit 5 - Reserved.\n
-			Bit 4 - Unit.\n
-			Bit 3 - Unit.\n
-			Bit 2 - Reserved.\n
-			Bit 1 - Reserved.\n
-			Bit 0 - Calculate using counter if zero, frequency if one.\n
             </description>
 			<access>rw</access>
             <bit pos="0" default="false" >
@@ -1089,15 +1089,15 @@
 		<reg page="0" offset="92" default="0" bgcolor="0xFAF1FA">
 			<name lang="en">VSCP event information counter 2.</name>
 			<description lang="en">
-            VSCP event information for linearization counter 2.
+            VSCP event information for linearization counter 2.\n\n
+            Bit 0 - Calculate using counter if zero, frequency if one.\n
+            Bit 1 - Reserved.\n
+            Bit 2 - Reserved.\n
+            Bit 3 - Unit.\n
+            Bit 4 - Unit.\n
+            Bit 5 - Reserved.\n
+            Bit 6 - Class bit 8 (must currently always be set to zero).\n
             Bit 7 - Enable.\n
-			Bit 6 - Class bit 8 (must currently always be set to zero).\n
-			Bit 5 - Reserved.\n
-			Bit 4 - Unit.\n
-			Bit 3 - Unit.\n
-			Bit 2 - Reserved.\n
-			Bit 1 - Reserved.\n
-			Bit 0 - Calculate using counter if zero, frequency if one.\n
             </description>
 			<access>rw</access>
             <bit pos="0" default="false" >
@@ -1149,15 +1149,15 @@
 		<reg page="0" offset="95" default="0" bgcolor="0xFAF1FA">
 			<name lang="en">VSCP event information counter 3.</name>
 			<description lang="en">
-            VSCP event information for linearization counter 3.
+            VSCP event information for linearization counter 3.\n\n
+            Bit 0 - Calculate using counter if zero, frequency if one.\n
+            Bit 1 - Reserved.\n
+            Bit 2 - Reserved.\n
+            Bit 3 - Unit.\n
+            Bit 4 - Unit.\n
+            Bit 5 - Reserved.\n
+            Bit 6 - Class bit 8 (must currently always be set to zero).\n
             Bit 7 - Enable.\n
-			Bit 6 - Class bit 8 (must currently always be set to zero).\n
-			Bit 5 - Reserved.\n
-			Bit 4 - Unit.\n
-			Bit 3 - Unit.\n
-			Bit 2 - Reserved.\n
-			Bit 1 - Reserved.\n
-			Bit 0 - Calculate using counter if zero, frequency if one.\n
             </description>
 			<access>rw</access>
             <bit pos="0" default="false" >
@@ -1775,7 +1775,7 @@
 		<abstraction type="uint32_t"  
 							page = "0" offset = "18" 
 							bgcolor="0xE0E0FF" >
-   		<name lang="en">Counter for channel 0</name>
+   		<name lang="en">counter0</name>
       	<description lang="en">A 32-bit counter value for channel 0.\n</description>
       	<access>r</access>
 		</abstraction>
@@ -1783,7 +1783,7 @@
 		<abstraction type="uint32_t"  
 							page = "0" offset = "22" 
 							bgcolor="0xE0E0FF" >
-   		<name lang="en">Counter for channel 1</name>
+   		<name lang="en">counter1</name>
       	<description lang="en">A 32-bit counter value for channel 1.\n</description>
       	<access>r</access>
 		</abstraction>
@@ -1791,7 +1791,7 @@
 		<abstraction type="uint32_t" 
 							page = "0" offset = "26" 
 							bgcolor="0xE0E0FF" >
-   		<name lang="en">Counter for channel 2</name>
+   		<name lang="en">counter2</name>
       	<description lang="en">A 32-bit counter value for channel 2.\n</description>
       	<access>r</access>
 		</abstraction>
@@ -1799,7 +1799,7 @@
 		<abstraction type="uint32_t"  
 							page = "0" offset = "30" 
 							bgcolor="0xE0E0FF" >
-   		<name lang="en">Counter for channel 3</name>
+   		<name lang="en">counter3</name>
       	<description lang="en">A 32-bit counter value for channel 3.\n</description>
       	<access>r</access>
 		</abstraction>
@@ -1807,7 +1807,7 @@
 		<abstraction type="uint32_t"   
 							page = "1" offset = "0" 
 							bgcolor="0xE0E0FF" >
-   		<name lang="en">Frequency for channel 0</name>
+   		<name lang="en">frequency0</name>
       	<description lang="en">A 32-bit frequency for channel 0.\n</description>
       	<access>r</access>
 		</abstraction>
@@ -1815,7 +1815,7 @@
 		<abstraction type="uint32_t"   
 							page = "1" offset = "4" 
 							bgcolor="0xE0E0FF" >
-   		<name lang="en">Frequency for channel 1</name>
+   		<name lang="en">frequency1</name>
       	<description lang="en">A 32-bit frequency for channel 1.\n</description>
       	<access>r</access>
 		</abstraction>
@@ -1823,7 +1823,7 @@
 		<abstraction type="uint32_t"   
 							page = "1" offset = "8" 
 							bgcolor="0xE0E0FF" >
-   		<name lang="en">Frequency for channel 2</name>
+   		<name lang="en">frequency2</name>
       	<description lang="en">A 32-bit frequency for channel 2.\n</description>
       	<access>r</access>
 		</abstraction>
@@ -1831,7 +1831,7 @@
 		<abstraction type="uint32_t"   
 							page = "1" offset = "12" 
 							bgcolor="0xE0E0FF" >
-   		<name lang="en">Frequency for channel 3</name>
+   		<name lang="en">frequency3</name>
       	<description lang="en">A 32-bit frequency for channel 3.\n</description>
       	<access>r</access>
 		</abstraction>
@@ -1839,7 +1839,7 @@
 		<abstraction type="float" default="0"  
 							page = "2" offset = "0" 
 							bgcolor="0xE0E0FF" >
-   		<name lang="en">k-constant for channel 0</name>
+   		<name lang="en">cnt0_k</name>
       	<description lang="en">A 32-bit floating point k-constant for linearisation of channel 0.\n</description>
       	<access>rw</access>
 		</abstraction>
@@ -1847,7 +1847,7 @@
         <abstraction type="float" default="0"  
 							page = "2" offset = "16" 
 							bgcolor="0xE0E0FF" >
-   		<name lang="en">m-constant for channel 0</name>
+   		<name lang="en">cnt0_m</name>
       	<description lang="en">A 32-bit floating point m-constant for linearisation of channel 0.\n</description>
       	<access>rw</access>
 		</abstraction>
@@ -1855,7 +1855,7 @@
 		<abstraction type="float" default="0"  
 							page = "2" offset = "4" 
 							bgcolor="0xE0E0FF" >
-   		<name lang="en">k-constant for channel 1</name>
+   		<name lang="en">cnt1_k</name>
       	<description lang="en">A 32-bit floating point k-constant for linearisation of channel 1.\n</description>
       	<access>rw</access>
 		</abstraction>
@@ -1863,7 +1863,7 @@
         <abstraction type="float" default="0"  
 							page = "2" offset = "20" 
 							bgcolor="0xE0E0FF" >
-   		<name lang="en">m-constant for channel 1</name>
+   		<name lang="en">cnt1_m</name>
       	<description lang="en">A 32-bit floating point m-constant for linearisation of channel 1.\n</description>
       	<access>rw</access>
 		</abstraction>
@@ -1871,7 +1871,7 @@
 		<abstraction type="float" default="0"  
 							page = "2" offset = "8" 
 							bgcolor="0xE0E0FF" >
-   		<name lang="en">k-constant for channel 2</name>
+   		<name lang="en">cnt2_k</name>
       	<description lang="en">A 32-bit floating point k-constant for linearisation of channel 2.\n</description>
       	<access>rw</access>
 		</abstraction>
@@ -1879,7 +1879,7 @@
         <abstraction type="float" default="0"  
 							page = "2" offset = "24" 
 							bgcolor="0xE0E0FF" >
-   		<name lang="en">m-constant for channel 2</name>
+   		<name lang="en">cnt2_m</name>
       	<description lang="en">A 32-bit floating point m-constant for linearisation of channel 2.\n</description>
       	<access>rw</access>
 		</abstraction>
@@ -1887,7 +1887,7 @@
 		<abstraction type="float" default="0"  
 							page = "2" offset = "12" 
 							bgcolor="0xE0E0FF" >
-   		<name lang="en">k-constant for channel 3</name>
+   		<name lang="en">cnt3_k</name>
       	<description lang="en">A 32-bit floating point k-constant for linearisation of channel 3.\n</description>
       	<access>rw</access>
 		</abstraction>
@@ -1895,9 +1895,201 @@
 		<abstraction type="float" default="0"  
 							page = "2" offset = "28" 
 							bgcolor="0xE0E0FF" >
-   		<name lang="en">m-constant for channel 3</name>
+   		<name lang="en">cnt3_m</name>
       	<description lang="en">A 32-bit floating point m-constant for linearisation of channel 3.\n</description>
       	<access>rw</access>		
+		</abstraction>
+        
+        <abstraction type="uint32_t"  
+							page = "0" offset = "34" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">cnt0_alarm_level</name>
+      	<description lang="en">A 32-bit counter alarm level for channel 0.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint32_t"  
+							page = "0" offset = "38" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">cnt1_alarm_level</name>
+      	<description lang="en">A 32-bit counter alarm level for channel 1.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint32_t"  
+							page = "0" offset = "42" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">cnt2_alarm_level</name>
+      	<description lang="en">A 32-bit counter alarm level for channel 2.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint32_t"  
+							page = "0" offset = "46" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">cnt3_alarm_level</name>
+      	<description lang="en">A 32-bit counter alarm level for channel 3.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint32_t"  
+							page = "0" offset = "50" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">cnt0_reload</name>
+      	<description lang="en">A 32-bit counter reload value for channel 0.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint32_t"  
+							page = "0" offset = "54" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">cnt1_reload</name>
+      	<description lang="en">A 32-bit counter reload value for channel 1.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint32_t"  
+							page = "0" offset = "58" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">cnt2_reload</name>
+      	<description lang="en">A 32-bit counter reload value for channel 2.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint32_t"  
+							page = "0" offset = "62" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">cnt3_reload</name>
+      	<description lang="en">A 32-bit counter reload value for channel 3.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint16_t"  
+							page = "0" offset = "66" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">cnt0_hysteresis</name>
+      	<description lang="en">A 16-bit counter hysteresis value for channel 0.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint16_t"  
+							page = "0" offset = "68" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">cnt1_hysteresis</name>
+      	<description lang="en">A 16-bit counter hysteresis value for channel 1.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint16_t"  
+							page = "0" offset = "70" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">cnt2_hysteresis</name>
+      	<description lang="en">A 16-bit counter hysteresis value for channel 2.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint16_t"  
+							page = "0" offset = "72" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">cnt3_hysteresis</name>
+      	<description lang="en">A 16-bit counter hysteresis value for channel 3.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint32_t"  
+							page = "1" offset = "16" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">freq0_alarm_low</name>
+      	<description lang="en">A 32-bit low alarm level for frequency 0.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint32_t"  
+							page = "1" offset = "20" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">freq1_alarm_low</name>
+      	<description lang="en">A 32-bit low alarm level for frequency 1.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint32_t"  
+							page = "1" offset = "24" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">freq2_alarm_low</name>
+      	<description lang="en">A 32-bit low alarm level for frequency 2.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint32_t"  
+							page = "1" offset = "28" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">freq3_alarm_low</name>
+      	<description lang="en">A 32-bit low alarm level for frequency 3.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint32_t"  
+							page = "1" offset = "32" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">freq0_alarm_high</name>
+      	<description lang="en">A 32-bit high alarm level for frequency 0.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint32_t"  
+							page = "1" offset = "36" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">freq1_alarm_high</name>
+      	<description lang="en">A 32-bit high alarm level for frequency 1.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint32_t"  
+							page = "1" offset = "40" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">freq2_alarm_high</name>
+      	<description lang="en">A 32-bit high alarm level for frequency 2.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint32_t"  
+							page = "1" offset = "44" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">freq3_alarm_high</name>
+      	<description lang="en">A 32-bit high alarm level for frequency 3.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint16_t"  
+							page = "1" offset = "48" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">freq0_hysteresis</name>
+      	<description lang="en">A 16-bit hysteresis value for frequency 0.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint16_t"  
+							page = "1" offset = "50" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">freq1_hysteresis</name>
+      	<description lang="en">A 16-bit hysteresis value for frequency 1.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint16_t"  
+							page = "1" offset = "52" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">freq2_hysteresis</name>
+      	<description lang="en">A 16-bit hysteresis value for frequency 2.\n</description>
+      	<access>rw</access>
+		</abstraction>
+        
+        <abstraction type="uint16_t"  
+							page = "1" offset = "54" 
+							bgcolor="0xE0E0FF" >
+   		<name lang="en">freq3_hysteresis</name>
+      	<description lang="en">A 16-bit hysteresis value for frequency 3.\n</description>
+      	<access>rw</access>
 		</abstraction>
    	 
    </abstractions>

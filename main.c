@@ -94,10 +94,10 @@ const uint8_t vscp_deviceURL[] = "www.eurosource.se/accra_1.xml";
 
 volatile unsigned long measurement_clock_sec;  // Clock for one second work
 
-uint16_t sendTimer;  // Timer for CAN send
-uint8_t seconds;    // counter for seconds
-uint8_t minutes;    // counter for minutes
-uint8_t hours;      // Counter for hours
+uint16_t sendTimer;         // Timer for CAN send
+uint8_t seconds;            // Counter for seconds
+uint8_t minutes;            // Counter for minutes
+uint8_t hours;              // Counter for hours
 
 uint32_t counter[4];        // Counters
 uint32_t lastcounter[4];    // Counter values last second (for frequency)
@@ -126,6 +126,206 @@ uint8_t frequencyReports[ 4 ];
 uint8_t measurementReports[ 4 ];
 
 //__EEPROM_DATA(0x11,0x22,0x33,0x44,0x55,0x66,0x77,0x88);
+
+// This table translates registers in page 0 to EEPROM locations
+const uint8_t reg2eeprom_pg0[] = {
+    /* REG0_ACCRA_ZONE                  */          VSCP_EEPROM_END + 0,
+    /* REG0_ACCRA_SUBZONE               */          VSCP_EEPROM_END + 1,
+    /* REG0_ACCRA_CH0_SUBZONE           */          VSCP_EEPROM_END + 2,
+    /* REG0_ACCRA_CH1_SUBZONE           */          VSCP_EEPROM_END + 3,
+    /* REG0_ACCRA_CH2_SUBZONE           */          VSCP_EEPROM_END + 4,
+    /* REG0_ACCRA_CH3_SUBZONE           */          VSCP_EEPROM_END + 5,
+    /* REG0_ACCRA_CONTROL_COUNTER_CH0   */          VSCP_EEPROM_END + 6,
+    /* REG0_ACCRA_CONTROL_COUNTER_CH1   */          VSCP_EEPROM_END + 7,
+    /* REG0_ACCRA_CONTROL_COUNTER_CH2   */          VSCP_EEPROM_END + 8,
+    /* REG0_ACCRA_CONTROL_COUNTER_CH3   */          VSCP_EEPROM_END + 9,
+    /* REG0_ACCRA_CONTROL_FREQ_CH0      */          VSCP_EEPROM_END + 10,
+    /* REG0_ACCRA_CONTROL_FREQ_CH1      */          VSCP_EEPROM_END + 11, 
+    /* REG0_ACCRA_CONTROL_FREQ_CH2      */          VSCP_EEPROM_END + 12, 
+    /* REG0_ACCRA_CONTROL_FREQ_CH3      */          VSCP_EEPROM_END + 13,
+    /* REG0_ACCRA_RESET_COUNTER_CH0     */          0xff,
+    /* REG0_ACCRA_RESET_COUNTER_CH1     */          0xff,
+    /* REG0_ACCRA_RESET_COUNTER_CH2     */          0xff,
+    /* REG0_ACCRA_RESET_COUNTER_CH3     */          0xff, 
+    /* REG0_ACCRA_COUNTER_CH0_0         */          0xff,
+    /* REG0_ACCRA_COUNTER_CH0_1         */          0xff,
+    /* REG0_ACCRA_COUNTER_CH0_2         */          0xff,
+    /* REG0_ACCRA_COUNTER_CH0_3         */          0xff,
+    /* REG0_ACCRA_COUNTER_CH1_0         */          0xff,
+    /* REG0_ACCRA_COUNTER_CH1_1         */          0xff,
+    /* REG0_ACCRA_COUNTER_CH1_2         */          0xff,
+    /* REG0_ACCRA_COUNTER_CH1_3         */          0xff,
+    /* REG0_ACCRA_COUNTER_CH2_0         */          0xff,
+    /* REG0_ACCRA_COUNTER_CH2_1         */          0xff,
+    /* REG0_ACCRA_COUNTER_CH2_2         */          0xff,
+    /* REG0_ACCRA_COUNTER_CH2_3         */          0xff,
+    /* REG0_ACCRA_COUNTER_CH3_0         */          0xff,
+    /* REG0_ACCRA_COUNTER_CH3_1         */          0xff,
+    /* REG0_ACCRA_COUNTER_CH3_2         */          0xff,
+    /* REG0_ACCRA_COUNTER_CH3_3         */          0xff,                                                    
+    /* REG0_ACCRA_COUNTER_ALARM_CH0_0   */          VSCP_EEPROM_END + 14, 
+    /* REG0_ACCRA_COUNTER_ALARM_CH0_1   */          VSCP_EEPROM_END + 15,
+    /* REG0_ACCRA_COUNTER_ALARM_CH0_2   */          VSCP_EEPROM_END + 16,
+    /* REG0_ACCRA_COUNTER_ALARM_CH0_3   */          VSCP_EEPROM_END + 17, 
+    /* REG0_ACCRA_COUNTER_ALARM_CH1_0   */          VSCP_EEPROM_END + 18, 
+    /* REG0_ACCRA_COUNTER_ALARM_CH1_1   */          VSCP_EEPROM_END + 19,
+    /* REG0_ACCRA_COUNTER_ALARM_CH1_2   */          VSCP_EEPROM_END + 20,
+    /* REG0_ACCRA_COUNTER_ALARM_CH1_3   */          VSCP_EEPROM_END + 21, 
+    /* REG0_ACCRA_COUNTER_ALARM_CH2_0   */          VSCP_EEPROM_END + 22, 
+    /* REG0_ACCRA_COUNTER_ALARM_CH2_1   */          VSCP_EEPROM_END + 23,
+    /* REG0_ACCRA_COUNTER_ALARM_CH2_2   */          VSCP_EEPROM_END + 24,
+    /* REG0_ACCRA_COUNTER_ALARM_CH2_3   */          VSCP_EEPROM_END + 25, 
+    /* REG0_ACCRA_COUNTER_ALARM_CH3_0   */          VSCP_EEPROM_END + 26, 
+    /* REG0_ACCRA_COUNTER_ALARM_CH3_1   */          VSCP_EEPROM_END + 27,
+    /* REG0_ACCRA_COUNTER_ALARM_CH3_2   */          VSCP_EEPROM_END + 28,
+    /* REG0_ACCRA_COUNTER_ALARM_CH3_3   */          VSCP_EEPROM_END + 29,   
+    /* REG0_ACCRA_COUNTER_RELOAD_CH0_0  */          VSCP_EEPROM_END + 30,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH0_1  */          VSCP_EEPROM_END + 31,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH0_2  */          VSCP_EEPROM_END + 32,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH0_3  */          VSCP_EEPROM_END + 33,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH1_0  */          VSCP_EEPROM_END + 34,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH1_1  */          VSCP_EEPROM_END + 35,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH1_2  */          VSCP_EEPROM_END + 36,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH1_3  */          VSCP_EEPROM_END + 37,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH2_0  */          VSCP_EEPROM_END + 38,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH2_1  */          VSCP_EEPROM_END + 39,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH2_2  */          VSCP_EEPROM_END + 40,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH2_3  */          VSCP_EEPROM_END + 41,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH3_0  */          VSCP_EEPROM_END + 42,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH3_1  */          VSCP_EEPROM_END + 43,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH3_2  */          VSCP_EEPROM_END + 44,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH3_3  */          VSCP_EEPROM_END + 45,   
+    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH0_MSB  */    VSCP_EEPROM_END + 46,
+    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH0_LSB  */    VSCP_EEPROM_END + 47,
+    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH1_MSB  */    VSCP_EEPROM_END + 48,
+    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH1_LSB  */    VSCP_EEPROM_END + 49,
+    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH2_MSB  */    VSCP_EEPROM_END + 50,
+    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH2_LSB  */    VSCP_EEPROM_END + 51,
+    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH3_MSB  */    VSCP_EEPROM_END + 52,
+    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH3_LSB  */    VSCP_EEPROM_END + 53, 
+    /* REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH0 */    VSCP_EEPROM_END + 54,
+    /* REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH1 */    VSCP_EEPROM_END + 55,
+    /* REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH2 */    VSCP_EEPROM_END + 56,
+    /* REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH3 */    VSCP_EEPROM_END + 57,  
+    /* REG0_ACCRA_FREQ_REPORT_INTERVAL_CH0    */    VSCP_EEPROM_END + 58, 
+    /* REG0_ACCRA_FREQ_REPORT_INTERVAL_CH1    */    VSCP_EEPROM_END + 59,
+    /* REG0_ACCRA_FREQ_REPORT_INTERVAL_CH2    */    VSCP_EEPROM_END + 60,
+    /* REG0_ACCRA_FREQ_REPORT_INTERVAL_CH3    */    VSCP_EEPROM_END + 61,  
+    /* REG0_ACCRA_MESURMENT_REPORT_INTERVAL_CH0 */      VSCP_EEPROM_END + 62, 
+    /* REG0_ACCRA_MESURMENT_REPORT_INTERVAL_CH1 */      VSCP_EEPROM_END + 63, 
+    /* REG0_ACCRA_MESURMENT_REPORT_INTERVAL_CH2 */      VSCP_EEPROM_END + 64, 
+    /* REG0_ACCRA_MESURMENT_REPORT_INTERVAL_CH3 */      VSCP_EEPROM_END + 65,
+    /* REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH0 */    VSCP_EEPROM_END + 66,
+    /* REG0_ACCRA_LINEARIZATION_EVENT_CLASS_CH0 */      VSCP_EEPROM_END + 67,
+    /* REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH0 */       VSCP_EEPROM_END + 68,
+    /* REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH1 */    VSCP_EEPROM_END + 69,
+    /* REG0_ACCRA_LINEARIZATION_EVENT_CLASS_CH1 */      VSCP_EEPROM_END + 70,
+    /* REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH1 */       VSCP_EEPROM_END + 71,
+    /* REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH2 */    VSCP_EEPROM_END + 72,
+    /* REG0_ACCRA_LINEARIZATION_EVENT_CLASS_CH2 */      VSCP_EEPROM_END + 73,
+    /* REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH2 */       VSCP_EEPROM_END + 74,
+    /* REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH3 */    VSCP_EEPROM_END + 75,
+    /* REG0_ACCRA_LINEARIZATION_EVENT_CLASS_CH3 */      VSCP_EEPROM_END + 76,
+    /* REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH3 */       VSCP_EEPROM_END + 77,                                                    
+};
+
+// This table translates registers in page 1 to EEPROM locations
+const uint8_t reg2eeprom_pg1[] = {
+    /* REG1_ACCRA_CH0_FREQUENCY_0 */                    0xff,
+    /* REG1_ACCRA_CH0_FREQUENCY_1 */                    0xff,
+    /* REG1_ACCRA_CH0_FREQUENCY_2 */                    0xff,
+    /* REG1_ACCRA_CH0_FREQUENCY_3 */                    0xff,  
+    /* REG1_ACCRA_CH1_FREQUENCY_0 */                    0xff,
+    /* REG1_ACCRA_CH1_FREQUENCY_1 */                    0xff,
+    /* REG1_ACCRA_CH1_FREQUENCY_2 */                    0xff,
+    /* REG1_ACCRA_CH1_FREQUENCY_3 */                    0xff,
+    /* REG1_ACCRA_CH2_FREQUENCY_0 */                    0xff,
+    /* REG1_ACCRA_CH2_FREQUENCY_1 */                    0xff,
+    /* REG1_ACCRA_CH2_FREQUENCY_2 */                    0xff,
+    /* REG1_ACCRA_CH2_FREQUENCY_3 */                    0xff,
+    /* REG1_ACCRA_CH3_FREQUENCY_0 */                    0xff,
+    /* REG1_ACCRA_CH3_FREQUENCY_1 */                    0xff,
+    /* REG1_ACCRA_CH3_FREQUENCY_2 */                    0xff,
+    /* REG1_ACCRA_CH3_FREQUENCY_3 */                    0xff,
+    /* REG1_ACCRA_CH0_FREQUENCY_LOW_0 */                VSCP_EEPROM_END + 78,
+    /* REG1_ACCRA_CH0_FREQUENCY_LOW_1 */                VSCP_EEPROM_END + 79,
+    /* REG1_ACCRA_CH0_FREQUENCY_LOW_2 */                VSCP_EEPROM_END + 80,
+    /* REG1_ACCRA_CH0_FREQUENCY_LOW_3 */                VSCP_EEPROM_END + 81, 
+    /* REG1_ACCRA_CH1_FREQUENCY_LOW_0 */                VSCP_EEPROM_END + 82,
+    /* REG1_ACCRA_CH1_FREQUENCY_LOW_1 */                VSCP_EEPROM_END + 83,
+    /* REG1_ACCRA_CH1_FREQUENCY_LOW_2 */                VSCP_EEPROM_END + 84,
+    /* REG1_ACCRA_CH1_FREQUENCY_LOW_3 */                VSCP_EEPROM_END + 85,
+    /* REG1_ACCRA_CH2_FREQUENCY_LOW_0 */                VSCP_EEPROM_END + 86,
+    /* REG1_ACCRA_CH2_FREQUENCY_LOW_1 */                VSCP_EEPROM_END + 87,
+    /* REG1_ACCRA_CH2_FREQUENCY_LOW_2 */                VSCP_EEPROM_END + 88,
+    /* REG1_ACCRA_CH2_FREQUENCY_LOW_3 */                VSCP_EEPROM_END + 89,
+    /* REG1_ACCRA_CH3_FREQUENCY_HIGH_0 */               VSCP_EEPROM_END + 90,
+    /* REG1_ACCRA_CH3_FREQUENCY_HIGH_1 */               VSCP_EEPROM_END + 91,
+    /* REG1_ACCRA_CH3_FREQUENCY_HIGH_2 */               VSCP_EEPROM_END + 92,
+    /* REG1_ACCRA_CH3_FREQUENCY_HIGH_3 */               VSCP_EEPROM_END + 93, 
+    /* REG1_ACCRA_CH0_FREQUENCY_HIGH_0 */               VSCP_EEPROM_END + 94,
+    /* REG1_ACCRA_CH0_FREQUENCY_HIGH_1 */               VSCP_EEPROM_END + 95,
+    /* REG1_ACCRA_CH0_FREQUENCY_HIGH_2 */               VSCP_EEPROM_END + 96,
+    /* REG1_ACCRA_CH0_FREQUENCY_HIGH_3 */               VSCP_EEPROM_END + 97, 
+    /* REG1_ACCRA_CH1_FREQUENCY_HIGH_0 */               VSCP_EEPROM_END + 98,
+    /* REG1_ACCRA_CH1_FREQUENCY_HIGH_1 */               VSCP_EEPROM_END + 99,
+    /* REG1_ACCRA_CH1_FREQUENCY_HIGH_2 */               VSCP_EEPROM_END + 100,
+    /* REG1_ACCRA_CH1_FREQUENCY_HIGH_3 */               VSCP_EEPROM_END + 101,
+    /* REG1_ACCRA_CH2_FREQUENCY_HIGH_0 */               VSCP_EEPROM_END + 102,
+    /* REG1_ACCRA_CH2_FREQUENCY_HIGH_1 */               VSCP_EEPROM_END + 103,
+    /* REG1_ACCRA_CH2_FREQUENCY_HIGH_2 */               VSCP_EEPROM_END + 104,
+    /* REG1_ACCRA_CH2_FREQUENCY_HIGH_3 */               VSCP_EEPROM_END + 105,
+    /* REG1_ACCRA_CH3_FREQUENCY_HIGH_0 */               VSCP_EEPROM_END + 106,
+    /* REG1_ACCRA_CH3_FREQUENCY_HIGH_1 */               VSCP_EEPROM_END + 107,
+    /* REG1_ACCRA_CH3_FREQUENCY_HIGH_2 */               VSCP_EEPROM_END + 108,
+    /* REG1_ACCRA_CH3_FREQUENCY_HIGH_3 */               VSCP_EEPROM_END + 109,
+    /* REG1_ACCRA_CH0_FREQ_HYSTERESIS_MSB */            VSCP_EEPROM_END + 110,
+    /* REG1_ACCRA_CH0_FREQ_HYSTERESIS_LSB */            VSCP_EEPROM_END + 111, 
+    /* REG1_ACCRA_CH1_FREQ_HYSTERESIS_MSB */            VSCP_EEPROM_END + 112,
+    /* REG1_ACCRA_CH1_FREQ_HYSTERESIS_LSB */            VSCP_EEPROM_END + 113,
+    /* REG1_ACCRA_CH2_FREQ_HYSTERESIS_MSB */            VSCP_EEPROM_END + 114,
+    /* REG1_ACCRA_CH2_FREQ_HYSTERESIS_LSB */            VSCP_EEPROM_END + 115,
+    /* REG1_ACCRA_CH3_FREQ_HYSTERESIS_MSB */            VSCP_EEPROM_END + 116,
+    /* REG1_ACCRA_CH3_FREQ_HYSTERESIS_LSB */            VSCP_EEPROM_END + 117,                                                        
+};
+
+// This table translates registers in page 2 to EEPROM locations
+const uint8_t reg2eeprom_pg2[] = {
+  /* REG2_ACCRA_CH0_LINEARIZATION_K_0 */                VSCP_EEPROM_END + 118, 
+  /* REG2_ACCRA_CH0_LINEARIZATION_K_1 */                VSCP_EEPROM_END + 119,
+  /* REG2_ACCRA_CH0_LINEARIZATION_K_2 */                VSCP_EEPROM_END + 120,
+  /* REG2_ACCRA_CH0_LINEARIZATION_K_3 */                VSCP_EEPROM_END + 121,
+  /* REG2_ACCRA_CH1_LINEARIZATION_K_0 */                VSCP_EEPROM_END + 122, 
+  /* REG2_ACCRA_CH1_LINEARIZATION_K_1 */                VSCP_EEPROM_END + 123,
+  /* REG2_ACCRA_CH1_LINEARIZATION_K_2 */                VSCP_EEPROM_END + 124,
+  /* REG2_ACCRA_CH1_LINEARIZATION_K_3 */                VSCP_EEPROM_END + 125,
+  /* REG2_ACCRA_CH2_LINEARIZATION_K_0 */                VSCP_EEPROM_END + 126, 
+  /* REG2_ACCRA_CH2_LINEARIZATION_K_1 */                VSCP_EEPROM_END + 127,
+  /* REG2_ACCRA_CH2_LINEARIZATION_K_2 */                VSCP_EEPROM_END + 128,
+  /* REG2_ACCRA_CH2_LINEARIZATION_K_3 */                VSCP_EEPROM_END + 129,
+  /* REG2_ACCRA_CH3_LINEARIZATION_K_0 */                VSCP_EEPROM_END + 130, 
+  /* REG2_ACCRA_CH3_LINEARIZATION_K_1 */                VSCP_EEPROM_END + 131,
+  /* REG2_ACCRA_CH3_LINEARIZATION_K_2 */                VSCP_EEPROM_END + 132,
+  /* REG2_ACCRA_CH3_LINEARIZATION_K_3 */                VSCP_EEPROM_END + 133, 
+  /* REG2_ACCRA_CH0_LINEARIZATION_M_0 */                VSCP_EEPROM_END + 134,
+  /* REG2_ACCRA_CH0_LINEARIZATION_M_1 */                VSCP_EEPROM_END + 135,
+  /* REG2_ACCRA_CH0_LINEARIZATION_M_2 */                VSCP_EEPROM_END + 136,
+  /* REG2_ACCRA_CH0_LINEARIZATION_M_3 */                VSCP_EEPROM_END + 137, 
+  /* REG2_ACCRA_CH1_LINEARIZATION_M_0 */                VSCP_EEPROM_END + 138,
+  /* REG2_ACCRA_CH1_LINEARIZATION_M_1 */                VSCP_EEPROM_END + 139,
+  /* REG2_ACCRA_CH1_LINEARIZATION_M_2 */                VSCP_EEPROM_END + 140,
+  /* REG2_ACCRA_CH1_LINEARIZATION_M_3 */                VSCP_EEPROM_END + 141, 
+  /* REG2_ACCRA_CH2_LINEARIZATION_M_0 */                VSCP_EEPROM_END + 142,
+  /* REG2_ACCRA_CH2_LINEARIZATION_M_1 */                VSCP_EEPROM_END + 143,
+  /* REG2_ACCRA_CH2_LINEARIZATION_M_2 */                VSCP_EEPROM_END + 144,
+  /* REG2_ACCRA_CH2_LINEARIZATION_M_3 */                VSCP_EEPROM_END + 145, 
+  /* REG2_ACCRA_CH3_LINEARIZATION_M_0 */                VSCP_EEPROM_END + 146,
+  /* REG2_ACCRA_CH3_LINEARIZATION_M_1 */                VSCP_EEPROM_END + 147,
+  /* REG2_ACCRA_CH3_LINEARIZATION_M_2 */                VSCP_EEPROM_END + 148,
+  /* REG2_ACCRA_CH3_LINEARIZATION_M_3 */                VSCP_EEPROM_END + 149,                                                         
+};
+
+#define DECISION_MATRIX_EEPROM_START                    VSCP_EEPROM_END + 150     // always one after above
 
 ///////////////////////////////////////////////////////////////////////////////
 // Isr() 	- Interrupt Service Routine
@@ -255,10 +455,10 @@ void main()
     init_app_ram();
     
     // Set up counter shadow registers
-    counter_control_shadow[ 0 ] = eeprom_read( REG0_ACCRA_CONTROL_COUNTER_CH0 );
-    counter_control_shadow[ 1 ] = eeprom_read( REG0_ACCRA_CONTROL_COUNTER_CH1 );
-    counter_control_shadow[ 2 ] = eeprom_read( REG0_ACCRA_CONTROL_COUNTER_CH2 );
-    counter_control_shadow[ 3 ] = eeprom_read( REG0_ACCRA_CONTROL_COUNTER_CH3 );
+    counter_control_shadow[ 0 ] = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_CONTROL_COUNTER_CH0 ] );
+    counter_control_shadow[ 1 ] = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_CONTROL_COUNTER_CH1 ] );
+    counter_control_shadow[ 2 ] = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_CONTROL_COUNTER_CH2 ] );
+    counter_control_shadow[ 3 ] = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_CONTROL_COUNTER_CH3 ] );
     
     // Initialize the VSCP functionality
     vscp_init();    
@@ -541,197 +741,123 @@ void init_app_eeprom(void)
 {
     unsigned char i, j;
 
-    eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_ZONE, 0 );
-    eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_SUBZONE, 0 );
+    eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_ZONE ], 0 );
+    eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_SUBZONE ], 0 );
     
     for ( i=0; i<4; i++ ) {
-        eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_CH0_SUBZONE + i, i );
+        eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_CH0_SUBZONE + i ], i );
     }
     
  
 
     for ( i=0; i<4; i++ ) {
         
-        eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_CONTROL_COUNTER_CH0 + i,
-                        COUNTER_CTRL_ENABLED );
+        eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_CONTROL_COUNTER_CH0 + i ], COUNTER_CTRL_ENABLED );
         
-        eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_CONTROL_FREQ_CH0 + i,
-                        FREQ_CTRL_ENABLE );
+        eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_CONTROL_FREQ_CH0 + i ], FREQ_CTRL_ENABLE );
         
-        eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_ALARM_CH0_MSB + i - REG0_MINUS,
-                        0 );
+        eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_ALARM_CH0_MSB ], 0 );
         
-        eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_ALARM_CH1_MSB + i - REG0_MINUS,
-                        0 );
+        eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_ALARM_CH1_MSB + i ], 0 );
         
-        eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_ALARM_CH2_MSB + i - REG0_MINUS,
-                        0 );
+        eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_ALARM_CH2_MSB + i ], 0 );
         
-        eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_ALARM_CH3_MSB + i - REG0_MINUS,
-                        0 );
+        eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_ALARM_CH3_MSB + i ], 0 );
         
-        eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH0_MSB + i - REG0_MINUS,
-                        0 );
+        eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH0_MSB + i ], 0 );
         
-        eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH1_MSB + i - REG0_MINUS,
-                        FREQ_CTRL_ENABLE );
+        eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH1_MSB + i ], FREQ_CTRL_ENABLE );
         
-        eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH2_MSB + i - REG0_MINUS,
-                        0 );
+        eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH2_MSB + i ], 0 );
         
-        eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH3_MSB + i - REG0_MINUS,
-                        FREQ_CTRL_ENABLE );
+        eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH3_MSB + i ], FREQ_CTRL_ENABLE );
         
-        eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH0 + i - REG0_MINUS,
-                        0 );
+        eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH0 + i ], 0 );
         
-        eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_FREQ_REPORT_INTERVAL_CH0 + i - REG0_MINUS,
-                        0 );
+        eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_FREQ_REPORT_INTERVAL_CH0 + i ], 0 );
         
-        eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_MESURMENT_REPORT_INTERVAL_CH0 + i - REG0_MINUS,
-                        0 );
+        eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_MESURMENT_REPORT_INTERVAL_CH0 + i ], 0 );
     }
     
     // Counter hysteresis
-    eeprom_write( VSCP_EEPROM_END + 
-                    REG0_ACCRA_COUNTER_HYSTERESIS_CH0_MSB - 
-                    REG0_MINUS,
+    eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_HYSTERESIS_CH0_MSB ],
                         ( DEFAULT_COUNTER0_HYSTERESIS >> 8 ) & 0xff );
         
-    eeprom_write( VSCP_EEPROM_END + 
-                    REG0_ACCRA_COUNTER_HYSTERESIS_CH0_LSB - 
-                    REG0_MINUS,
+    eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_HYSTERESIS_CH0_LSB ],
                         DEFAULT_COUNTER0_HYSTERESIS & 0xff );
     
-    eeprom_write( VSCP_EEPROM_END + 
-                    REG0_ACCRA_COUNTER_HYSTERESIS_CH1_MSB - 
-                    REG0_MINUS,
+    eeprom_write( reg2eeprom_pg0[REG0_ACCRA_COUNTER_HYSTERESIS_CH1_MSB ],
                         ( DEFAULT_COUNTER1_HYSTERESIS >> 8 ) & 0xff );
         
-    eeprom_write( VSCP_EEPROM_END + 
-                    REG0_ACCRA_COUNTER_HYSTERESIS_CH1_LSB - 
-                    REG0_MINUS,
+    eeprom_write( reg2eeprom_pg0[REG0_ACCRA_COUNTER_HYSTERESIS_CH1_LSB ],
                         DEFAULT_COUNTER1_HYSTERESIS & 0xff );
     
-    eeprom_write( VSCP_EEPROM_END + 
-                    REG0_ACCRA_COUNTER_HYSTERESIS_CH2_MSB - 
-                    REG0_MINUS,
+    eeprom_write( reg2eeprom_pg0[REG0_ACCRA_COUNTER_HYSTERESIS_CH2_MSB ],
                         ( DEFAULT_COUNTER2_HYSTERESIS >> 8 ) & 0xff );
         
-    eeprom_write( VSCP_EEPROM_END + 
-                    REG0_ACCRA_COUNTER_HYSTERESIS_CH2_LSB - 
-                    REG0_MINUS,
+    eeprom_write( reg2eeprom_pg0[REG0_ACCRA_COUNTER_HYSTERESIS_CH2_LSB ],
                         DEFAULT_COUNTER2_HYSTERESIS & 0xff );
     
-    eeprom_write( VSCP_EEPROM_END + 
-                    REG0_ACCRA_COUNTER_HYSTERESIS_CH3_MSB - 
-                    REG0_MINUS,
+    eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_HYSTERESIS_CH3_MSB ],
                         ( DEFAULT_COUNTER3_HYSTERESIS >> 8 ) & 0xff );
         
-    eeprom_write( VSCP_EEPROM_END + 
-                    REG0_ACCRA_COUNTER_HYSTERESIS_CH3_LSB - 
-                    REG0_MINUS,
+    eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_HYSTERESIS_CH3_LSB ],
                         DEFAULT_COUNTER0_HYSTERESIS & 0xff );
     
         
-    eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH0 - REG0_MINUS,
-                        0 );
-    eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_LINEARIZATION_EVENT_CLASS_CH0 - REG0_MINUS,
-                        0 );
-    eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH0 - REG0_MINUS,
-                        0 );
-    eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH1 - REG0_MINUS,
-                        0 );
-    eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_LINEARIZATION_EVENT_CLASS_CH1 - REG0_MINUS,
-                        0 );
-    eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH1 - REG0_MINUS,
-                        0 );
-    eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH2 - REG0_MINUS,
-                        0 );
-    eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_LINEARIZATION_EVENT_CLASS_CH2 - REG0_MINUS,
-                        0 );
-    eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH2 - REG0_MINUS,
-                        0 );
-    eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH3 - REG0_MINUS,
-                        0 );
-    eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_LINEARIZATION_EVENT_CLASS_CH3 - REG0_MINUS,
-                        0 );
-    eeprom_write( VSCP_EEPROM_END + REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH3 - REG0_MINUS,
-                        0 );
+    eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH0 ], 0 );
+    eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_LINEARIZATION_EVENT_CLASS_CH0 ], 0 );
+    eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH0 ], 0 );
+    eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH1 ], 0 );
+    eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_LINEARIZATION_EVENT_CLASS_CH1 ], 0 );
+    eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH1 ], 0 );
+    eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH2 ], 0 );
+    eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_LINEARIZATION_EVENT_CLASS_CH2 ], 0 );
+    eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH2 ], 0 );
+    eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH3 ], 0 );
+    eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_LINEARIZATION_EVENT_CLASS_CH3 ], 0 );
+    eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH3 ], 0 );
 
     // Page 1
     
     // Frequency limits
     for ( int i=0; i<(4*8); i++ ) {
-        eeprom_write( VSCP_EEPROM_END + 
-                        REG0_COUNT +
-                        REG1_ACCRA_CH0_FREQUENCY_LOW_MSB - 
-                        REG1_MINUS + i,
-                            0 );
+        eeprom_write( reg2eeprom_pg1[ REG1_ACCRA_CH0_FREQUENCY_LOW_MSB ] + i, 0 );
     }
     
     // Hysteresis channel 0
-    eeprom_write( VSCP_EEPROM_END + 
-                        REG0_COUNT +
-                        REG1_ACCRA_CH0_FREQ_HYSTERESIS_MSB - 
-                        REG1_MINUS,
+    eeprom_write( reg2eeprom_pg1[ REG1_ACCRA_CH0_FREQ_HYSTERESIS_MSB ],
                             ( DEFAULT_FREQUENCY0_HYSTERESIS >> 8 ) & 0xff );
     
-    eeprom_write( VSCP_EEPROM_END + 
-                        REG0_COUNT +
-                        REG1_ACCRA_CH0_FREQ_HYSTERESIS_LSB - 
-                        REG1_MINUS,
+    eeprom_write( reg2eeprom_pg1[ REG1_ACCRA_CH0_FREQ_HYSTERESIS_LSB ],
                             DEFAULT_FREQUENCY0_HYSTERESIS & 0xff );
     
     // Hysteresis channel 1
-    eeprom_write( VSCP_EEPROM_END + 
-                        REG0_COUNT +
-                        REG1_ACCRA_CH1_FREQ_HYSTERESIS_MSB - 
-                        REG1_MINUS,
+    eeprom_write( reg2eeprom_pg1[ REG1_ACCRA_CH1_FREQ_HYSTERESIS_MSB ],
                             ( DEFAULT_FREQUENCY1_HYSTERESIS >> 8 ) & 0xff  );
     
-    eeprom_write( VSCP_EEPROM_END + 
-                        REG0_COUNT +
-                        REG1_ACCRA_CH1_FREQ_HYSTERESIS_LSB - 
-                        REG1_MINUS,
+    eeprom_write( reg2eeprom_pg1[ REG1_ACCRA_CH1_FREQ_HYSTERESIS_LSB ],
                             DEFAULT_FREQUENCY1_HYSTERESIS & 0xff );
     
     // Hysteresis channel 2
-    eeprom_write( VSCP_EEPROM_END + 
-                        REG0_COUNT +
-                        REG1_ACCRA_CH2_FREQ_HYSTERESIS_MSB - 
-                        REG1_MINUS,
+    eeprom_write( reg2eeprom_pg1[ REG1_ACCRA_CH2_FREQ_HYSTERESIS_MSB ],
                             ( DEFAULT_FREQUENCY2_HYSTERESIS >> 8 ) & 0xff  );
     
-    eeprom_write( VSCP_EEPROM_END + 
-                        REG0_COUNT +
-                        REG1_ACCRA_CH2_FREQ_HYSTERESIS_LSB - 
-                        REG1_MINUS,
+    eeprom_write( reg2eeprom_pg1[ REG1_ACCRA_CH2_FREQ_HYSTERESIS_LSB ],
                             DEFAULT_FREQUENCY2_HYSTERESIS & 0xff );
     
     // Hysteresis channel 3
-    eeprom_write( VSCP_EEPROM_END + 
-                        REG0_COUNT +
-                        REG1_ACCRA_CH3_FREQ_HYSTERESIS_MSB - 
-                        REG1_MINUS,
+    eeprom_write( reg2eeprom_pg1[ REG1_ACCRA_CH3_FREQ_HYSTERESIS_MSB ],
                             ( DEFAULT_FREQUENCY3_HYSTERESIS >> 8 ) & 0xff  );
     
-    eeprom_write( VSCP_EEPROM_END + 
-                        REG0_COUNT +
-                        REG1_ACCRA_CH3_FREQ_HYSTERESIS_LSB - 
-                        REG1_MINUS,
+    eeprom_write( reg2eeprom_pg1[ REG1_ACCRA_CH3_FREQ_HYSTERESIS_LSB ],
                             DEFAULT_FREQUENCY3_HYSTERESIS & 0xff );
     
     
     // * * *  Page 2 * * *
     
     for ( i=0; i<(4*8); i++ ) {
-        eeprom_write( VSCP_EEPROM_END + 
-                        REG0_COUNT + 
-                        REG1_COUNT +
-                        REG2_ACCRA_CH0_LINEARIZATION_K_MSB + 
-                        i,
-                            0 );
+        eeprom_write( reg2eeprom_pg2[ REG2_ACCRA_CH0_LINEARIZATION_K_MSB + i ], 0 );
     }
     
     // * * * Decision Matrix * * *
@@ -739,11 +865,7 @@ void init_app_eeprom(void)
     // All elements disabled.
     for ( i = 0; i < DESCION_MATRIX_ROWS; i++ ) {
         for ( j = 0; j < 8; j++ ) {
-            eeprom_write( VSCP_EEPROM_END + 
-                            REG0_COUNT + 
-                            REG1_COUNT +
-                            REG2_COUNT +
-                            REG_DESCION_MATRIX + i * 8 + j, 0 );
+            eeprom_write( DECISION_MATRIX_EEPROM_START + i * 8 + j, 0 );
         }
     }
     
@@ -763,20 +885,20 @@ void doWork(void)
     // Check for zero and if a reload is needed
     if ( bReloadCounter0 && 
             ( counter_control_shadow[ 0 ] & COUNTER_CTRL_RELOAD_ZERO ) ) {
-        counter[ 0 ] = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH0_0 ) << 24 +
-                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH0_1 ) << 16 +
-                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH0_2 ) << 8 +
-                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH0_3 );
+        counter[ 0 ] = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH0_0 ] ) << 24 +
+                                        eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH0_1 ] ) << 16 +
+                                        eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH0_2 ] ) << 8 +
+                                        eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH0_3 ] );
         bReloadCounter0 = 0;
     }
     
     // Check for zero and if a reload is needed
     if ( bReloadCounter1 && 
             ( counter_control_shadow[ 1 ] & COUNTER_CTRL_RELOAD_ZERO ) ) {
-        counter[ 1 ] = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH1_0 ) << 24 +
-                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH1_1 ) << 16 +
-                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH1_2 ) << 8 +
-                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH1_3 );
+        counter[ 1 ] = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH1_0 ] ) << 24 +
+                                        eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH1_1 ] ) << 16 +
+                                        eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH1_2 ] ) << 8 +
+                                        eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH1_3 ] );
         bReloadCounter1 = 0;
     }
     // Check if counter2 channel changed state
@@ -798,10 +920,10 @@ void doWork(void)
             // Check for zero and if a reload is needed
             if ( !counter[ 2 ] && 
                         ( counter_control_shadow[ 2 ] & COUNTER_CTRL_RELOAD_ZERO ) ) {
-                    counter[ 2 ] = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH2_0 ) << 24 +
-                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH2_1 ) << 16 +
-                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH2_2 ) << 8 +
-                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH2_3 );
+                    counter[ 2 ] = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH2_0 ] ) << 24 +
+                                        eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH2_1 ] ) << 16 +
+                                        eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH2_2 ] ) << 8 +
+                                        eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH2_3 ] );
                 }
             
         }
@@ -825,10 +947,10 @@ void doWork(void)
             // Check for zero and if a reload is needed
             if ( !counter[ 3 ] && 
                         ( counter_control_shadow[ 3 ] & COUNTER_CTRL_RELOAD_ZERO ) ) {
-                    counter[ 3 ] = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH3_0 ) << 24 +
-                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH3_1 ) << 16 +
-                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH3_2 ) << 8 +
-                                        eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_RELOAD_CH3_3 );
+                    counter[ 3 ] = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH3_0 ] ) << 24 +
+                                        eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH3_1 ] ) << 16 +
+                                        eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_RELOAD_CH3_2 ] ) << 8 +
+                                        eeprom_read( reg2eeprom_pg0[REG0_ACCRA_COUNTER_RELOAD_CH3_3 ] );
                 }
             
         }
@@ -851,30 +973,31 @@ void doApplicationOneSecondWork(void)
     uint32_t alarmvalue;
     uint16_t hysteresis;
     double val;
+    int i;
     
     //memset( bFreqLowAlarm, 0,  sizeof( bFreqLowAlarm ) );
     //memset( bFreqHighAlarm, 0,  sizeof( bFreqHighAlarm ) );
     
     // calculate frequency
-    for ( int i=0; i<4; i++ ) {
+    for ( i=0; i<4; i++ ) {
         frequency[ i ] = counter[ i ] - lastcounter[ i ];
         lastcounter[ i ] = counter[ i ];
     }
     
     // Check for counter alarm
-    for ( int i=0; i<4; i++ ) {
+    for ( i=0; i<4; i++ ) {
         
         // Must be enabled
         if ( !( counter_control_shadow[ i ] & COUNTER_CTRL_ENABLED ) ) continue;
         
         if ( counter_control_shadow[ i ] & COUNTER_CTRL_ALARM ) {    
         
-            alarmvalue = ( (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_ALARM_CH0_0 + (4*i) ) << 24 ) +
-                            ( (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_ALARM_CH0_1 + (4*i) ) << 16 ) +
-                            ( (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_ALARM_CH0_2 + (4*i) ) << 8 ) +
-                            (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_ALARM_CH0_3 + (4*i) );
-            hysteresis = ( eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_HYSTERESIS_CH0_MSB + (4*i) ) << 8 ) +
-                            eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_HYSTERESIS_CH0_LSB + (4*i) );
+            alarmvalue = ( (uint32_t)eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_ALARM_CH0_0 + (4*i) ] ) << 24 ) +
+                            ( (uint32_t)eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_ALARM_CH0_1 + (4*i) ] ) << 16 ) +
+                            ( (uint32_t)eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_ALARM_CH0_2 + (4*i) ] ) << 8 ) +
+                            (uint32_t)eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_ALARM_CH0_3 + (4*i) ] );
+            hysteresis = ( eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_HYSTERESIS_CH0_MSB + (4*i) ] ) << 8 ) +
+                            eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_HYSTERESIS_CH0_LSB + (4*i) ] );
         
             // if value is over limit and no alarm yet
             if ( ( counter[ i ] > alarmvalue ) && !bCounterAlarm[ i ] ) {
@@ -897,19 +1020,19 @@ void doApplicationOneSecondWork(void)
     }
     
     // Check for low frequency alarm 
-    for ( int i=0; i<4; i++ ) {
+    for ( i=0; i<4; i++ ) {
     
         // Must be enabled
-        if ( !( eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_CONTROL_FREQ_CH0 + i ) & FREQ_CTRL_ENABLE ) ) continue;
+        if ( !( eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_CONTROL_FREQ_CH0 + i ] ) & FREQ_CTRL_ENABLE ) ) continue;
         
-        if ( eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_CONTROL_FREQ_CH0 + i ) & FREQ_CTRL_LOW_ALARM ) {
+        if ( eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_CONTROL_FREQ_CH0 + i ] ) & FREQ_CTRL_LOW_ALARM ) {
         
-            alarmvalue = ( (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQUENCY_LOW_0 + (4*i) ) << 24 ) +
-                            ( (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQUENCY_LOW_1 + (4*i) ) << 16 ) +
-                            ( (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQUENCY_LOW_2 + (4*i) ) << 8 ) +
-                            (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQUENCY_LOW_3 + (4*i) );
-            hysteresis = ( eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQ_HYSTERESIS_MSB + (4*i) ) << 8 ) +
-                            eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQ_HYSTERESIS_LSB + (4*i) );
+            alarmvalue = ( (uint32_t)eeprom_read( reg2eeprom_pg1[ REG1_ACCRA_CH0_FREQUENCY_LOW_0 + (4*i) ] ) << 24 ) +
+                            ( (uint32_t)eeprom_read( reg2eeprom_pg1[ REG1_ACCRA_CH0_FREQUENCY_LOW_1 + (4*i) ] ) << 16 ) +
+                            ( (uint32_t)eeprom_read( reg2eeprom_pg1[ REG1_ACCRA_CH0_FREQUENCY_LOW_2 + (4*i) ] ) << 8 ) +
+                            (uint32_t)eeprom_read( reg2eeprom_pg1[ REG1_ACCRA_CH0_FREQUENCY_LOW_3 + (4*i) ] );
+            hysteresis = ( eeprom_read( reg2eeprom_pg1[ REG1_ACCRA_CH0_FREQ_HYSTERESIS_MSB + (4*i) ] ) << 8 ) +
+                            eeprom_read( reg2eeprom_pg1[ REG1_ACCRA_CH0_FREQ_HYSTERESIS_LSB + (4*i) ] );
         
             // if value is over limit and no alarm yet
             if ( ( frequency[ i ] < alarmvalue ) && !bFreqLowAlarm[ i ] ) {
@@ -932,19 +1055,19 @@ void doApplicationOneSecondWork(void)
     }
     
     // Check for high frequency alarm 
-    for ( int i=0; i<4; i++ ) {
+    for ( i=0; i<4; i++ ) {
     
         // Must be enabled
-        if ( !( eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_CONTROL_FREQ_CH0 + i ) & FREQ_CTRL_ENABLE ) ) continue;
+        if ( !( eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_CONTROL_FREQ_CH0 + i ] ) & FREQ_CTRL_ENABLE ) ) continue;
         
-        if ( eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_CONTROL_FREQ_CH0 + i ) & FREQ_CTRL_HIGH_ALARM ) {
+        if ( eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_CONTROL_FREQ_CH0 + i ] ) & FREQ_CTRL_HIGH_ALARM ) {
         
-            alarmvalue = ( (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQUENCY_HIGH_0 + (4*i) ) << 24 ) +
-                            ( (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQUENCY_HIGH_1 + (4*i) ) << 16 ) +
-                            ( (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQUENCY_HIGH_2 + (4*i) ) << 8 ) +
-                            (uint32_t)eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQUENCY_HIGH_3 + (4*i) );
-            hysteresis = ( eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQ_HYSTERESIS_MSB + (4*i) ) << 8 ) +
-                            eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_ACCRA_CH0_FREQ_HYSTERESIS_LSB + (4*i) );
+            alarmvalue = ( (uint32_t)eeprom_read( reg2eeprom_pg1[ REG1_ACCRA_CH0_FREQUENCY_HIGH_0 + (4*i) ] ) << 24 ) +
+                            ( (uint32_t)eeprom_read( reg2eeprom_pg1[ REG1_ACCRA_CH0_FREQUENCY_HIGH_1 + (4*i) ] ) << 16 ) +
+                            ( (uint32_t)eeprom_read( reg2eeprom_pg1[ REG1_ACCRA_CH0_FREQUENCY_HIGH_2 + (4*i) ] ) << 8 ) +
+                            (uint32_t)eeprom_read( reg2eeprom_pg1[ REG1_ACCRA_CH0_FREQUENCY_HIGH_3 + (4*i) ] );
+            hysteresis = ( eeprom_read( reg2eeprom_pg1[ REG1_ACCRA_CH0_FREQ_HYSTERESIS_MSB + (4*i) ] ) << 8 ) +
+                            eeprom_read( reg2eeprom_pg1[ REG1_ACCRA_CH0_FREQ_HYSTERESIS_LSB + (4*i) ] );
         
             // if value is over limit and no alarm yet
             if ( ( frequency[ i ] > alarmvalue ) && !bFreqHighAlarm[ i ] ) {
@@ -968,17 +1091,17 @@ void doApplicationOneSecondWork(void)
     
     
     // Check if counter stream event should be sent 
-    for ( int i=0; i<4; i++ ) {
+    for ( i=0; i<4; i++ ) {
         
         // Must be enabled
         if ( !( counter_control_shadow[ i ] & COUNTER_CTRL_ENABLED ) ) continue;
-        
+                
         // Interval must be non zero
-        if ( !eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH0 + i ) ) continue;
+        if ( !eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH0 + i ] ) ) continue;
 
         counterReports[ i ]++;
         
-        if ( counterReports[ i ] > eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH0 + i ) ) {
+        if ( counterReports[ i ] > eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH0 + i ] ) ) {
             
             counterReports[ i ] = 0;
             
@@ -1005,17 +1128,17 @@ void doApplicationOneSecondWork(void)
     
     
     // Check if frequency stream event should be sent 
-    for ( int i=0; i<4; i++ ) {
+    for ( i=0; i<4; i++ ) {
         
         // Must be enabled
-        if ( !( eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_CONTROL_FREQ_CH0 + i ) & COUNTER_CTRL_ENABLED ) ) continue;
+        if ( !( eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_CONTROL_FREQ_CH0 + i ] ) & COUNTER_CTRL_ENABLED ) ) continue;
         
         // Interval must be non zero
-        if ( !eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_FREQ_REPORT_INTERVAL_CH0 + i ) ) continue;
+        if ( !eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_FREQ_REPORT_INTERVAL_CH0 + i ] ) ) continue;
         
         frequencyReports[ i ]++;
         
-        if ( frequencyReports[ i ] > eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_FREQ_REPORT_INTERVAL_CH0 + i ) ) {
+        if ( frequencyReports[ i ] > eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_FREQ_REPORT_INTERVAL_CH0 + i ] ) ) {
             
             frequencyReports[ i ] = 0;
             
@@ -1042,43 +1165,33 @@ void doApplicationOneSecondWork(void)
     
     
     // Check if measurement stream event should be sent 
-    for ( int i=0; i<4; i++ ) {
+    for ( i=0; i<4; i++ ) {
         
         // Must be enabled
-        if ( !( eeprom_read( VSCP_EEPROM_END + 
-                REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH0 + i ) & MEASUREMENT_CTRL_ENABLED ) ) continue;
+        if ( !( eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH0 + i ] ) & 
+                                                MEASUREMENT_CTRL_ENABLED ) ) continue;
         
         // Interval must be non zero
-        if ( !eeprom_read( VSCP_EEPROM_END + 
-                REG0_ACCRA_MESURMENT_REPORT_INTERVAL_CH0 + i ) ) continue;
+        if ( !eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_MESURMENT_REPORT_INTERVAL_CH0 + i ] ) ) continue;
         
         measurementReports[ i ]++;
         
-        if ( measurementReports[ i ] > eeprom_read( VSCP_EEPROM_END + 
-                                                        REG0_ACCRA_MESURMENT_REPORT_INTERVAL_CH0 + i ) ) {
+        if ( measurementReports[ i ] > eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_MESURMENT_REPORT_INTERVAL_CH0 + i ] ) ) {
             
             measurementReports[ i ] = 0;
             
-            double k = (double)eeprom_read( VSCP_EEPROM_END + 
-                                                    REG2_ACCRA_CH0_LINEARIZATION_K_0 + 4*i ) +
-                            (double)( (uint32_t)eeprom_read( VSCP_EEPROM_END + 
-                                                    REG2_ACCRA_CH0_LINEARIZATION_K_1 + 4*i ) << 8 ) +
-                            (double)( (uint32_t)eeprom_read( VSCP_EEPROM_END + 
-                                                    REG2_ACCRA_CH0_LINEARIZATION_K_2 + 4*i ) << 16 ) +
-                            (double)( (uint32_t)eeprom_read( VSCP_EEPROM_END + 
-                                                    REG2_ACCRA_CH0_LINEARIZATION_K_3 + 4*i ) << 24 );
-            double m = (double)eeprom_read( VSCP_EEPROM_END + 
-                                                    REG2_ACCRA_CH0_LINEARIZATION_M_MSB + 4*i ) +
-                            (double)( (uint32_t)eeprom_read( VSCP_EEPROM_END + 
-                                                    REG2_ACCRA_CH0_LINEARIZATION_M_MSB + 4*i ) << 8 ) +
-                            (double)( (uint32_t)eeprom_read( VSCP_EEPROM_END + 
-                                                    REG2_ACCRA_CH0_LINEARIZATION_M_MSB + 4*i ) << 16 ) +
-                            (double)( (uint32_t)eeprom_read( VSCP_EEPROM_END + 
-                                                    REG2_ACCRA_CH0_LINEARIZATION_M_MSB + 4*i ) << 24 );
+            double k = (double)eeprom_read( reg2eeprom_pg2[REG2_ACCRA_CH0_LINEARIZATION_K_0 + 4*i ] ) +
+                            (double)( (uint32_t)eeprom_read( reg2eeprom_pg2[ REG2_ACCRA_CH0_LINEARIZATION_K_1 + 4*i ] ) << 8 ) +
+                            (double)( (uint32_t)eeprom_read( reg2eeprom_pg2[ REG2_ACCRA_CH0_LINEARIZATION_K_2 + 4*i ] ) << 16 ) +
+                            (double)( (uint32_t)eeprom_read( reg2eeprom_pg2[ REG2_ACCRA_CH0_LINEARIZATION_K_3 + 4*i ] ) << 24 );
+            double m = (double)eeprom_read( reg2eeprom_pg2[ REG2_ACCRA_CH0_LINEARIZATION_M_MSB + 4*i ] ) +
+                            (double)( (uint32_t)eeprom_read( reg2eeprom_pg2[ REG2_ACCRA_CH0_LINEARIZATION_M_MSB + 4*i ] ) << 8 ) +
+                            (double)( (uint32_t)eeprom_read( reg2eeprom_pg2[ REG2_ACCRA_CH0_LINEARIZATION_M_MSB + 4*i ] ) << 16 ) +
+                            (double)( (uint32_t)eeprom_read( reg2eeprom_pg2[ REG2_ACCRA_CH0_LINEARIZATION_M_MSB + 4*i ] ) << 24 );
             
             // Send measurement report
-            if ( eeprom_read( VSCP_EEPROM_END + 
-                    REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH0 + i ) & MEASUREMENT_CTRL_CALCULATION ) {
+            if ( eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH0 + i ] ) & 
+                                                    MEASUREMENT_CTRL_CALCULATION ) {
             
                 // use frequency for the calculation
                 
@@ -1086,8 +1199,7 @@ void doApplicationOneSecondWork(void)
                 // unit from control settings (bits 3,4)
                 // Channel as index
                 data[ 0 ] = 
-                    ( 0b10100000 | ( eeprom_read( VSCP_EEPROM_END + 
-                                                    REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH0 + i ) & 
+                    ( 0b10100000 | ( eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH0 + i ] ) & 
                                                         MEASUREMENT_CTRL_UNIT_MASK ) ) + i; 
                 
                 // Do calculation
@@ -1102,8 +1214,7 @@ void doApplicationOneSecondWork(void)
                 // use the counter for the calculation
                 
                 data[ 0 ] = 
-                    ( 0b10100000 | ( eeprom_read( VSCP_EEPROM_END + 
-                                                    REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH0 + i ) & 
+                    ( 0b10100000 | ( eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_LINEARIZATION_EVENT_SETTING_CH0 + i ] ) & 
                                                         MEASUREMENT_CTRL_UNIT_MASK ) ) + i; 
                 
                 // Do calculation
@@ -1225,7 +1336,7 @@ void vscp_writeNicknamePermanent(uint8_t nickname)
 
 uint8_t vscp_getZone(void)
 {
-    return eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_ZONE );
+    return eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_ZONE ] );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1234,7 +1345,7 @@ uint8_t vscp_getZone(void)
 
 uint8_t vscp_getSubzone(void)
 {
-    return eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_SUBZONE );
+    return eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_SUBZONE ] );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1252,18 +1363,17 @@ uint8_t vscp_readAppReg(uint8_t reg)
 
         // Zone
         if ( reg == REG0_ACCRA_ZONE ) {
-            rv = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_ZONE );
+            rv = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_ZONE ] );
         }            
         // SubZone
         else if ( reg == REG0_ACCRA_SUBZONE ) {
-            rv = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_SUBZONE );
+            rv = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_SUBZONE ] );
         }
         // Channel subzones & control registers
         else if ( ( reg >= REG0_ACCRA_CH0_SUBZONE ) && 
                     ( reg <= REG0_ACCRA_CONTROL_FREQ_CH3 ) ) {
-            rv = eeprom_read( VSCP_EEPROM_END + 
-                                REG0_ACCRA_CH0_SUBZONE + 
-                                ( reg - REG0_ACCRA_CH0_SUBZONE ) );
+            rv = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_CH0_SUBZONE + 
+                                ( reg - REG0_ACCRA_CH0_SUBZONE ) ] );
         }
         // Reset counter locations
         else if ( ( reg >= REG0_ACCRA_RESET_COUNTER_CH0 ) && 
@@ -1297,7 +1407,8 @@ uint8_t vscp_readAppReg(uint8_t reg)
         // The rest
         else if ( ( reg >= REG0_ACCRA_COUNTER_ALARM_CH0_MSB ) && 
                     ( reg <= REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH3 ) ) {
-            rv = eeprom_read( VSCP_EEPROM_END + ( reg - REG0_ACCRA_COUNTER_ALARM_CH0_MSB ) );
+            rv = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_ALARM_CH0_MSB + 
+                                ( reg - REG0_ACCRA_COUNTER_ALARM_CH0_MSB ) ] );
         }
         
     } // page 0
@@ -1338,9 +1449,8 @@ uint8_t vscp_readAppReg(uint8_t reg)
         else if ( ( reg >= REG1_ACCRA_CH0_FREQUENCY_LOW_MSB ) && 
                     ( reg <= REG1_ACCRA_CH3_FREQ_HYSTERESIS_LSB ) ) {
             
-            rv = eeprom_read( VSCP_EEPROM_END + 
-                                REG0_COUNT + 
-                                ( reg - REG1_ACCRA_CH0_FREQUENCY_LOW_MSB ) );
+            rv = eeprom_read( reg2eeprom_pg1[ REG1_ACCRA_CH0_FREQUENCY_LOW_MSB +
+                                ( reg - REG1_ACCRA_CH0_FREQUENCY_LOW_MSB ) ] );
             
         }
         
@@ -1352,10 +1462,7 @@ uint8_t vscp_readAppReg(uint8_t reg)
         if ( ( reg >= REG2_ACCRA_CH0_LINEARIZATION_K_MSB ) && 
                     ( reg <= REG2_ACCRA_CH3_LINEARIZATION_M_LSB ) ) {
             
-            rv = eeprom_read( VSCP_EEPROM_END + 
-                                REG0_COUNT +
-                                REG1_COUNT +
-                                ( reg - REG2_ACCRA_CH0_LINEARIZATION_K_MSB ) );
+            rv = eeprom_read( reg2eeprom_pg2[ reg - REG2_ACCRA_CH0_LINEARIZATION_K_MSB ] );
             
         }
         
@@ -1366,12 +1473,7 @@ uint8_t vscp_readAppReg(uint8_t reg)
     else if ( 3 == vscp_page_select ) {
         
         if ( reg < ( REG_DESCION_MATRIX + 8*DESCION_MATRIX_ROWS ) ) {
-            rv = eeprom_read( VSCP_EEPROM_END + 
-                                REG_DESCION_MATRIX + 
-                                REG0_COUNT + 
-                                REG1_COUNT +
-                                REG2_COUNT +
-                                reg );
+            rv = eeprom_read( DECISION_MATRIX_EEPROM_START + reg );
         }
         
     } // page 3
@@ -1397,35 +1499,31 @@ uint8_t vscp_writeAppReg( uint8_t reg, uint8_t val )
 
         // Zone
         if ( reg == REG0_ACCRA_ZONE ) {
-            eeprom_write(VSCP_EEPROM_END + REG0_ACCRA_ZONE, val);
-            rv = eeprom_read(VSCP_EEPROM_END + REG0_ACCRA_ZONE);
+            eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_ZONE ], val);
+            rv = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_ZONE ]);
         }
         else if ( reg == REG0_ACCRA_SUBZONE ) {
             // SubZone
-            eeprom_write(VSCP_EEPROM_END + REG0_ACCRA_SUBZONE, val);
-            rv = eeprom_read(VSCP_EEPROM_END + REG0_ACCRA_SUBZONE);
+            eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_SUBZONE ], val);
+            rv = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_SUBZONE ] );
         }
         
         // Channel sub zones
         else if ( ( reg >= REG0_ACCRA_CH0_SUBZONE ) && 
                        ( reg <= REG0_ACCRA_CH3_SUBZONE ) ) {
-            eeprom_write( VSCP_EEPROM_END + 
-                                REG0_ACCRA_CH0_SUBZONE + 
-                                ( reg - REG0_ACCRA_CH0_SUBZONE ), val );
-            rv = eeprom_read( VSCP_EEPROM_END + 
-                                REG0_ACCRA_CH0_SUBZONE + 
-                                ( reg - REG0_ACCRA_CH0_SUBZONE ) );
+            eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_CH0_SUBZONE + 
+                                ( reg - REG0_ACCRA_CH0_SUBZONE ) ], val );
+            rv = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_CH0_SUBZONE + 
+                                ( reg - REG0_ACCRA_CH0_SUBZONE ) ] );
         }
         
         // channel control registers
         else if ( ( reg >= REG0_ACCRA_CONTROL_COUNTER_CH0 ) && 
                        ( reg <= REG0_ACCRA_CONTROL_COUNTER_CH3 ) ) {
-            eeprom_write( VSCP_EEPROM_END + 
-                                REG0_ACCRA_CONTROL_COUNTER_CH0 + 
-                                ( reg - REG0_ACCRA_CONTROL_COUNTER_CH0 ), val );
-            rv = eeprom_read( VSCP_EEPROM_END + 
-                                REG0_ACCRA_CONTROL_COUNTER_CH0 + 
-                                ( reg - REG0_ACCRA_CONTROL_COUNTER_CH0 ) );
+            eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_CONTROL_COUNTER_CH0 + 
+                                ( reg - REG0_ACCRA_CONTROL_COUNTER_CH0 ) ], val );
+            rv = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_CONTROL_COUNTER_CH0 + 
+                                ( reg - REG0_ACCRA_CONTROL_COUNTER_CH0 ) ] );
             // Also update counter shadow control register
             counter_control_shadow[ reg - REG0_ACCRA_CONTROL_COUNTER_CH0 ] = val;
         }
@@ -1433,12 +1531,10 @@ uint8_t vscp_writeAppReg( uint8_t reg, uint8_t val )
         // Frequency control register
         else if ( ( reg >= REG0_ACCRA_CONTROL_FREQ_CH0 ) && 
                        ( reg <= REG0_ACCRA_CONTROL_FREQ_CH3 ) ) {
-            eeprom_write( VSCP_EEPROM_END + 
-                                REG0_ACCRA_CONTROL_FREQ_CH0 + 
-                                ( reg - REG0_ACCRA_CONTROL_FREQ_CH0 ), val );
-            rv = eeprom_read( VSCP_EEPROM_END + 
-                                REG0_ACCRA_CONTROL_FREQ_CH0 + 
-                                ( reg - REG0_ACCRA_CONTROL_FREQ_CH0 ) );
+            eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_CONTROL_FREQ_CH0 + 
+                                ( reg - REG0_ACCRA_CONTROL_FREQ_CH0 ) ], val );
+            rv = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_CONTROL_FREQ_CH0 + 
+                                ( reg - REG0_ACCRA_CONTROL_FREQ_CH0 ) ] );
         }
         
         // Reset counter 0
@@ -1496,14 +1592,10 @@ uint8_t vscp_writeAppReg( uint8_t reg, uint8_t val )
         // The rest...
         else if ( ( reg >= REG0_ACCRA_COUNTER_ALARM_CH0_MSB ) && 
                        ( reg <= REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH3 ) ) {
-            eeprom_write( VSCP_EEPROM_END + 
-                                REG0_ACCRA_COUNTER_ALARM_CH0_MSB -
-                                REG0_MINUS +
-                                ( reg - REG0_ACCRA_COUNTER_ALARM_CH0_MSB ), val );
-            rv = eeprom_read( VSCP_EEPROM_END + 
-                                REG0_ACCRA_COUNTER_ALARM_CH0_MSB -
-                                REG0_MINUS +
-                                ( reg - REG0_ACCRA_COUNTER_ALARM_CH0_MSB ) );
+            eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_ALARM_CH0_MSB -
+                                ( reg - REG0_ACCRA_COUNTER_ALARM_CH0_MSB ) ], val );
+            rv = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_COUNTER_ALARM_CH0_MSB -
+                                ( reg - REG0_ACCRA_COUNTER_ALARM_CH0_MSB ) ] );
         }
         
     } // page 0
@@ -1513,16 +1605,8 @@ uint8_t vscp_writeAppReg( uint8_t reg, uint8_t val )
     
         if ( ( reg >= REG1_ACCRA_CH0_FREQUENCY_LOW_MSB ) && 
                        ( reg <= REG1_ACCRA_CH3_FREQ_HYSTERESIS_LSB ) ) {
-            eeprom_write( VSCP_EEPROM_END + 
-                                REG1_ACCRA_CH0_FREQUENCY_LOW_MSB +
-                                REG0_COUNT - 
-                                REG1_MINUS +
-                                ( reg - REG1_ACCRA_CH0_FREQUENCY_LOW_MSB ), val );
-            rv = eeprom_read( VSCP_EEPROM_END + 
-                                REG1_ACCRA_CH0_FREQUENCY_LOW_MSB +
-                                REG0_COUNT - 
-                                REG1_MINUS +
-                                ( reg - REG1_ACCRA_CH0_FREQUENCY_LOW_MSB ) );
+            eeprom_write( reg2eeprom_pg1[ reg ], val );
+            rv = eeprom_read( reg2eeprom_pg1[ reg ] );
         }
         
     } // page 1
@@ -1532,14 +1616,8 @@ uint8_t vscp_writeAppReg( uint8_t reg, uint8_t val )
     
         if ( ( reg >= REG2_ACCRA_CH0_LINEARIZATION_K_MSB ) && 
                        ( reg <= REG2_ACCRA_CH3_LINEARIZATION_M_LSB ) ) {
-            eeprom_write( VSCP_EEPROM_END +
-                                REG0_COUNT + 
-                                REG1_COUNT +
-                                reg, val );
-            rv = eeprom_read( VSCP_EEPROM_END + 
-                                REG0_COUNT + 
-                                REG1_COUNT +
-                                reg );
+            eeprom_write( reg2eeprom_pg1[ reg ], val );
+            rv = eeprom_read( reg2eeprom_pg1[ reg ] );
         }
         
     } // page 2
@@ -1555,19 +1633,9 @@ uint8_t vscp_writeAppReg( uint8_t reg, uint8_t val )
     else if ( 4 == vscp_page_select ) {
     
         if ( reg < (REG_DESCION_MATRIX + DESCION_MATRIX_ROWS * 8) ) {
-            eeprom_write( VSCP_EEPROM_END + 
-                            REG_DESCION_MATRIX +
-                            REG0_COUNT + 
-                            REG1_COUNT + 
-                            REG2_COUNT +
-                            reg, val );
+            eeprom_write( DECISION_MATRIX_EEPROM_START + reg, val );
             calculateSetFilterMask();  // Calculate new hardware filter
-            rv = eeprom_read( VSCP_EEPROM_END + 
-                                REG_DESCION_MATRIX + 
-                                REG0_COUNT + 
-                                REG1_COUNT +
-                                REG2_COUNT +
-                                reg );
+            rv = eeprom_read( DECISION_MATRIX_EEPROM_START + reg );
         }
         
     } // page 4
@@ -1636,8 +1704,8 @@ void SendInformationEvent( unsigned char channel,
     uint8_t data[3];
 
     data[ 0 ] = channel; // Register
-    data[ 1 ] = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_ZONE );
-    data[ 2 ] = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_CH0_SUBZONE + channel );
+    data[ 1 ] = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_ZONE ] );
+    data[ 2 ] = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_CH0_SUBZONE + ( channel & 0x03 ) ] );
     sendVSCPFrame( eventClass,
                     eventTypeId,
                     vscp_nickname,
@@ -1656,8 +1724,8 @@ void SendAlarmEvent( uint8_t channel  )
 
     data[ 0 ] = channel;    // Channel 0-3 for counter, channel 4-6 for frequency low, channel 7-9 for 
                             // frequency high
-    data[ 1 ] = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_ZONE );
-    data[ 2 ] = eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_CH0_SUBZONE + ( channel & 0x03 ) );
+    data[ 1 ] = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_ZONE ] );
+    data[ 2 ] = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_CH0_SUBZONE + ( channel & 0x03 ) ] );
     sendVSCPFrame( VSCP_CLASS1_ALARM,
                     VSCP_TYPE_ALARM_ALARM,
                     vscp_nickname,
@@ -1689,26 +1757,21 @@ void doDM(void)
     for (i = 0; i<DESCION_MATRIX_ROWS; i++) {
 
         // Get DM flags for this row
-        dmflags = eeprom_read( VSCP_EEPROM_END + 
-                                    REG0_COUNT + 
-                                    REG1_COUNT + 
-                                    REG_DESCION_MATRIX + 
-                                    VSCP_DM_POS_FLAGS + 
-                                    (8 * i) );
+        dmflags = eeprom_read( DECISION_MATRIX_EEPROM_START + (8 * i) );
 
         // Is the DM row enabled?
         if ( dmflags & VSCP_DM_FLAG_ENABLED ) {
 
             // Should the originating id be checked and if so is it the same?
             if ( ( dmflags & VSCP_DM_FLAG_CHECK_OADDR ) &&
-                    ( vscp_imsg.oaddr != eeprom_read( VSCP_EEPROM_END + REG0_COUNT + REG1_COUNT + REG_DESCION_MATRIX + (8 * i) ) ) ) {
+                    ( vscp_imsg.oaddr != eeprom_read( DECISION_MATRIX_EEPROM_START + (8 * i) ) ) ) {
                 continue;
             }
 
             // Check if zone should match and if so if it match
             if ( dmflags & VSCP_DM_FLAG_CHECK_ZONE ) {
                 if ( 255 != vscp_imsg.data[ 1 ] ) {
-                    if ( vscp_imsg.data[ 1 ] != eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_ZONE ) ) {
+                    if ( vscp_imsg.data[ 1 ] != eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_ZONE ] ) ) {
                         continue;
                     }
                 }
@@ -1717,35 +1780,27 @@ void doDM(void)
             // Check if sub zone should match and if so if it match
             if ( dmflags & VSCP_DM_FLAG_CHECK_SUBZONE ) {
                 if ( 255 != vscp_imsg.data[ 2 ] ) {
-                    if ( vscp_imsg.data[ 2 ] != eeprom_read( VSCP_EEPROM_END + REG0_ACCRA_SUBZONE ) ) {
+                    if ( vscp_imsg.data[ 2 ] != eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_SUBZONE ] ) ) {
                         continue;
                     }
                 }
             }
             
             class_filter = ( ( dmflags & VSCP_DM_FLAG_CLASS_FILTER) << 8 ) +
-                    eeprom_read( VSCP_EEPROM_END +
-                                    REG0_COUNT + REG1_COUNT + 
-                                    REG_DESCION_MATRIX +
+                    eeprom_read( DECISION_MATRIX_EEPROM_START +
                                     (8 * i) +
-                                    VSCP_DM_POS_CLASSFILTER);
+                                    VSCP_DM_POS_CLASSFILTER );
             
             class_mask = ( ( dmflags & VSCP_DM_FLAG_CLASS_MASK ) << 7 ) +
-                    eeprom_read( VSCP_EEPROM_END +
-                                    REG0_COUNT + REG1_COUNT + 
-                                    REG_DESCION_MATRIX +
+                    eeprom_read( DECISION_MATRIX_EEPROM_START +
                                     (8 * i) +
                                     VSCP_DM_POS_CLASSMASK);
             
-            type_filter = eeprom_read( VSCP_EEPROM_END +
-                                        REG0_COUNT + REG1_COUNT + 
-                                        REG_DESCION_MATRIX +
+            type_filter = eeprom_read( DECISION_MATRIX_EEPROM_START +
                                         (8 * i) +
                                         VSCP_DM_POS_TYPEFILTER);
             
-            type_mask = eeprom_read( VSCP_EEPROM_END +
-                                        REG0_COUNT + REG1_COUNT + 
-                                        REG_DESCION_MATRIX +
+            type_mask = eeprom_read( DECISION_MATRIX_EEPROM_START +
                                         (8 * i) +
                                         VSCP_DM_POS_TYPEMASK);
                            
@@ -1753,20 +1808,13 @@ void doDM(void)
                     !( ( type_filter ^ vscp_imsg.vscp_type ) & type_mask ) ) {
 
                 // OK Trigger this action
-                switch ( eeprom_read( VSCP_EEPROM_END + 
-                                        REG0_COUNT + REG1_COUNT + 
-                                        REG_DESCION_MATRIX + (8 * i) + VSCP_DM_POS_ACTION ) ) {
+                switch ( eeprom_read( DECISION_MATRIX_EEPROM_START + 
+                                        (8 * i) + 
+                                        VSCP_DM_POS_ACTION ) ) {
 
                     case ACCRA_ACTION_NOOP:
                         break;
                         
-                    /*case ACCRA_ACTION_SET: // Enable Channels in arg. bit arry
-                        doActionOn( dmflags, eeprom_read( VSCP_EEPROM_END + 
-                                                            REG0_COUNT + REG1_COUNT + 
-                                                            REG_DESCION_MATRIX + (8 * i) + VSCP_DM_POS_ACTIONPARAM ) );
-                        break;*/
-
-
                 } // case
                 
             } // Filter/mask

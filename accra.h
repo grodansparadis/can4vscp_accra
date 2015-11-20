@@ -294,7 +294,7 @@
 #define REG0_ACCRA_LINEARIZATION_EVENT_CLASS_CH3    96
 #define REG0_ACCRA_LINEARIZATION_EVENT_TYPE_CH3     97
 
-#define REG0_MINUS                                  20              // # registers not written to EEPROM
+#define REG0_MINUS                                  28              // # registers not written to EEPROM
 #define REG0_COUNT                                  (98-REG0_MINUS) // Needed for EEPROM writes
 
 // * * *  Page 1 * * *
