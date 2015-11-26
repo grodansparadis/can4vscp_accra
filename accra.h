@@ -34,8 +34,8 @@
 #define ACCRA_H
 
 //Defines
-#define	TRUE			1
-#define	FALSE			0
+#define	TRUE                    1
+#define	FALSE                   0
 
 // IO0 - RB0 INT0/AN10 (weak pull up)
 // IO1 - RB1 INT1/AN8 (weak pull up)
@@ -107,7 +107,7 @@
 #define FREQ_CTRL_ENABLE                    0x80    // Enable Input.
 
 // Bits for measurement control registers
-#define MEASUREMENT_CTRL_CALCULATION        0x01    // 0 use counter, 1 use frequency
+#define MEASUREMENT_CTRL_CALCBASE           0x01    // 0 use counter, 1 use frequency
 #define MEASUREMENT_CTRL_UNIT0              0x08    // Unit low bit
 #define MEASUREMENT_CTRL_UNIT1              0x10    // Unit high bit
 #define MEASUREMENT_CTRL_CLASS_BIT_8        0x40    // Bit 8 of the class
@@ -533,9 +533,6 @@ void SendAlarmEvent( uint8_t channel  );
 
 // Handle DM
 void doDM(void);
-
-// 
-void doActionOn(unsigned char dmflags, unsigned char arg);
 
 // Do application work
 void doApplicationOneSecondWork(void);
