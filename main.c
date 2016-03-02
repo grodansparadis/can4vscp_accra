@@ -5,7 +5,7 @@
  *  Accra I/O module
  * 	akhe@grodansparadis.com
  *
- *  Copyright (C) 2015 Ake Hedman, Grodans Paradis AB
+ *  Copyright (C) 2015-2016 Ake Hedman, Grodans Paradis AB
  *                          <akhe@grodansparadis.com>
  *
  *  This work is licensed under the Creative Common 
@@ -1957,25 +1957,6 @@ void vscp_setSegmentCRC(uint8_t crc)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//  setVSCPControlByte
-//
-
-void vscp_setControlByte(uint8_t ctrl)
-{
-    eeprom_write(VSCP_EEPROM_CONTROL, ctrl);
-}
-
-
-///////////////////////////////////////////////////////////////////////////////
-//  getVSCPControlByte
-//
-
-uint8_t vscp_getControlByte(void)
-{
-    return eeprom_read(VSCP_EEPROM_CONTROL);
-}
-
-///////////////////////////////////////////////////////////////////////////////
 //  vscp_getEmbeddedMdfInfo
 //
 
@@ -2286,3 +2267,19 @@ void calculateSetFilterMask( void )
   
 }
 
+uint8_t vscp_getControlByte( uint8_t idx )
+{
+    return 0;
+}
+
+
+void vscp_setControlByte(uint8_t idx, uint8_t ctrl)
+{
+    ;
+}
+
+
+void vscp_init_pstorage( void )
+{
+
+}
