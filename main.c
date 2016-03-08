@@ -6,7 +6,7 @@
  *  Accra I/O module
  * 	akhe@grodansparadis.com
  *
- *  Copyright (C) 2015 Ake Hedman, Grodans Paradis AB
+ *  Copyright (C) 2015-2016 Ake Hedman, Grodans Paradis AB
  *                          <akhe@grodansparadis.com>
  *
  *  This work is licensed under the Creative Common 
