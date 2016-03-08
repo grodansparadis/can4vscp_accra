@@ -2,8 +2,12 @@
  * 	VSCP (Very Simple Control Protocol) 
  * 	http://www.vscp.org
  *
- *  Copyright (C) 2015-2016 Ake Hedman, Grodans Paradis AB
- *  <akhe@grodansparadis.com>
+ *  Accra Counter Module
+ *  ====================
+ *
+ *  Copyright (C)1995-2016 Ake Hedman, Grodans Paradis AB
+ *                          http://www.grodansparadis.com
+ *                          <akhe@grodansparadis.com>
  *
  *  This work is licensed under the Creative Common 
  *  Attribution-NonCommercial-ShareAlike 3.0 Unported license. The full
@@ -16,7 +20,7 @@
  *	http://www.vscp.org
  *
  * ******************************************************************************
-*/
+ */
 
 #ifndef ACCRA_VERSION_H
 #define ACCRA_VERSION_H
