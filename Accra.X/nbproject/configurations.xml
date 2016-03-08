@@ -19,7 +19,6 @@
                    projectFiles="true">
     </logicalFolder>
     <logicalFolder name="f1" displayName="Misc documents" projectFiles="true">
-      <itemPath>../HISTORY.txt</itemPath>
       <itemPath>../TODO.TXT</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
@@ -34,6 +33,7 @@
                    projectFiles="false">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <itemPath>../HISTORY.txt</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>..</Elem>

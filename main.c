@@ -1,3 +1,4 @@
+
 /* ******************************************************************************
  * 	VSCP (Very Simple Control Protocol) 
  * 	http://www.vscp.org
@@ -2309,4 +2310,5 @@ void calculateSetFilterMask( void )
     ECANSetOperationMode( ECAN_OP_MODE_NORMAL );
   
 }
+
 
