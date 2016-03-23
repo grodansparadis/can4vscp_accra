@@ -13,6 +13,7 @@
       <itemPath>../vscp_projdefs.h</itemPath>
       <itemPath>../../vscp_firmware/common/vscp_class.h</itemPath>
       <itemPath>../../vscp_firmware/common/vscp_type.h</itemPath>
+      <itemPath>../../vscp_firmware/common/vscp_firmware.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
