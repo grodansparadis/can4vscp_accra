@@ -47,7 +47,7 @@
 #pragma config OSC = HSPLL
 #pragma config BOREN = BOACTIVE
 #pragma config STVREN = ON
-#pragma config BORV = 3
+#pragma config BORV = 0         // 4.6V
 #pragma config LVP = ON
 #pragma config CPB = ON
 #pragma config BBSIZ = 2048
@@ -67,7 +67,7 @@
 #pragma config PWRT = ON
 #pragma config BOREN = BOACTIVE
 #pragma config STVREN = ON
-#pragma config BORV = 3
+#pragma config BORV = 0         // 4.6V
 #pragma config LVP = OFF
 #pragma config CPB = OFF
 #pragma config WRTD  = OFF
@@ -625,9 +625,9 @@ void init()
     // RA1/AN1  - output
     // RA2/AN2  - output
     // RA3/AN3  - output
-    // RA4      - output
+    // RA4      - input 
     // RA5/AN4  - output
-    TRISA = 0b00000000;
+    TRISA = 0b00010000;
     PORTA = 0x00;  // Default off
 
     // PortB
