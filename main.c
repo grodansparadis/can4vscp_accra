@@ -161,7 +161,7 @@ uint8_t measurementReports[ 4 ];
 //__EEPROM_DATA(0x11,0x22,0x33,0x44,0x55,0x66,0x77,0x88);
 
 // This table translates registers in page 0 to EEPROM locations
-const uint8_t reg2eeprom_pg0[] = {
+const uint16_t reg2eeprom_pg0[] = {
     /* REG0_ACCRA_ZONE                  */          VSCP_EEPROM_END + 0,
     /* REG0_ACCRA_SUBZONE               */          VSCP_EEPROM_END + 1,
     /* REG0_ACCRA_CH0_SUBZONE           */          VSCP_EEPROM_END + 2,
@@ -263,7 +263,7 @@ const uint8_t reg2eeprom_pg0[] = {
 };
 
 // This table translates registers in page 1 to EEPROM locations
-const uint8_t reg2eeprom_pg1[] = {
+const uint16_t reg2eeprom_pg1[] = {
     /* REG1_ACCRA_CH0_FREQUENCY_0 */                    0xff,
     /* REG1_ACCRA_CH0_FREQUENCY_1 */                    0xff,
     /* REG1_ACCRA_CH0_FREQUENCY_2 */                    0xff,
@@ -323,7 +323,7 @@ const uint8_t reg2eeprom_pg1[] = {
 };
 
 // This table translates registers in page 2 to EEPROM locations
-const uint8_t reg2eeprom_pg2[] = {
+const uint16_t reg2eeprom_pg2[] = {
   /* REG2_ACCRA_CH0_LINEARIZATION_K_0 */                VSCP_EEPROM_END + 118, 
   /* REG2_ACCRA_CH0_LINEARIZATION_K_1 */                VSCP_EEPROM_END + 119,
   /* REG2_ACCRA_CH0_LINEARIZATION_K_2 */                VSCP_EEPROM_END + 120,
