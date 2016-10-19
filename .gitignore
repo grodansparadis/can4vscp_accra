@@ -29,6 +29,8 @@
 
 # Debug files
 *.dSYM/
+*.b#?
+*.s#?
 /Accra.X/build/Debug/production/_ext/1472/*.p1
 /Accra.X/build/Debug/production/_ext/1472/*.d
 /Accra.X/build/Debug/production/_ext/1472/*.pre
