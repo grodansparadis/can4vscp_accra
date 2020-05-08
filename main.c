@@ -6,7 +6,7 @@
  *  Accra Counter Module
  *  ====================
  *
- *  Copyright (C)1995-2016 Ake Hedman, Grodans Paradis AB
+ *  Copyright (C)1995-2020 Ake Hedman, Grodans Paradis AB
  *                          http://www.grodansparadis.com
  *                          <akhe@grodansparadis.com>
  *
@@ -477,16 +477,11 @@ void main()
     
     // Check VSCP persistent storage and
     // restore if needed
-    if ( !vscp_check_pstorage() ) {
-
-        // Spoiled or not initialized - reinitialize
-        init_app_eeprom();
-
-    }
+    vscp_check_pstorage();
     
     // Initialize data
     init_app_ram();
-    
+        
     // Set up counter shadow registers
     counter_control_shadow[ 0 ] = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_CONTROL_COUNTER_CH0 ] );
     counter_control_shadow[ 1 ] = eeprom_read( reg2eeprom_pg0[ REG0_ACCRA_CONTROL_COUNTER_CH1 ] );
@@ -503,7 +498,7 @@ void main()
 
         ClrWdt();   // Feed the dog
 
-        if ( ( vscp_initbtncnt > 250 ) &&
+        if ( ( vscp_initbtncnt > 2500 ) &&
                 ( VSCP_STATE_INIT != vscp_node_state ) ) {
 
             // Init. button pressed
@@ -1126,8 +1121,8 @@ void doApplicationOneSecondWork(void)
             data[ 2 ] = ( counter[ i ] >> 16 ) & 0xff;
             data[ 1 ] = ( counter[ i ] >> 24 ) & 0xff;    
             
-            sendVSCPFrame( VSCP_CLASS1_DATA,
-                                VSCP_TYPE_DATA_COUNT,
+            sendVSCPFrame( VSCP_CLASS1_MEASUREMENT,
+                                VSCP_TYPE_MEASUREMENT_COUNT,
                                 vscp_nickname,
                                 VSCP_PRIORITY_NORMAL,
                                 5,
@@ -1521,8 +1516,8 @@ uint8_t vscp_readAppReg(uint8_t reg)
 uint8_t vscp_writeAppReg( uint8_t reg, uint8_t val )
 {
     uint8_t rv;
-    BOOL bInfoEvent = FALSE;
-    BOOL bOn = FALSE;
+    //BOOL bInfoEvent = FALSE;
+    //BOOL bOn = FALSE;
 
     rv = ~val; // error return
     
@@ -2044,8 +2039,6 @@ void vscp_goBootloaderMode( uint8_t algorithm )
 
 void vscp_getMatrixInfo(char *pData)
 {
-    uint8_t i;
-
     pData[ 0 ] = DESCION_MATRIX_ROWS;  // Matrix is seven rows
     pData[ 1 ] = REG_DESCION_MATRIX;   // Matrix start offset
     pData[ 2 ] = 0;                    // Matrix start page
