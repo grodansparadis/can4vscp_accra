@@ -1,6 +1,7 @@
 Accra counter module
 ====================
 
+2020-05-08 AKHE - Version is 1.0.3   firmware 1.6.3
 2020-05-08 AKHE - Boot button time increased to > 2500 ms
 2016-04-19 AKHE - RA4 set to input to prevent collision with VCAP circuits in 
                   PIC18F2580. Brown out raised to maximum (3V & 4.6V). Valable 

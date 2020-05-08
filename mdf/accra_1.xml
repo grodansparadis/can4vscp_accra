@@ -5,7 +5,7 @@
     <name>Accra counter module</name>
     <model>B</model>
     <version>5</version>
-    <changed>2015-12-07</changed>
+    <changed>2020-05-08</changed>
     <description lang="en">
         With this VSCP module it is possible to count pulses and measure frequency 
         on four channels.
