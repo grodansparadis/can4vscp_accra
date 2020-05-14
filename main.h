@@ -25,7 +25,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-
+/*
 // EEPROM Storage
 #define VSCP_EEPROM_BOOTLOADER_FLAG			0x00	// Reserved for bootloader	 
 
@@ -60,7 +60,7 @@
                                                 // 		0x21 - 0x40
 
 #define VSCP_EEPROM_END                 0x41	// marks end of VSCP EEPROM usage
-                                                //   (next free position)
+*/                                                //   (next free position)
 
 // Function Prototypes
 

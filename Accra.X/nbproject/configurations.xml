@@ -13,7 +13,7 @@
       <itemPath>../vscp_projdefs.h</itemPath>
       <itemPath>../../vscp_firmware/common/vscp_class.h</itemPath>
       <itemPath>../../vscp_firmware/common/vscp_type.h</itemPath>
-      <itemPath>../../vscp_firmware/common/vscp_firmware.h</itemPath>
+      <itemPath>../../vscp-firmware/common/vscp_firmware.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -28,7 +28,6 @@
       <itemPath>../ECAN.c</itemPath>
       <itemPath>../main.c</itemPath>
       <itemPath>../../vscp-firmware/common/vscp_firmware.c</itemPath>
-      <itemPath>../../vscp-firmware/common/vscp_firmware.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -50,7 +49,7 @@
         <targetDevice>PIC18F2580</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>noID</platformTool>
+        <platformTool>RealICEPlatformTool</platformTool>
         <languageToolchain>XC8</languageToolchain>
         <languageToolchainVersion>1.21</languageToolchainVersion>
         <platform>2</platform>
@@ -178,7 +177,7 @@
         <property key="ToolFirmwareFilePath"
                   value="Press to browse for a specific firmware version"/>
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
-        <property key="debugoptions.useswbreakpoints" value="false"/>
+        <property key="debugoptions.useswbreakpoints" value="true"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="hwtoolclock.instructionspeed" value="4"/>
         <property key="hwtoolclock.units" value="mips"/>
@@ -245,7 +244,7 @@
         <targetDevice>PIC18F2580</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>noID</platformTool>
+        <platformTool></platformTool>
         <languageToolchain>XC8</languageToolchain>
         <languageToolchainVersion>1.21</languageToolchainVersion>
         <platform>2</platform>

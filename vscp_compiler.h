@@ -17,8 +17,8 @@
  * ******************************************************************************
 */
 
-#ifndef BEIJING_COMPILER_H
-#define BEIJING_COMPILER_H
+#ifndef ACCRA_COMPILER_H
+#define ACCRA_COMPILER_H
 
 
 

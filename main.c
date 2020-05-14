@@ -32,6 +32,7 @@
 #include <inttypes.h>
 #include <string.h>
 #include <ECAN.h>
+#include "EEP.h"
 #include <vscp_firmware.h>
 #include <vscp_class.h>
 #include <vscp_type.h>
@@ -70,7 +71,7 @@
 #pragma config BORV = 0         // 4.6V
 #pragma config LVP = OFF
 #pragma config CPB = OFF
-#pragma config WRTD  = OFF
+#pragma config WRTD  = OFF 
 
 #pragma config EBTR0 = OFF
 #pragma config EBTR1 = OFF
@@ -78,6 +79,7 @@
 #pragma config EBTR3 = OFF
 
 #pragma config EBTRB = OFF
+#pragma config CPD = OFF
 
 #endif
 
@@ -114,13 +116,17 @@
 #pragma config WDTEN = ON       // WDT enabled in hardware; 
 #endif
 
-
 #endif
 
+#if _EEPROMSIZE > 0 && defined(_PLIB)
+
+#endif
 
 // Calculate and st required filter and mask
 // for the current decision matrix
 void calculateSetFilterMask( void );
+
+void init_app_ram( void );
 
 // The device URL (max 32 characters including null termination)
 const uint8_t vscp_deviceURL[] = "www.eurosource.se/accra_1.xml";
@@ -162,88 +168,88 @@ uint8_t measurementReports[ 4 ];
 
 // This table translates registers in page 0 to EEPROM locations
 const uint16_t reg2eeprom_pg0[] = {
-    /* REG0_ACCRA_ZONE                  */          VSCP_EEPROM_END + 0,
-    /* REG0_ACCRA_SUBZONE               */          VSCP_EEPROM_END + 1,
-    /* REG0_ACCRA_CH0_SUBZONE           */          VSCP_EEPROM_END + 2,
-    /* REG0_ACCRA_CH1_SUBZONE           */          VSCP_EEPROM_END + 3,
-    /* REG0_ACCRA_CH2_SUBZONE           */          VSCP_EEPROM_END + 4,
-    /* REG0_ACCRA_CH3_SUBZONE           */          VSCP_EEPROM_END + 5,
-    /* REG0_ACCRA_CONTROL_COUNTER_CH0   */          VSCP_EEPROM_END + 6,
-    /* REG0_ACCRA_CONTROL_COUNTER_CH1   */          VSCP_EEPROM_END + 7,
-    /* REG0_ACCRA_CONTROL_COUNTER_CH2   */          VSCP_EEPROM_END + 8,
-    /* REG0_ACCRA_CONTROL_COUNTER_CH3   */          VSCP_EEPROM_END + 9,
-    /* REG0_ACCRA_CONTROL_FREQ_CH0      */          VSCP_EEPROM_END + 10,
-    /* REG0_ACCRA_CONTROL_FREQ_CH1      */          VSCP_EEPROM_END + 11, 
-    /* REG0_ACCRA_CONTROL_FREQ_CH2      */          VSCP_EEPROM_END + 12, 
-    /* REG0_ACCRA_CONTROL_FREQ_CH3      */          VSCP_EEPROM_END + 13,
-    /* REG0_ACCRA_RESET_COUNTER_CH0     */          0xff,
-    /* REG0_ACCRA_RESET_COUNTER_CH1     */          0xff,
-    /* REG0_ACCRA_RESET_COUNTER_CH2     */          0xff,
-    /* REG0_ACCRA_RESET_COUNTER_CH3     */          0xff, 
-    /* REG0_ACCRA_COUNTER_CH0_0         */          0xff,
-    /* REG0_ACCRA_COUNTER_CH0_1         */          0xff,
-    /* REG0_ACCRA_COUNTER_CH0_2         */          0xff,
-    /* REG0_ACCRA_COUNTER_CH0_3         */          0xff,
-    /* REG0_ACCRA_COUNTER_CH1_0         */          0xff,
-    /* REG0_ACCRA_COUNTER_CH1_1         */          0xff,
-    /* REG0_ACCRA_COUNTER_CH1_2         */          0xff,
-    /* REG0_ACCRA_COUNTER_CH1_3         */          0xff,
-    /* REG0_ACCRA_COUNTER_CH2_0         */          0xff,
-    /* REG0_ACCRA_COUNTER_CH2_1         */          0xff,
-    /* REG0_ACCRA_COUNTER_CH2_2         */          0xff,
-    /* REG0_ACCRA_COUNTER_CH2_3         */          0xff,
-    /* REG0_ACCRA_COUNTER_CH3_0         */          0xff,
-    /* REG0_ACCRA_COUNTER_CH3_1         */          0xff,
-    /* REG0_ACCRA_COUNTER_CH3_2         */          0xff,
-    /* REG0_ACCRA_COUNTER_CH3_3         */          0xff,                                                    
-    /* REG0_ACCRA_COUNTER_ALARM_CH0_0   */          VSCP_EEPROM_END + 14, 
-    /* REG0_ACCRA_COUNTER_ALARM_CH0_1   */          VSCP_EEPROM_END + 15,
-    /* REG0_ACCRA_COUNTER_ALARM_CH0_2   */          VSCP_EEPROM_END + 16,
-    /* REG0_ACCRA_COUNTER_ALARM_CH0_3   */          VSCP_EEPROM_END + 17, 
-    /* REG0_ACCRA_COUNTER_ALARM_CH1_0   */          VSCP_EEPROM_END + 18, 
-    /* REG0_ACCRA_COUNTER_ALARM_CH1_1   */          VSCP_EEPROM_END + 19,
-    /* REG0_ACCRA_COUNTER_ALARM_CH1_2   */          VSCP_EEPROM_END + 20,
-    /* REG0_ACCRA_COUNTER_ALARM_CH1_3   */          VSCP_EEPROM_END + 21, 
-    /* REG0_ACCRA_COUNTER_ALARM_CH2_0   */          VSCP_EEPROM_END + 22, 
-    /* REG0_ACCRA_COUNTER_ALARM_CH2_1   */          VSCP_EEPROM_END + 23,
-    /* REG0_ACCRA_COUNTER_ALARM_CH2_2   */          VSCP_EEPROM_END + 24,
-    /* REG0_ACCRA_COUNTER_ALARM_CH2_3   */          VSCP_EEPROM_END + 25, 
-    /* REG0_ACCRA_COUNTER_ALARM_CH3_0   */          VSCP_EEPROM_END + 26, 
-    /* REG0_ACCRA_COUNTER_ALARM_CH3_1   */          VSCP_EEPROM_END + 27,
-    /* REG0_ACCRA_COUNTER_ALARM_CH3_2   */          VSCP_EEPROM_END + 28,
-    /* REG0_ACCRA_COUNTER_ALARM_CH3_3   */          VSCP_EEPROM_END + 29,   
-    /* REG0_ACCRA_COUNTER_RELOAD_CH0_0  */          VSCP_EEPROM_END + 30,
-    /* REG0_ACCRA_COUNTER_RELOAD_CH0_1  */          VSCP_EEPROM_END + 31,
-    /* REG0_ACCRA_COUNTER_RELOAD_CH0_2  */          VSCP_EEPROM_END + 32,
-    /* REG0_ACCRA_COUNTER_RELOAD_CH0_3  */          VSCP_EEPROM_END + 33,
-    /* REG0_ACCRA_COUNTER_RELOAD_CH1_0  */          VSCP_EEPROM_END + 34,
-    /* REG0_ACCRA_COUNTER_RELOAD_CH1_1  */          VSCP_EEPROM_END + 35,
-    /* REG0_ACCRA_COUNTER_RELOAD_CH1_2  */          VSCP_EEPROM_END + 36,
-    /* REG0_ACCRA_COUNTER_RELOAD_CH1_3  */          VSCP_EEPROM_END + 37,
-    /* REG0_ACCRA_COUNTER_RELOAD_CH2_0  */          VSCP_EEPROM_END + 38,
-    /* REG0_ACCRA_COUNTER_RELOAD_CH2_1  */          VSCP_EEPROM_END + 39,
-    /* REG0_ACCRA_COUNTER_RELOAD_CH2_2  */          VSCP_EEPROM_END + 40,
-    /* REG0_ACCRA_COUNTER_RELOAD_CH2_3  */          VSCP_EEPROM_END + 41,
-    /* REG0_ACCRA_COUNTER_RELOAD_CH3_0  */          VSCP_EEPROM_END + 42,
-    /* REG0_ACCRA_COUNTER_RELOAD_CH3_1  */          VSCP_EEPROM_END + 43,
-    /* REG0_ACCRA_COUNTER_RELOAD_CH3_2  */          VSCP_EEPROM_END + 44,
-    /* REG0_ACCRA_COUNTER_RELOAD_CH3_3  */          VSCP_EEPROM_END + 45,   
-    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH0_MSB  */    VSCP_EEPROM_END + 46,
-    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH0_LSB  */    VSCP_EEPROM_END + 47,
-    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH1_MSB  */    VSCP_EEPROM_END + 48,
-    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH1_LSB  */    VSCP_EEPROM_END + 49,
-    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH2_MSB  */    VSCP_EEPROM_END + 50,
-    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH2_LSB  */    VSCP_EEPROM_END + 51,
-    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH3_MSB  */    VSCP_EEPROM_END + 52,
-    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH3_LSB  */    VSCP_EEPROM_END + 53, 
-    /* REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH0 */    VSCP_EEPROM_END + 54,
-    /* REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH1 */    VSCP_EEPROM_END + 55,
-    /* REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH2 */    VSCP_EEPROM_END + 56,
-    /* REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH3 */    VSCP_EEPROM_END + 57,  
-    /* REG0_ACCRA_FREQ_REPORT_INTERVAL_CH0    */    VSCP_EEPROM_END + 58, 
-    /* REG0_ACCRA_FREQ_REPORT_INTERVAL_CH1    */    VSCP_EEPROM_END + 59,
-    /* REG0_ACCRA_FREQ_REPORT_INTERVAL_CH2    */    VSCP_EEPROM_END + 60,
-    /* REG0_ACCRA_FREQ_REPORT_INTERVAL_CH3    */    VSCP_EEPROM_END + 61,  
+    /* REG0_ACCRA_ZONE                  */              VSCP_EEPROM_END + 0,
+    /* REG0_ACCRA_SUBZONE               */              VSCP_EEPROM_END + 1,
+    /* REG0_ACCRA_CH0_SUBZONE           */              VSCP_EEPROM_END + 2,
+    /* REG0_ACCRA_CH1_SUBZONE           */              VSCP_EEPROM_END + 3,
+    /* REG0_ACCRA_CH2_SUBZONE           */              VSCP_EEPROM_END + 4,
+    /* REG0_ACCRA_CH3_SUBZONE           */              VSCP_EEPROM_END + 5,
+    /* REG0_ACCRA_CONTROL_COUNTER_CH0   */              VSCP_EEPROM_END + 6,
+    /* REG0_ACCRA_CONTROL_COUNTER_CH1   */              VSCP_EEPROM_END + 7,
+    /* REG0_ACCRA_CONTROL_COUNTER_CH2   */              VSCP_EEPROM_END + 8,
+    /* REG0_ACCRA_CONTROL_COUNTER_CH3   */              VSCP_EEPROM_END + 9,
+    /* REG0_ACCRA_CONTROL_FREQ_CH0      */              VSCP_EEPROM_END + 10,
+    /* REG0_ACCRA_CONTROL_FREQ_CH1      */              VSCP_EEPROM_END + 11, 
+    /* REG0_ACCRA_CONTROL_FREQ_CH2      */              VSCP_EEPROM_END + 12, 
+    /* REG0_ACCRA_CONTROL_FREQ_CH3      */              VSCP_EEPROM_END + 13,
+    /* REG0_ACCRA_RESET_COUNTER_CH0     */              0xff,
+    /* REG0_ACCRA_RESET_COUNTER_CH1     */              0xff,
+    /* REG0_ACCRA_RESET_COUNTER_CH2     */              0xff,
+    /* REG0_ACCRA_RESET_COUNTER_CH3     */              0xff, 
+    /* REG0_ACCRA_COUNTER_CH0_0         */              0xff,
+    /* REG0_ACCRA_COUNTER_CH0_1         */              0xff,
+    /* REG0_ACCRA_COUNTER_CH0_2         */              0xff,
+    /* REG0_ACCRA_COUNTER_CH0_3         */              0xff,
+    /* REG0_ACCRA_COUNTER_CH1_0         */              0xff,
+    /* REG0_ACCRA_COUNTER_CH1_1         */              0xff,
+    /* REG0_ACCRA_COUNTER_CH1_2         */              0xff,
+    /* REG0_ACCRA_COUNTER_CH1_3         */              0xff,
+    /* REG0_ACCRA_COUNTER_CH2_0         */              0xff,
+    /* REG0_ACCRA_COUNTER_CH2_1         */              0xff,
+    /* REG0_ACCRA_COUNTER_CH2_2         */              0xff,
+    /* REG0_ACCRA_COUNTER_CH2_3         */              0xff,
+    /* REG0_ACCRA_COUNTER_CH3_0         */              0xff,
+    /* REG0_ACCRA_COUNTER_CH3_1         */              0xff,
+    /* REG0_ACCRA_COUNTER_CH3_2         */              0xff,
+    /* REG0_ACCRA_COUNTER_CH3_3         */              0xff,                                                    
+    /* REG0_ACCRA_COUNTER_ALARM_CH0_0   */              VSCP_EEPROM_END + 14, 
+    /* REG0_ACCRA_COUNTER_ALARM_CH0_1   */              VSCP_EEPROM_END + 15,
+    /* REG0_ACCRA_COUNTER_ALARM_CH0_2   */              VSCP_EEPROM_END + 16,
+    /* REG0_ACCRA_COUNTER_ALARM_CH0_3   */              VSCP_EEPROM_END + 17, 
+    /* REG0_ACCRA_COUNTER_ALARM_CH1_0   */              VSCP_EEPROM_END + 18, 
+    /* REG0_ACCRA_COUNTER_ALARM_CH1_1   */              VSCP_EEPROM_END + 19,
+    /* REG0_ACCRA_COUNTER_ALARM_CH1_2   */              VSCP_EEPROM_END + 20,
+    /* REG0_ACCRA_COUNTER_ALARM_CH1_3   */              VSCP_EEPROM_END + 21, 
+    /* REG0_ACCRA_COUNTER_ALARM_CH2_0   */              VSCP_EEPROM_END + 22, 
+    /* REG0_ACCRA_COUNTER_ALARM_CH2_1   */              VSCP_EEPROM_END + 23,
+    /* REG0_ACCRA_COUNTER_ALARM_CH2_2   */              VSCP_EEPROM_END + 24,
+    /* REG0_ACCRA_COUNTER_ALARM_CH2_3   */              VSCP_EEPROM_END + 25, 
+    /* REG0_ACCRA_COUNTER_ALARM_CH3_0   */              VSCP_EEPROM_END + 26, 
+    /* REG0_ACCRA_COUNTER_ALARM_CH3_1   */              VSCP_EEPROM_END + 27,
+    /* REG0_ACCRA_COUNTER_ALARM_CH3_2   */              VSCP_EEPROM_END + 28,
+    /* REG0_ACCRA_COUNTER_ALARM_CH3_3   */              VSCP_EEPROM_END + 29,   
+    /* REG0_ACCRA_COUNTER_RELOAD_CH0_0  */              VSCP_EEPROM_END + 30,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH0_1  */              VSCP_EEPROM_END + 31,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH0_2  */              VSCP_EEPROM_END + 32,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH0_3  */              VSCP_EEPROM_END + 33,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH1_0  */              VSCP_EEPROM_END + 34,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH1_1  */              VSCP_EEPROM_END + 35,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH1_2  */              VSCP_EEPROM_END + 36,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH1_3  */              VSCP_EEPROM_END + 37,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH2_0  */              VSCP_EEPROM_END + 38,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH2_1  */              VSCP_EEPROM_END + 39,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH2_2  */              VSCP_EEPROM_END + 40,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH2_3  */              VSCP_EEPROM_END + 41,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH3_0  */              VSCP_EEPROM_END + 42,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH3_1  */              VSCP_EEPROM_END + 43,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH3_2  */              VSCP_EEPROM_END + 44,
+    /* REG0_ACCRA_COUNTER_RELOAD_CH3_3  */              VSCP_EEPROM_END + 45,   
+    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH0_MSB  */        VSCP_EEPROM_END + 46,
+    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH0_LSB  */        VSCP_EEPROM_END + 47,
+    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH1_MSB  */        VSCP_EEPROM_END + 48,
+    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH1_LSB  */        VSCP_EEPROM_END + 49,
+    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH2_MSB  */        VSCP_EEPROM_END + 50,
+    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH2_LSB  */        VSCP_EEPROM_END + 51,
+    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH3_MSB  */        VSCP_EEPROM_END + 52,
+    /* REG0_ACCRA_COUNTER_HYSTERESIS_CH3_LSB  */        VSCP_EEPROM_END + 53, 
+    /* REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH0 */        VSCP_EEPROM_END + 54,
+    /* REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH1 */        VSCP_EEPROM_END + 55,
+    /* REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH2 */        VSCP_EEPROM_END + 56,
+    /* REG0_ACCRA_COUNTER_REPORT_INTERVAL_CH3 */        VSCP_EEPROM_END + 57,  
+    /* REG0_ACCRA_FREQ_REPORT_INTERVAL_CH0    */        VSCP_EEPROM_END + 58, 
+    /* REG0_ACCRA_FREQ_REPORT_INTERVAL_CH1    */        VSCP_EEPROM_END + 59,
+    /* REG0_ACCRA_FREQ_REPORT_INTERVAL_CH2    */        VSCP_EEPROM_END + 60,
+    /* REG0_ACCRA_FREQ_REPORT_INTERVAL_CH3    */        VSCP_EEPROM_END + 61,  
     /* REG0_ACCRA_MESURMENT_REPORT_INTERVAL_CH0 */      VSCP_EEPROM_END + 62, 
     /* REG0_ACCRA_MESURMENT_REPORT_INTERVAL_CH1 */      VSCP_EEPROM_END + 63, 
     /* REG0_ACCRA_MESURMENT_REPORT_INTERVAL_CH2 */      VSCP_EEPROM_END + 64, 
@@ -478,7 +484,7 @@ void main()
     // Check VSCP persistent storage and
     // restore if needed
     vscp_check_pstorage();
-    
+   
     // Initialize data
     init_app_ram();
         
@@ -493,13 +499,14 @@ void main()
     
     // Set DM filters
     calculateSetFilterMask();
+    
             
     while ( 1 ) {   // Loop Forever
 
         ClrWdt();   // Feed the dog
 
         if ( ( vscp_initbtncnt > 2500 ) &&
-                ( VSCP_STATE_INIT != vscp_node_state ) ) {
+             ( VSCP_STATE_INIT != vscp_node_state ) ) {
 
             // Init. button pressed
             vscp_nickname = VSCP_ADDRESS_FREE;
@@ -568,6 +575,7 @@ void main()
         if ( measurement_clock_sec > 1000 ) {
 
             measurement_clock_sec = 0;
+            seconds++;
  
             // Do VSCP one second jobs
             vscp_doOneSecondWork();
@@ -718,7 +726,7 @@ void init()
     
     INTCONbits.GIE_GIEH = 1;    // high priority interrupts are enabled
     INTCONbits.PEIE_GIEL = 1;   // low priority interrupts are enabled
-
+    
     return;
 }
 
@@ -768,7 +776,7 @@ void init_app_ram( void )
 void init_app_eeprom(void)
 {
     unsigned char i, j;
-
+      
     eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_ZONE ], 0 );
     eeprom_write( reg2eeprom_pg0[ REG0_ACCRA_SUBZONE ], 0 );
         
@@ -867,6 +875,7 @@ void init_app_eeprom(void)
     
     for ( i=0; i<(4*8); i++ ) {
         eeprom_write( reg2eeprom_pg2[ REG2_ACCRA_CH0_LINEARIZATION_K_MSB + i ], 0 );
+        Busy_eep();
     }
     
     // * * * Decision Matrix * * *
@@ -1970,7 +1979,7 @@ uint8_t vscp_getNickname(void)
 //  setVSCPControlByte
 //
 
-void vscp_setControlByte( uint8_t ctrl, uint8_t idx )
+void vscp_setControlByte( uint8_t idx, uint8_t ctrl )
 {
     if ( idx > 1 ) return;
     eeprom_write( VSCP_EEPROM_CONTROL1 + idx, ctrl );
