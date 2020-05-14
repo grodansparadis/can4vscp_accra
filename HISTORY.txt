@@ -1,9 +1,9 @@
 Accra counter module
 ====================
 
-2020-05-08 AKHE - Version is 1.0.4   Firmware 1.0.3
-2020-05-14 AKHE - Fixed bug tyhta cause init to be performed on all
-                  cold starts.
+2020-05-08 AKHE - Version is 1.0.4   Firmware 1.6.3
+2020-05-14 AKHE - Fixed bug that cause init to be performed on all
+                  cold starts. Fixed seconds timer.
 2020-05-08 AKHE - Version is 1.0.3   firmware 1.6.3
 2020-05-08 AKHE - Boot button time increased to > 2500 ms
 2016-04-19 AKHE - RA4 set to input to prevent collision with VCAP circuits in 
