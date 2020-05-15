@@ -52,7 +52,30 @@
     
     <!-- Firmware for the device -->
     <files>
-    	<firmware target="pic18f2580" path="https://github.com/grodansparadis/can4vscp_accra/releases/download/v1.0.3/Accra_2580_1_0_3.hex" 
+    <firmware target="pic18f2580" 
+    	        path="https://github.com/grodansparadis/can4vscp_accra/releases/download/v1.0.4/Accra_2580_1_0_4.hexx" 
+        	format="intelhex8"
+        	date="2020-05-14"
+        	version_major="1"
+        	version_minor="0"
+        	version_subminor="4">
+        	<description lang="en" >
+        	Firmware for the Accra counter module with PIC18F26K80 for use with the VSCP Bootloader wizard.
+        	</description> 
+    	</firmware>
+    	<firmware target="pic18f26k80" 
+    	        path="https://github.com/grodansparadis/can4vscp_accra/releases/download/v1.0.4/Accra_26K80_1_0_4.hex" 
+        	format="intelhex8"
+        	date="2020-05-14"
+        	version_major="1"
+        	version_minor="0"
+        	version_subminor="3">
+        	<description lang="en" >
+        	Firmware for the Accra counter module with PIC18F26K80 for use with the VSCP Bootloader wizard.
+        	</description> 
+    	</firmware>
+    	<firmware target="pic18f2580" 
+    	        path="https://github.com/grodansparadis/can4vscp_accra/releases/download/v1.0.3/Accra_2580_1_0_3.hex" 
         	format="intelhex8"
         	date="2020-05-08"
         	version_major="1"
@@ -62,7 +85,8 @@
         	Firmware for the Accra counter module with PIC18F26K80 for use with the VSCP Bootloader wizard.
         	</description> 
     	</firmware>
-    	<firmware target="pic18f26k80" path="https://github.com/grodansparadis/can4vscp_accra/releases/download/v1.0.3/Accra_26K80_1_0_3.hex" 
+    	<firmware target="pic18f26k80" 
+    	        path="https://github.com/grodansparadis/can4vscp_accra/releases/download/v1.0.3/Accra_26K80_1_0_3.hex" 
         	format="intelhex8"
         	date="2020-05-08"
         	version_major="1"
