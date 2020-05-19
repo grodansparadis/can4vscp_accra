@@ -244,7 +244,7 @@
         <targetDevice>PIC18F2580</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool></platformTool>
+        <platformTool>noID</platformTool>
         <languageToolchain>XC8</languageToolchain>
         <languageToolchainVersion>1.21</languageToolchainVersion>
         <platform>2</platform>
@@ -343,7 +343,7 @@
         <property key="fill-flash-options-increment" value=""/>
         <property key="fill-flash-options-seq" value=""/>
         <property key="fill-flash-options-what" value="0"/>
-        <property key="format-hex-file-for-download" value="false"/>
+        <property key="format-hex-file-for-download" value="true"/>
         <property key="initialize-data" value="true"/>
         <property key="input-libraries" value="libm"/>
         <property key="keep-generated-startup.as" value="false"/>
