@@ -55,29 +55,30 @@ void _RegsToCANID(BYTE* ptr,
 
 BYTE_VAL _ECANRxFilterHitInfo;
 
-#define _SetStdRXFnValue(f, val)                                \
+#define _SetStdRXFnValue(f, val) {                                \
     ##f##SIDH = (long)ECAN_##f##_VAL >> 3L;                     \
-    ##f##SIDL = (long)ECAN_##f##_VAL >> 5L
+    ##f##SIDL = (long)ECAN_##f##_VAL >> 5L }
 
-#define _SetXtdRXFnValue(f, val)                                \
-    ##f##SIDH = (long)ECAN_##f##_VAL >> 21L;                    \
+#define _SetXtdRXFnValue(f, val) {                               \
+    ##f##SIDH = (long)ECAN_##f##_VAL >> 21L;                   \
     ##f##SIDL = (((long)ECAN_##f##_VAL >> 13L) & 0xe0) |        \
                     ((long)(ECAN_##f##_VAL) & 0x03L)   |        \
                     0x08;                                       \
     ##f##EIDH = (long)ECAN_##f##_VAL >> 8L;                     \
-    ##f##EIDL = ECAN_##f##_VAL;
+    ##f##EIDL = ECAN_##f##_VAL;                                \
+    }
 
 
-#define _SetStdRXMnValue(m, val)                                \
+#define _SetStdRXMnValue(m, val) {                               \
     RXM##m##SIDH = (long)ECAN_RXM##m##_VAL >> 3L;               \
-    RXM##m##SIDL = (long)ECAN_RXM##m##_VAL >> 5L
+    RXM##m##SIDL = (long)ECAN_RXM##m##_VAL >> 5L }
 
-#define _SetXtdRXMnValue(m, val)                                \
+#define _SetXtdRXMnValue(m, val) {                               \
     RXM##m##SIDH = (long)ECAN_RXM##m##_VAL >> 21L;              \
     RXM##m##SIDL = (((long)ECAN_RXM##m##_VAL >> 13L) & 0xe0) |  \
                     ((long)(ECAN_RXM##m##_VAL) & 0x03L);\
     RXM##m##EIDH = (long)ECAN_RXM##m##_VAL >> 8L;\
-    RXM##m##EIDL = ECAN_RXM##m##_VAL;
+    RXM##m##EIDL = ECAN_RXM##m##_VAL; }
 
 #define RXF0            0
 #define RXF1            1

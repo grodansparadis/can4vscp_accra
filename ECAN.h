@@ -1003,15 +1003,15 @@ void ECANSetOperationMode(ECAN_OP_MODE mode);
  *
  * Note:            Parameter buffer must be a constant symbol of either
  *                  RXB0 or RXB1.
- *                  A variable paraemter would result in compiler error.
+ *                  A variable parameter would result in compiler error.
  *
  *                  e.g. ECANSetRxBnTxRxMode(myBuffer, ECAN_RECEIVE_ALL_VALID)
  *                       would not compiler
  *
  ********************************************************************/
-#define ECANSetRxBnRxMode(buffer, mode)      \
+#define ECANSetRxBnRxMode(buffer, mode) {\
         ##buffer##CON_RXM1 = mode >> 1; \
-        ##buffer##CON_RXM0 = mode;
+        ##buffer##CON_RXM0 = mode }; 
 
     #define ECAN_RECEIVE_ALL_VALID  0
     #define ECAN_RECEIVE_STANDARD   1
@@ -1061,7 +1061,7 @@ void ECANSetOperationMode(ECAN_OP_MODE mode);
  ********************************************************************/
 #if ( (ECAN_LIB_MODE_VAL == ECAN_LIB_MODE_RUN_TIME) || \
       (ECAN_FUNC_MODE_VAL != ECAN_MODE_0) )
-    #define ECANSetBnRxMode(buffer, mode)      ##buffer##CON_RXM1 = mode
+    #define ECANSetBnRxMode(buffer, mode) { ##buffer##CON_RXM1 = mode }
 
 #endif
 
