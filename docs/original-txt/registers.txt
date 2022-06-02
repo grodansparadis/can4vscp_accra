@@ -1,0 +1,278 @@
+====== Registers ======
+
+===== Page 0 =====
+
+==== Zone information  ====
+
+^ Register ^ Page ^ Description ^
+|  0  |  0  | The zone this module belongs to |
+|  1  |  0  | The sub zone this module belongs to |
+|  2  |  0  | Sub zone for channel 0 |
+|  3  |  0  | Sub zone for channel 1 |
+|  4  |  0  | Sub zone for channel 2 |
+|  5  |  0  | Sub zone for channel 3 |
+
+==== Control registers for counters ====
+
+^ Register ^ Page ^ Description ^
+|  6  |  0  | Control register for channel 0 counter\\ \\ **Bit 0** - Counting direction (0=up/1=down).\\ **Bit 1** - Enable alarm level.\\ **Bit 2** - Reload value on zero.\\ **Bit 3** - Reserved.\\ **Bit 4** - Reserved.\\ **Bit 5** - Reserved.\\ **Bit 6** - Reserved.\\ **Bit 7** - Enable counter. |
+|  7  |  0  | Control register for channel 1 counter\\ \\ **Bit 0** - Counting direction (0=up/1=down).\\ **Bit 1** - Enable alarm level.\\ **Bit 2** - Reload value on zero.\\ **Bit 3** - Reserved.\\ **Bit 4** - Reserved.\\ **Bit 5** - Reserved.\\ **Bit 6** - Reserved.\\ **Bit 7** - Enable counter. |
+|  8  |  0  | Control register for channel 2 counter\\ \\ **Bit 0** - Counting direction (0=up/1=down).\\ **Bit 1** - Enable alarm level.\\ **Bit 2** - Reload value on zero.\\ **Bit 3** - Reserved.\\ **Bit 4** - Reserved.\\ **Bit 5** - Reserved.\\ **Bit 6** - Reserved.\\ **Bit 7** - Enable counter. |
+|  9  |  0  | Control register for channel 3 counter\\ \\ **Bit 0** - Counting direction (0=up/1=down).\\ **Bit 1** - Enable alarm level.\\ **Bit 2** - Reload value on zero.\\ **Bit 3** - Reserved.\\ **Bit 4** - Reserved.\\ **Bit 5** - Reserved.\\ **Bit 6** - Reserved.\\ **Bit 7** - Enable counter. |
+
+==== Control registers for frequency  ====
+
+^ Register ^ Page ^ Description ^
+|  10  |  0  | Control register for channel 0 frequency\\ \\ **Bit 0** - Enable frequency low alarm.\\ **Bit 1** - Enable frequency high alarm.\\ **Bit 2** - Reserved.\\ **Bit 3** - Reserved.\\ **Bit 4** - Reserved.\\ **Bit 5** - Reserved.\\ **Bit 6** - Reserved.\\ **Bit 7** - Enable frequency measurements. |
+|  11  |  0  | Control register for channel 1 frequency\\ \\ **Bit 0** - Enable frequency low alarm.\\ **Bit 1** - Enable frequency high alarm.\\ **Bit 2** - Reserved.\\ **Bit 3** - Reserved.\\ **Bit 4** - Reserved.\\ **Bit 5** - Reserved.\\ **Bit 6** - Reserved.\\ **Bit 7** - Enable frequency measurements. |
+|  12  |  0  | Control register for channel 2 frequency\\ \\ **Bit 0** - Enable frequency low alarm.\\ **Bit 1** - Enable frequency high alarm.\\ **Bit 2** - Reserved.\\ **Bit 3** - Reserved.\\ **Bit 4** - Reserved.\\ **Bit 5** - Reserved.\\ **Bit 6** - Reserved.\\ **Bit 7** - Enable frequency measurements. |
+|  13  |  0  | Control register for channel 3 frequency\\ \\ **Bit 0** - Enable frequency low alarm.\\ **Bit 1** - Enable frequency high alarm.\\ **Bit 2** - Reserved.\\ **Bit 3** - Reserved.\\ **Bit 4** - Reserved.\\ **Bit 5** - Reserved.\\ **Bit 6** - Reserved.\\ **Bit 7** - Enable frequency measurements. |
+
+==== Counter reset  ====
+
+^ Register ^ Page ^ Description ^
+|  14  |  0  | Reset channel 0 counter\\  Reset counter 0 by writing 0x55 to this register. Will read back as zero for all values except 0x55. |
+|  15  |  0  | Reset channel 1 counter\\ Reset counter 1 by writing 0x55 to this register. Will read back as zero for all values except 0x55. |
+|  16  |  0  | Reset channel 2 counter\\ Reset counter 2 by writing 0x55 to this register. Will read back as zero for all values except 0x55. |
+|  17  |  0  | Reset channel 3 counter\\ Reset counter 3 by writing 0x55 to this register. Will read back as zero for all values except 0x55. |
+
+==== Counters  ====
+
+^ Register ^ Page ^ Description ^
+|  18  |  0  | 32-bit counter 0 (MSB) |
+|  19  |  0  | 32-bit counter 0 |
+|  20  |  0  | 32-bit counter 0 |
+|  21  |  0  | 32-bit counter 0 (LSB) |
+|  22  |  0  | 32-bit counter 1 (MSB) |
+|  23  |  0  | 32-bit counter 1 |
+|  24  |  0  | 32-bit counter 1 |
+|  25  |  0  | 32-bit counter 1 (LSB) |
+|  26  |  0  | 32-bit counter 2 (MSB) |
+|  27  |  0  | 32-bit counter 2 |
+|  28  |  0  | 32-bit counter 2 |
+|  29  |  0  | 32-bit counter 2 (LSB) |
+|  30  |  0  | 32-bit counter 3 (MSB) |
+|  31  |  0  | 32-bit counter 3 |
+|  32  |  0  | 32-bit counter 3 |
+|  33  |  0  | 32-bit counter 3 (LSB) |
+
+
+==== Counter alarm level  ====
+
+^ Register ^ Page ^ Description ^
+|  34  |  0  | 32-bit counter 0 alarm level (MSB) |
+|  35  |  0  | 32-bit counter 0 alarm level |
+|  36  |  0  | 32-bit counter 0 alarm level |
+|  37  |  0  | 32-bit counter 0 alarm level (LSB) |
+|  38  |  0  | 32-bit counter 1 alarm level (MSB) |
+|  39  |  0  | 32-bit counter 1 alarm level |
+|  40  |  0  | 32-bit counter 1 alarm level |
+|  41  |  0  | 32-bit counter 1 alarm level (LSB) |
+|  42  |  0  | 32-bit counter 2 alarm level (MSB) |
+|  43  |  0  | 32-bit counter 2 alarm level |
+|  44  |  0  | 32-bit counter 2 alarm level |
+|  45  |  0  | 32-bit counter 2 alarm level (LSB) |
+|  46  |  0  | 32-bit counter 3 alarm level (MSB) |
+|  47  |  0  | 32-bit counter 3 alarm level |
+|  48  |  0  | 32-bit counter 3 alarm level |
+|  49  |  0  | 32-bit counter 3 alarm level (LSB) |
+
+==== Counter reload value  ====
+
+^ Register ^ Page ^ Description ^
+|  50  |  0  | 32-bit counter 0 reload value (MSB) |
+|  51  |  0  | 32-bit counter 0 reload value |
+|  52  |  0  | 32-bit counter 0 reload value |
+|  53  |  0  | 32-bit counter 0 reload value (LSB) |
+|  54  |  0  | 32-bit counter 1 reload value (MSB) |
+|  55  |  0  | 32-bit counter 1 reload value |
+|  56  |  0  | 32-bit counter 1 reload value |
+|  57  |  0  | 32-bit counter 1 reload value (LSB) |
+|  58  |  0  | 32-bit counter 2 reload value (MSB) |
+|  59  |  0  | 32-bit counter 2 reload value |
+|  60  |  0  | 32-bit counter 2 reload value |
+|  61  |  0  | 32-bit counter 2 reload value (LSB) |
+|  62  |  0  | 32-bit counter 3 reload value (MSB) |
+|  63  |  0  | 32-bit counter 3 reload value |
+|  64  |  0  | 32-bit counter 3 reload value |
+|  65  |  0  | 32-bit counter 3 reload value (LSB) |
+
+==== Counter hysteresis  ====
+
+^ Register ^ Page ^ Description ^
+|  66  |  0  | 16-bit counter 0 hysteresis (MSB) |
+|  67  |  0  | 16-bit counter 0 hysteresis (LSB) |
+|  68  |  0  | 16-bit counter 1 hysteresis (MSB) |
+|  69  |  0  | 16-bit counter 1 hysteresis (LSB) |
+|  70  |  0  | 16-bit counter 2 hysteresis (MSB) |
+|  71  |  0  | 16-bit counter 2 hysteresis (LSB) |
+|  72  |  0  | 16-bit counter 3 hysteresis (MSB) |
+|  73  |  0  | 16-bit counter 3 hysteresis (LSB) |
+
+==== Counter report interval ====
+
+^ Register ^ Page ^ Description ^
+|  74  |  0  | Report interval for counter 0 in seconds. Set to zero to disable. |
+|  75  |  0  | Report interval for counter 1 in seconds. Set to zero to disable. |
+|  76  |  0  | Report interval for counter 2 in seconds. Set to zero to disable. |
+|  77  |  0  | Report interval for counter 3 in seconds. Set to zero to disable. |
+|  78  |  0  | Report interval for frequency 0 in seconds. Set to zero to disable. |
+
+==== Frequency report interval  ====
+
+^ Register ^ Page ^ Description ^
+|  79  |  0  | Report interval for frequency 1 in seconds. Set to zero to disable. |
+|  80  |  0  | Report interval for frequency 2 in seconds. Set to zero to disable. |
+|  81  |  0  | Report interval for frequency 3 in seconds. Set to zero to disable. |
+
+==== Measurements report interval  ====
+
+^ Register ^ Page ^ Description ^
+|  82  |  0  | Report interval for measurement 0 in seconds. Set to zero to disable. |
+|  83  |  0  | Report interval for measurement 1 in seconds. Set to zero to disable. |
+|  84  |  0  | Report interval for measurement 2 in seconds. Set to zero to disable. |
+|  85  |  0  | Report interval for measurement 3 in seconds. Set to zero to disable. | 
+
+==== Linearization information  ====
+
+^ Register ^ Page ^ Description ^
+|  86  |  0  | VSCP event information for linearization counter 0\\ \\ **bit 0** - Calculate using counter if zero, frequency if one.\\ **bit 1** - Reserved.\\ **bit 2** - Reserved.\\ **bit 3** - Unit.\\ **bit 4** - Unit.\\ **bit 5** - Reserved.\\ **bit 6** - Class bit 8.\\ **bit 7** - Enable.\\  |
+|  87  |  0  | VSCP event information for linearization counter 0, VSCP Class low eight bits |
+|  88  |  0  | VSCP event information for linearization counter 0, VSCP Type |
+|  89  |  0  | VSCP event information for linearization counter 1\\ \\ **bit 0** - Calculate using counter if zero, frequency if one.\\ **bit 1** - Reserved.\\ **bit 2** - Reserved.\\ **bit 3** - Unit.\\ **bit 4** - Unit.\\ **bit 5** - Reserved.\\ **bit 6** - Class bit 8.\\ **bit 7** - Enable.\\  |
+|  90  |  0  | VSCP event information for linearization counter 1, VSCP Class low eight bits |
+|  91  |  0  | VSCP event information for linearization counter 1, VSCP Type |
+|  92  |  0  | VSCP event information for linearization counter 2\\ \\ **bit 0** - Calculate using counter if zero, frequency if one.\\ **bit 1** - Reserved.\\ **bit 2** - Reserved.\\ **bit 3** - Unit.\\ **bit 4** - Unit.\\ **bit 5** - Reserved.\\ **bit 6** - Reserved.\\ **bit 7** - Class bit 8.\\  |
+|  93  |  0  | VSCP event information for linearization counter 2, VSCP Class low eight bits |
+|  94  |  0  | VSCP event information for linearization counter 2, VSCP Type |
+|  95  |  0  | VSCP event information for linearization counter 3\\ \\ **bit 0** - Calculate using counter if zero, frequency if one.\\ **bit 1** - Reserved.\\ **bit 2** - Reserved.\\ **bit 3** - Unit.\\ **bit 4** - Unit.\\ **bit 5** - Class bit 8.\\ **bit 6** - Enable.\\ **bit 7** - Enable.\\  |
+|  96  |  0  | VSCP event information for linearization counter 3, VSCP Class low eight bits |
+|  97  |  0  | VSCP event information for linearization counter 3, VSCP Type |
+
+
+===== Page 1 =====
+
+==== Frequency  ====
+
+^ Register ^ Page ^ Description ^
+|  0  |  1  | 32-bit frequency for channel 0 (MSB) |
+|  1  |  1  | 32-bit frequency for channel 0 |
+|  2  |  1  | 32-bit frequency for channel 0 |
+|  3  |  1  | 32-bit frequency for channel 0 (LSB) |
+|  4  |  1  | 32-bit frequency for channel 1 (MSB) |
+|  5  |  1  | 32-bit frequency for channel 1 |
+|  6  |  1  | 32-bit frequency for channel 1 |
+|  7  |  1  | 32-bit frequency for channel 1 (LSB) |
+|  8  |  1  | 32-bit frequency for channel 2 (MSB) |
+|  9  |  1  | 32-bit frequency for channel 2 |
+|  10  |  1  | 32-bit frequency for channel 2 |
+|  11  |  1  | 32-bit frequency for channel 2 (LSB) |
+|  12  |  1  | 32-bit frequency for channel 3 (MSB) |
+|  13  |  1  | 32-bit frequency for channel 3 |
+|  14  |  1  | 32-bit frequency for channel 3 |
+|  15  |  1  | 32-bit frequency for channel 3 (LSB) |
+
+==== Frequency  low alarm level ====
+
+^ Register ^ Page ^ Description ^
+|  16  |  1  | 32-bit frequency low alarm level for channel 0 (MSB) |
+|  17  |  1  | 32-bit frequency low alarm level for channel 0 |
+|  18  |  1  | 32-bit frequency low alarm level for channel 0 |
+|  19  |  1  | 32-bit frequency low alarm level for channel 0 (LSB) |
+|  20  |  1  | 32-bit frequency low alarm level for channel 1 (MSB) |
+|  21  |  1  | 32-bit frequency low alarm level for channel 1 |
+|  22  |  1  | 32-bit frequency low alarm level for channel 1 |
+|  23  |  1  | 32-bit frequency low alarm level for channel 1 (LSB) |
+|  24  |  1  | 32-bit frequency low alarm level for channel 2 (MSB) |
+|  25  |  1  | 32-bit frequency low alarm level for channel 2 |
+|  26  |  1  | 32-bit frequency low alarm level for channel 2 |
+|  27  |  1  | 32-bit frequency low alarm level for channel 2 (LSB) |
+|  28  |  1  | 32-bit frequency low alarm level for channel 3 (MSB) |
+|  29  |  1  | 32-bit frequency low alarm level for channel 3 |
+|  30  |  1  | 32-bit frequency low alarm level for channel 3 |
+|  31  |  1  | 32-bit frequency low alarm level for channel 3 (LSB) |
+
+==== Frequency high alarm level ====
+
+^ Register ^ Page ^ Description ^
+|  32  |  1  | 32-bit frequency high alarm level for channel 0 (MSB) |
+|  33  |  1  | 32-bit frequency high alarm level for channel 0 |
+|  34  |  1  | 32-bit frequency high alarm level for channel 0 |
+|  35  |  1  | 32-bit frequency high alarm level for channel 0 (LSB) |
+|  36  |  1  | 32-bit frequency high alarm level for channel 1 (MSB) |
+|  37  |  1  | 32-bit frequency high alarm level for channel 1 |
+|  38  |  1  | 32-bit frequency high alarm level for channel 1 |
+|  39  |  1  | 32-bit frequency high alarm level for channel 1 (LSB) |
+|  40  |  1  | 32-bit frequency high alarm level for channel 2 (MSB) |
+|  41  |  1  | 32-bit frequency high alarm level for channel 2 |
+|  42  |  1  | 32-bit frequency high alarm level for channel 2 |
+|  43  |  1  | 32-bit frequency high alarm level for channel 2 (LSB) |
+|  44  |  1  | 32-bit frequency high alarm level for channel 3 (MSB) |
+|  45  |  1  | 32-bit frequency high alarm level for channel 3 |
+|  46  |  1  | 32-bit frequency high alarm level for channel 3 |
+|  47  |  1  | 32-bit frequency high alarm level for channel 3 (LSB) |
+
+==== Frequency hysteresis ====
+
+^ Register ^ Page ^ Description ^
+|  48  |  1  | 16-bit frequency 0 hysteresis (MSB) |
+|  49  |  1  | 16-bit frequency 0 hysteresis (LSB) |
+|  50  |  1  | 16-bit frequency 1 hysteresis (MSB) |
+|  51  |  1  | 16-bit frequency 1 hysteresis (LSB) |
+|  52  |  1  | 16-bit frequency 2 hysteresis (MSB) |
+|  53  |  1  | 16-bit frequency 2 hysteresis (LSB) |
+|  54  |  1  | 16-bit frequency 3 hysteresis (MSB) |
+|  55  |  1  | 16-bit frequency 3 hysteresis (LSB) |
+
+===== Page 2 =====
+
+==== Linearization constants  ====
+
+^ Register ^ Page ^ Description ^
+|  0  |  2  | 32-bit floating point linearization k-constant for channel 0 (MSB) |
+|  1  |  2  | 32-bit floating point linearization k-constant for channel 0 |
+|  2  |  2  | 32-bit floating point linearization k-constant for channel 0 |
+|  3  |  2  | 32-bit floating point linearization k-constant for channel 0 (LSB) |
+|  4  |  2  | 32-bit floating point linearization k-constant for channel 1 (MSB) |
+|  5  |  2  | 32-bit floating point linearization k-constant for channel 1 |
+|  6  |  2  | 32-bit floating point linearization k-constant for channel 1 |
+|  7  |  2  | 32-bit floating point linearization k-constant for channel 1 (LSB) |
+|  8  |  2  | 32-bit floating point linearization k-constant for channel 2 (MSB) |
+|  9  |  2  | 32-bit floating point linearization k-constant for channel 2 |
+|  10  |  2  | 32-bit floating point linearization k-constant for channel 2 |
+|  11  |  2  | 32-bit floating point linearization k-constant for channel 2 (LSB) |
+|  12  |  2  | 32-bit floating point linearization k-constant for channel 3 (MSB) |
+|  13  |  2  | 32-bit floating point linearization k-constant for channel 3 |
+|  14  |  2  | 32-bit floating point linearization k-constant for channel 3 |
+|  15  |  2  | 32-bit floating point linearization k-constant for channel 3 (LSB) |
+|  16  |  2  | 32-bit floating point linearization m-constant for channel 0 (MSB) |
+|  17  |  2  | 32-bit floating point linearization m-constant for channel 0 |
+|  18  |  2  | 32-bit floating point linearization m-constant for channel 0 |
+|  19  |  2  | 32-bit floating point linearization m-constant for channel 0 (LSB) |
+|  20  |  2  | 32-bit floating point linearization m-constant for channel 1 (MSB) |
+|  21  |  2  | 32-bit floating point linearization m-constant for channel 1 |
+|  22  |  2  | 32-bit floating point linearization m-constant for channel 1 |
+|  23  |  2  | 32-bit floating point linearization m-constant for channel 1 (LSB) |
+|  24  |  2  | 32-bit floating point linearization m-constant for channel 2 (MSB) |
+|  25  |  2  | 32-bit floating point linearization m-constant for channel 2 |
+|  26  |  2  | 32-bit floating point linearization m-constant for channel 2 |
+|  27  |  2  | 32-bit floating point linearization m-constant for channel 2 (LSB) |
+|  28  |  2  | 32-bit floating point linearization m-constant for channel 3 (MSB) |
+|  29  |  2  | 32-bit floating point linearization m-constant for channel 3 |
+|  30  |  2  | 32-bit floating point linearization m-constant for channel 3 |
+|  31  |  2  | 32-bit floating point linearization m-constant for channel 3 (LSB) |
+
+===== Page 3 =====
+
+^ Register ^ Page ^ Description ^
+|  0-31  |  3  | Decision matrix |
+
+\\ 
+---- 
+{{ :grodan_logo.png?100 |}}
+\\ 
+<html><center></html>
+**Paradise of the Frog AB** Brattbergavägen 17 820 50 LOS SWEDEN\\  
+**email:** [[info@grodansparadis.com]] **phone:** +46 (0)8 40011835 \\ 
+**web:**[[http://www.grodansparadis.com]] \\ 
+<html></center></html>

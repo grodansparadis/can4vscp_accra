@@ -1,0 +1,20 @@
+====== Events ======
+
+Here the events sent by the module is described.
+
+
+^ Event ^ Description ^
+|  [[http://www.vscp.org/docs/vscpspec/doku.php?id=class1.data#type_6_0x06_count_value|CLASS1.DATA (15) Type=6, Count Value]]  | Count data steam event sent on regular intervals if activated. Coding: Integer. Unit: none. \\ \\ **__Byte 0__**\\ [[http://www.vscp.org/docs/vscpspec/doku.php?id=data_coding|Datacoding:]] 0b__011__00__xxx__ where xxx is the counter (0-3/4-7)\\ \\ **0x60** - Counter 0\\ **0x61** - Counter 1\\ **0x62** - Counter 2\\ **0x63** - Counter 3\\ \\  **__Byte 1-4__**\\ Counter value MSB in first byte.  |
+|  [[http://www.vscp.org/docs/vscpspec/doku.php?id=class1.alarm&#type_2_0x02_alarm_occurred|CLASS1.ALARM (1) Type=1, Alarm occurred]]  | If an alarm is armed this event is sent when it occurs and the corresponding alarm bit is set in the alarm register.\\ \\ **Byte 0** - Channel 0-3 for counter, channel 4-6 for frequency low, channel 7-9 for frequency high. \\ **Byte 1** - Zone for module.\\ **Byte 2** - Sub zone for channel.\\  |
+|  [[http://www.vscp.org/docs/vscpspec/doku.php?id=class1.measurement#type_9_0x09_frequency|CLASS1.MEASUREMENT (10) Type=9, Frequency]]  | Frequency measurement event sent on regular intervals if activated.  Coding: 32-bit integer. Unit: Hertz.\\ \\ **__Byte 0__**\\ [[http://www.vscp.org/docs/vscpspec/doku.php?id=data_coding|Datacoding:]] 0b__011__00__xxx__ where xxx is the counter (0-3)\\ \\ **0x60** - Counter 0\\ **0x61** - Counter 1\\ **0x62** - Counter 2\\ **0x63** - Counter 3\\ \\  **__Byte 1-4__**\\ Frequency value as 32-bit floating point value  with MSB in first byte.  |
+|  [[http://www.vscp.org/docs/vscpspec/doku.php?id=class1.measurement|CLASS1.MEASUREMENT (10) Type=x]]  | Measurement values of all kinds can be sent as a result of linearization. For example can an input counting S0 pulses be translated to KWh and watt \\ \\ The data is always a 32-bit floating point value and the and the counter is in the sensor index bits of the data coding byte. Unit and measurement type is configurable. |
+
+\\ 
+---- 
+{{ :grodan_logo.png?100 |}}
+\\ 
+<html><center></html>
+**Paradise of the Frog AB** Brattbergavägen 17 820 50 LOS SWEDEN\\  
+**email:** [[info@grodansparadis.com]] **phone:** +46 (0)8 40011835 \\ 
+**web:**[[http://www.grodansparadis.com]] \\ 
+<html></center></html>
