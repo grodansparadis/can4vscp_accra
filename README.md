@@ -7,6 +7,8 @@
 
 This project is part of the <a href="http://www.vscp.org">VSCP (Very Simple Control Protocol) project</a>. 
 
+The module is documented [here](https://grodansparadis.github.io/can4vscp_accra/#/)
+
 <hr>
 
 This project is licensed under the 
