@@ -21,13 +21,13 @@ its use. You can also buy ready made modules here.
 
 ## Schematics
 
-![](./images/accra_sch_rev_A.png)
+![](./images/accra_sch_rev_a.png)accra_sch_rev_a.png
 
 Schematics: Rev A (click picture to enlarge)
 
 ## Board components
 
-![](./images/accra_brd_rev_A.png)
+![](./images/accra_brd_rev_a.png)
 
 ## Connectors
 
