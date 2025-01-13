@@ -4,8 +4,8 @@
 <module>
     <name>Accra counter module</name>
     <model>B</model>
-    <version>5</version>
-    <changed>2020-05-08</changed>
+    <version>6</version>
+    <changed>2024-04-22</changed>
     <description lang="en">
         With this VSCP module it is possible to count pulses and measure frequency 
         on four channels.
@@ -53,7 +53,7 @@
     <!-- Firmware for the device -->
     <files>
     <firmware target="pic18f2580" 
-    	        path="https://github.com/grodansparadis/can4vscp_accra/releases/download/v1.0.4/Accra_2580_1_0_4.hexx" 
+    	        path="https://github.com/grodansparadis/can4vscp_accra/releases/download/v1.0.4/Accra_2580_1_0_4.hex" 
         	format="intelhex8"
         	date="2020-05-14"
         	version_major="1"

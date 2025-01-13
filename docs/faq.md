@@ -1,6 +1,6 @@
 # faq - Frequently Asked Questions
 
-*Not many of those yet\!*
+t.b.d.
 
   
 [filename](./bottom-copyright.md ':include')

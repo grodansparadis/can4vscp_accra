@@ -4,7 +4,7 @@
 * [Setup](./connecting.md)
 * [Updating the firmware](./replacing-the-firmware.md)
 * [Registers](./registers.md)
-* [Abstractions](./abstractions.md)
+* [Remote variables](./remotevar.md)
 * [Alarms](./alarms.md)
 * [Decision Matrix](./decisionmatrix.md)
 * [Events](./events.md)
