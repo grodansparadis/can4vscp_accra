@@ -20,6 +20,11 @@ out on the VSCP bus.
 The module comes with a GUID and is programmed with a bootloader and
 VSCP module functionality that works right out of the box.
 
+* [Repository for the module](https://github.com/grodansparadis/can4vscp_accra)
+  * This manual is available [here](https://grodansparadis.github.io/can4vscp_accra/)
+  * Latest schema for the module is available [here](https://github.com/grodansparadis/can4vscp_accra/tree/master/eagle)
+  * Latest firmware for the module is available [here](https://github.com/grodansparadis/can4vscp_accra/tree/master/firmware)
+  * [MDF for the module](https://github.com/grodansparadis/can4vscp_accra/tree/master/mdf)
 
 
 ## VSCP
