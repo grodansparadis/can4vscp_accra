@@ -8,9 +8,10 @@ This module is part of the [VSCP project](https://www.vscp.org).  It is free to 
 
 The module is documented [here](https://grodansparadis.github.io/can4vscp_accra/#/)
 
-![](/images/accra14.png)
+![](./images/accra14.png)
 
-Accra
+## Abstract
+
 Accra is a general counter module that connects to a CAN4VSCP bus and can count pulses on four channels. The module can be attached to a standard DIN Rail or be mounted directly on a wall.
 
 The module fully adopts to the CAN4VSCP specification and can be powered directly over the bus with a 9-28V DC power source. It has a rich register set for configuration and any information events defined. It also have a decision matrix for easy dynamic event handling.
