@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "accra_A")(type "KiCad")(uri "$(KIPRJMOD)/accra_A.pretty")(options "")(descr ""))
+)
