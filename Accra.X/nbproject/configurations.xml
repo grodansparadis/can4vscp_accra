@@ -15,6 +15,11 @@
       <itemPath>../../vscp_firmware/common/vscp_type.h</itemPath>
       <itemPath>../../vscp-firmware/common/vscp-firmware.h</itemPath>
     </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="true">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
                    projectFiles="true">
@@ -29,11 +34,7 @@
       <itemPath>../main.c</itemPath>
       <itemPath>../../vscp-firmware/common/vscp-firmware.c</itemPath>
     </logicalFolder>
-    <logicalFolder name="ExternalFiles"
-                   displayName="Important Files"
-                   projectFiles="false">
-      <itemPath>Makefile</itemPath>
-    </logicalFolder>
+    <itemPath>../HISTORY.txt</itemPath>
     <itemPath>../HISTORY.txt</itemPath>
   </logicalFolder>
   <sourceRootList>
@@ -51,7 +52,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>noID</platformTool>
         <languageToolchain>XC8</languageToolchain>
-        <languageToolchainVersion>2.31</languageToolchainVersion>
+        <languageToolchainVersion>3.00</languageToolchainVersion>
         <platform>2</platform>
       </toolsSet>
       <packs>
@@ -87,10 +88,26 @@
       <item path="../../vscp_firmware/common/vscp_class.h"
             ex="true"
             overriding="false">
+        <HI-TECH-COMP>
+        </HI-TECH-COMP>
+        <HI-TECH-LINK>
+        </HI-TECH-LINK>
+        <XC8-CO>
+        </XC8-CO>
+        <XC8-config-global>
+        </XC8-config-global>
       </item>
       <item path="../../vscp_firmware/common/vscp_type.h"
             ex="true"
             overriding="false">
+        <HI-TECH-COMP>
+        </HI-TECH-COMP>
+        <HI-TECH-LINK>
+        </HI-TECH-LINK>
+        <XC8-CO>
+        </XC8-CO>
+        <XC8-config-global>
+        </XC8-config-global>
       </item>
       <HI-TECH-COMP>
         <property key="additional-warnings" value="true"/>
@@ -173,64 +190,6 @@
         <property key="program-the-device-with-default-config-words" value="true"/>
         <property key="remove-unused-sections" value="true"/>
       </HI-TECH-LINK>
-      <RealICEPlatformTool>
-        <property key="AutoSelectMemRanges" value="auto"/>
-        <property key="Freeze Peripherals" value="true"/>
-        <property key="RIExTrigs.Five" value="OFF"/>
-        <property key="RIExTrigs.Four" value="OFF"/>
-        <property key="RIExTrigs.One" value="OFF"/>
-        <property key="RIExTrigs.Seven" value="OFF"/>
-        <property key="RIExTrigs.Six" value="OFF"/>
-        <property key="RIExTrigs.Three" value="OFF"/>
-        <property key="RIExTrigs.Two" value="OFF"/>
-        <property key="RIExTrigs.Zero" value="OFF"/>
-        <property key="SecureSegment.SegmentProgramming" value="FullChipProgramming"/>
-        <property key="ToolFirmwareFilePath"
-                  value="Press to browse for a specific firmware version"/>
-        <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
-        <property key="debugoptions.useswbreakpoints" value="true"/>
-        <property key="hwtoolclock.frcindebug" value="false"/>
-        <property key="hwtoolclock.instructionspeed" value="4"/>
-        <property key="hwtoolclock.units" value="mips"/>
-        <property key="memories.aux" value="false"/>
-        <property key="memories.bootflash" value="true"/>
-        <property key="memories.configurationmemory" value="true"/>
-        <property key="memories.configurationmemory2" value="true"/>
-        <property key="memories.dataflash" value="true"/>
-        <property key="memories.eeprom" value="true"/>
-        <property key="memories.flashdata" value="true"/>
-        <property key="memories.id" value="true"/>
-        <property key="memories.instruction.ram" value="true"/>
-        <property key="memories.instruction.ram.ranges"
-                  value="${memories.instruction.ram.ranges}"/>
-        <property key="memories.programmemory" value="true"/>
-        <property key="memories.programmemory.ranges" value="0-7fff"/>
-        <property key="poweroptions.powerenable" value="false"/>
-        <property key="programoptions.donoteraseauxmem" value="false"/>
-        <property key="programoptions.eraseb4program" value="true"/>
-        <property key="programoptions.preservedataflash" value="false"/>
-        <property key="programoptions.preservedataflash.ranges" value=""/>
-        <property key="programoptions.preserveeeprom" value="false"/>
-        <property key="programoptions.preserveeeprom.ranges" value="0-ff"/>
-        <property key="programoptions.preserveprogram.ranges" value=""/>
-        <property key="programoptions.preserveprogramrange" value="false"/>
-        <property key="programoptions.preserveuserid" value="false"/>
-        <property key="programoptions.programcalmem" value="false"/>
-        <property key="programoptions.programuserotp" value="false"/>
-        <property key="programoptions.usehighvoltageonmclr" value="false"/>
-        <property key="programoptions.uselvpprogramming" value="false"/>
-        <property key="tracecontrol.disablemacros" value="false"/>
-        <property key="tracecontrol.include.timestamp" value="summarydataenabled"/>
-        <property key="tracecontrol.medium" value="1"/>
-        <property key="tracecontrol.portselect" value="0"/>
-        <property key="tracecontrol.select" value="0"/>
-        <property key="tracecontrol.spiselect" value="0"/>
-        <property key="tracecontrol.stallontracebufferfull" value="false"/>
-        <property key="tracecontrol.tracebufmax" value="546000"/>
-        <property key="tracecontrol.tracefile" value="defmplabxtrace.log"/>
-        <property key="tracecontrol.tracefilemax" value="10000000"/>
-        <property key="voltagevalue" value="5.0"/>
-      </RealICEPlatformTool>
       <XC8-CO>
         <property key="coverage-enable" value=""/>
       </XC8-CO>
@@ -258,7 +217,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>noID</platformTool>
         <languageToolchain>XC8</languageToolchain>
-        <languageToolchainVersion>2.31</languageToolchainVersion>
+        <languageToolchainVersion>3.00</languageToolchainVersion>
         <platform>2</platform>
       </toolsSet>
       <packs>
@@ -294,10 +253,26 @@
       <item path="../../vscp_firmware/common/vscp_class.h"
             ex="true"
             overriding="false">
+        <HI-TECH-COMP>
+        </HI-TECH-COMP>
+        <HI-TECH-LINK>
+        </HI-TECH-LINK>
+        <XC8-CO>
+        </XC8-CO>
+        <XC8-config-global>
+        </XC8-config-global>
       </item>
       <item path="../../vscp_firmware/common/vscp_type.h"
             ex="true"
             overriding="false">
+        <HI-TECH-COMP>
+        </HI-TECH-COMP>
+        <HI-TECH-LINK>
+        </HI-TECH-LINK>
+        <XC8-CO>
+        </XC8-CO>
+        <XC8-config-global>
+        </XC8-config-global>
       </item>
       <HI-TECH-COMP>
         <property key="additional-warnings" value="true"/>
@@ -380,64 +355,6 @@
         <property key="program-the-device-with-default-config-words" value="true"/>
         <property key="remove-unused-sections" value="true"/>
       </HI-TECH-LINK>
-      <RealICEPlatformTool>
-        <property key="AutoSelectMemRanges" value="auto"/>
-        <property key="Freeze Peripherals" value="true"/>
-        <property key="RIExTrigs.Five" value="OFF"/>
-        <property key="RIExTrigs.Four" value="OFF"/>
-        <property key="RIExTrigs.One" value="OFF"/>
-        <property key="RIExTrigs.Seven" value="OFF"/>
-        <property key="RIExTrigs.Six" value="OFF"/>
-        <property key="RIExTrigs.Three" value="OFF"/>
-        <property key="RIExTrigs.Two" value="OFF"/>
-        <property key="RIExTrigs.Zero" value="OFF"/>
-        <property key="SecureSegment.SegmentProgramming" value="FullChipProgramming"/>
-        <property key="ToolFirmwareFilePath"
-                  value="Press to browse for a specific firmware version"/>
-        <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
-        <property key="debugoptions.useswbreakpoints" value="false"/>
-        <property key="hwtoolclock.frcindebug" value="false"/>
-        <property key="hwtoolclock.instructionspeed" value="4"/>
-        <property key="hwtoolclock.units" value="mips"/>
-        <property key="memories.aux" value="false"/>
-        <property key="memories.bootflash" value="true"/>
-        <property key="memories.configurationmemory" value="true"/>
-        <property key="memories.configurationmemory2" value="true"/>
-        <property key="memories.dataflash" value="true"/>
-        <property key="memories.eeprom" value="true"/>
-        <property key="memories.flashdata" value="true"/>
-        <property key="memories.id" value="true"/>
-        <property key="memories.instruction.ram" value="true"/>
-        <property key="memories.instruction.ram.ranges"
-                  value="${memories.instruction.ram.ranges}"/>
-        <property key="memories.programmemory" value="true"/>
-        <property key="memories.programmemory.ranges" value="0-7fff"/>
-        <property key="poweroptions.powerenable" value="false"/>
-        <property key="programoptions.donoteraseauxmem" value="false"/>
-        <property key="programoptions.eraseb4program" value="true"/>
-        <property key="programoptions.preservedataflash" value="false"/>
-        <property key="programoptions.preservedataflash.ranges" value=""/>
-        <property key="programoptions.preserveeeprom" value="false"/>
-        <property key="programoptions.preserveeeprom.ranges" value="0-ff"/>
-        <property key="programoptions.preserveprogram.ranges" value=""/>
-        <property key="programoptions.preserveprogramrange" value="false"/>
-        <property key="programoptions.preserveuserid" value="false"/>
-        <property key="programoptions.programcalmem" value="false"/>
-        <property key="programoptions.programuserotp" value="false"/>
-        <property key="programoptions.usehighvoltageonmclr" value="false"/>
-        <property key="programoptions.uselvpprogramming" value="false"/>
-        <property key="tracecontrol.disablemacros" value="false"/>
-        <property key="tracecontrol.include.timestamp" value="summarydataenabled"/>
-        <property key="tracecontrol.medium" value="1"/>
-        <property key="tracecontrol.portselect" value="0"/>
-        <property key="tracecontrol.select" value="0"/>
-        <property key="tracecontrol.spiselect" value="0"/>
-        <property key="tracecontrol.stallontracebufferfull" value="false"/>
-        <property key="tracecontrol.tracebufmax" value="546000"/>
-        <property key="tracecontrol.tracefile" value="defmplabxtrace.log"/>
-        <property key="tracecontrol.tracefilemax" value="10000000"/>
-        <property key="voltagevalue" value="5.0"/>
-      </RealICEPlatformTool>
       <XC8-CO>
         <property key="coverage-enable" value=""/>
       </XC8-CO>
@@ -465,7 +382,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>noID</platformTool>
         <languageToolchain>XC8</languageToolchain>
-        <languageToolchainVersion>2.31</languageToolchainVersion>
+        <languageToolchainVersion>3.00</languageToolchainVersion>
         <platform>2</platform>
       </toolsSet>
       <packs>
@@ -501,10 +418,26 @@
       <item path="../../vscp_firmware/common/vscp_class.h"
             ex="true"
             overriding="false">
+        <HI-TECH-COMP>
+        </HI-TECH-COMP>
+        <HI-TECH-LINK>
+        </HI-TECH-LINK>
+        <XC8-CO>
+        </XC8-CO>
+        <XC8-config-global>
+        </XC8-config-global>
       </item>
       <item path="../../vscp_firmware/common/vscp_type.h"
             ex="true"
             overriding="false">
+        <HI-TECH-COMP>
+        </HI-TECH-COMP>
+        <HI-TECH-LINK>
+        </HI-TECH-LINK>
+        <XC8-CO>
+        </XC8-CO>
+        <XC8-config-global>
+        </XC8-config-global>
       </item>
       <HI-TECH-COMP>
         <property key="additional-warnings" value="true"/>
@@ -587,64 +520,6 @@
         <property key="program-the-device-with-default-config-words" value="true"/>
         <property key="remove-unused-sections" value="true"/>
       </HI-TECH-LINK>
-      <RealICEPlatformTool>
-        <property key="AutoSelectMemRanges" value="auto"/>
-        <property key="Freeze Peripherals" value="true"/>
-        <property key="RIExTrigs.Five" value="OFF"/>
-        <property key="RIExTrigs.Four" value="OFF"/>
-        <property key="RIExTrigs.One" value="OFF"/>
-        <property key="RIExTrigs.Seven" value="OFF"/>
-        <property key="RIExTrigs.Six" value="OFF"/>
-        <property key="RIExTrigs.Three" value="OFF"/>
-        <property key="RIExTrigs.Two" value="OFF"/>
-        <property key="RIExTrigs.Zero" value="OFF"/>
-        <property key="SecureSegment.SegmentProgramming" value="FullChipProgramming"/>
-        <property key="ToolFirmwareFilePath"
-                  value="Press to browse for a specific firmware version"/>
-        <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
-        <property key="debugoptions.useswbreakpoints" value="false"/>
-        <property key="hwtoolclock.frcindebug" value="false"/>
-        <property key="hwtoolclock.instructionspeed" value="4"/>
-        <property key="hwtoolclock.units" value="mips"/>
-        <property key="memories.aux" value="false"/>
-        <property key="memories.bootflash" value="true"/>
-        <property key="memories.configurationmemory" value="true"/>
-        <property key="memories.configurationmemory2" value="true"/>
-        <property key="memories.dataflash" value="true"/>
-        <property key="memories.eeprom" value="true"/>
-        <property key="memories.flashdata" value="true"/>
-        <property key="memories.id" value="true"/>
-        <property key="memories.instruction.ram" value="true"/>
-        <property key="memories.instruction.ram.ranges"
-                  value="${memories.instruction.ram.ranges}"/>
-        <property key="memories.programmemory" value="true"/>
-        <property key="memories.programmemory.ranges" value="0-7fff"/>
-        <property key="poweroptions.powerenable" value="false"/>
-        <property key="programoptions.donoteraseauxmem" value="false"/>
-        <property key="programoptions.eraseb4program" value="true"/>
-        <property key="programoptions.preservedataflash" value="false"/>
-        <property key="programoptions.preservedataflash.ranges" value=""/>
-        <property key="programoptions.preserveeeprom" value="false"/>
-        <property key="programoptions.preserveeeprom.ranges" value="0-3ff"/>
-        <property key="programoptions.preserveprogram.ranges" value=""/>
-        <property key="programoptions.preserveprogramrange" value="false"/>
-        <property key="programoptions.preserveuserid" value="false"/>
-        <property key="programoptions.programcalmem" value="false"/>
-        <property key="programoptions.programuserotp" value="false"/>
-        <property key="programoptions.usehighvoltageonmclr" value="false"/>
-        <property key="programoptions.uselvpprogramming" value="false"/>
-        <property key="tracecontrol.disablemacros" value="false"/>
-        <property key="tracecontrol.include.timestamp" value="summarydataenabled"/>
-        <property key="tracecontrol.medium" value="1"/>
-        <property key="tracecontrol.portselect" value="0"/>
-        <property key="tracecontrol.select" value="0"/>
-        <property key="tracecontrol.spiselect" value="0"/>
-        <property key="tracecontrol.stallontracebufferfull" value="false"/>
-        <property key="tracecontrol.tracebufmax" value="546000"/>
-        <property key="tracecontrol.tracefile" value="defmplabxtrace.log"/>
-        <property key="tracecontrol.tracefilemax" value="10000000"/>
-        <property key="voltagevalue" value="5.0"/>
-      </RealICEPlatformTool>
       <XC8-CO>
         <property key="coverage-enable" value=""/>
       </XC8-CO>
@@ -672,7 +547,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>noID</platformTool>
         <languageToolchain>XC8</languageToolchain>
-        <languageToolchainVersion>2.31</languageToolchainVersion>
+        <languageToolchainVersion>3.00</languageToolchainVersion>
         <platform>2</platform>
       </toolsSet>
       <packs>
@@ -708,10 +583,26 @@
       <item path="../../vscp_firmware/common/vscp_class.h"
             ex="true"
             overriding="false">
+        <HI-TECH-COMP>
+        </HI-TECH-COMP>
+        <HI-TECH-LINK>
+        </HI-TECH-LINK>
+        <XC8-CO>
+        </XC8-CO>
+        <XC8-config-global>
+        </XC8-config-global>
       </item>
       <item path="../../vscp_firmware/common/vscp_type.h"
             ex="true"
             overriding="false">
+        <HI-TECH-COMP>
+        </HI-TECH-COMP>
+        <HI-TECH-LINK>
+        </HI-TECH-LINK>
+        <XC8-CO>
+        </XC8-CO>
+        <XC8-config-global>
+        </XC8-config-global>
       </item>
       <HI-TECH-COMP>
         <property key="additional-warnings" value="true"/>
@@ -794,64 +685,6 @@
         <property key="program-the-device-with-default-config-words" value="true"/>
         <property key="remove-unused-sections" value="true"/>
       </HI-TECH-LINK>
-      <RealICEPlatformTool>
-        <property key="AutoSelectMemRanges" value="auto"/>
-        <property key="Freeze Peripherals" value="true"/>
-        <property key="RIExTrigs.Five" value="OFF"/>
-        <property key="RIExTrigs.Four" value="OFF"/>
-        <property key="RIExTrigs.One" value="OFF"/>
-        <property key="RIExTrigs.Seven" value="OFF"/>
-        <property key="RIExTrigs.Six" value="OFF"/>
-        <property key="RIExTrigs.Three" value="OFF"/>
-        <property key="RIExTrigs.Two" value="OFF"/>
-        <property key="RIExTrigs.Zero" value="OFF"/>
-        <property key="SecureSegment.SegmentProgramming" value="FullChipProgramming"/>
-        <property key="ToolFirmwareFilePath"
-                  value="Press to browse for a specific firmware version"/>
-        <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
-        <property key="debugoptions.useswbreakpoints" value="false"/>
-        <property key="hwtoolclock.frcindebug" value="false"/>
-        <property key="hwtoolclock.instructionspeed" value="4"/>
-        <property key="hwtoolclock.units" value="mips"/>
-        <property key="memories.aux" value="false"/>
-        <property key="memories.bootflash" value="true"/>
-        <property key="memories.configurationmemory" value="true"/>
-        <property key="memories.configurationmemory2" value="true"/>
-        <property key="memories.dataflash" value="true"/>
-        <property key="memories.eeprom" value="true"/>
-        <property key="memories.flashdata" value="true"/>
-        <property key="memories.id" value="true"/>
-        <property key="memories.instruction.ram" value="true"/>
-        <property key="memories.instruction.ram.ranges"
-                  value="${memories.instruction.ram.ranges}"/>
-        <property key="memories.programmemory" value="true"/>
-        <property key="memories.programmemory.ranges" value="0-7fff"/>
-        <property key="poweroptions.powerenable" value="false"/>
-        <property key="programoptions.donoteraseauxmem" value="false"/>
-        <property key="programoptions.eraseb4program" value="true"/>
-        <property key="programoptions.preservedataflash" value="false"/>
-        <property key="programoptions.preservedataflash.ranges" value=""/>
-        <property key="programoptions.preserveeeprom" value="false"/>
-        <property key="programoptions.preserveeeprom.ranges" value="0-3ff"/>
-        <property key="programoptions.preserveprogram.ranges" value=""/>
-        <property key="programoptions.preserveprogramrange" value="false"/>
-        <property key="programoptions.preserveuserid" value="false"/>
-        <property key="programoptions.programcalmem" value="false"/>
-        <property key="programoptions.programuserotp" value="false"/>
-        <property key="programoptions.usehighvoltageonmclr" value="false"/>
-        <property key="programoptions.uselvpprogramming" value="false"/>
-        <property key="tracecontrol.disablemacros" value="false"/>
-        <property key="tracecontrol.include.timestamp" value="summarydataenabled"/>
-        <property key="tracecontrol.medium" value="1"/>
-        <property key="tracecontrol.portselect" value="0"/>
-        <property key="tracecontrol.select" value="0"/>
-        <property key="tracecontrol.spiselect" value="0"/>
-        <property key="tracecontrol.stallontracebufferfull" value="false"/>
-        <property key="tracecontrol.tracebufmax" value="546000"/>
-        <property key="tracecontrol.tracefile" value="defmplabxtrace.log"/>
-        <property key="tracecontrol.tracefilemax" value="10000000"/>
-        <property key="voltagevalue" value="5.0"/>
-      </RealICEPlatformTool>
       <XC8-CO>
         <property key="coverage-enable" value=""/>
       </XC8-CO>
