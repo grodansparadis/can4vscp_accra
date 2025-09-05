@@ -42,7 +42,7 @@ All VSCP modules contains information of there own setup, manual, hardware versi
   * Binary release files is available [here](https://github.com/grodansparadis/can4vscp_kelvin_ntc10k/releases)
 
 ### MDF - Module Description File(s)
-  * [MDF file version: B Release date: 2024-04-22](http://www.eurosource.se/accra_1.xml)
+  * [MDF file version: 6 Release date: 2024-04-22](http://www.eurosource.se/accra_1.xml)
 
 ### Support
 If you need support, please open an issue in the [GitHub repository](https://github.com/grodansparadis/can4vscp_kelvin_ntc10k/issues).
