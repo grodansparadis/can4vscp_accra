@@ -30,8 +30,7 @@ All VSCP modules contains information of there own setup, manual, hardware versi
   * [User Manual](https://grodansparadis.github.io/can4vscp_accra/#)
 
 ### Schematic, PCB, 3D files etc
-  * [Schematics reversion B (current)](http://www.grodansparadis.com/kelvinntc10k/kelvin_ntc_B.pdf)
-  * [Schematics reversion A](http://www.grodansparadis.com/kelvinntc10k/kelvin_ntc_A.pdf)
+  * [Schematics reversion A](https://raw.githubusercontent.com/grodansparadis/can4vscp_accra/refs/heads/master/eagle/accra_sch_rev_A.png)
  * Harsware design files is made in [KiCad](https://kicad.org) and can be found in the `kicad` directory. Valid from reversion B of the hardware.
    * Gerber files for PCB production can be found in the `gerber` directory (in the `kicad` folder).
  * Eagle schema and board files for reversion A and B can be found in the `eagle` directory. They are no longer actively updated.
@@ -43,9 +42,7 @@ All VSCP modules contains information of there own setup, manual, hardware versi
   * Binary release files is available [here](https://github.com/grodansparadis/can4vscp_kelvin_ntc10k/releases)
 
 ### MDF - Module Description File(s)
-  * [MDF file version: 1.2.0 Release date: 2015-02-18](http://www.eurosource.se/ntc10KA_3.xml)
-  * [MDF file version: 1.1.0 Release date: 2014-12-24](http://www.eurosource.se/ntc10KA_2.xml)
-  * [MDF file version: 1.0.0 Release date: 2012-02-24](http://www.eurosource.se/ntc10KA_1.xml)
+  * [MDF file version: B Release date: 2024-04-22](http://www.eurosource.se/accra_1.xml)
 
 ### Support
 If you need support, please open an issue in the [GitHub repository](https://github.com/grodansparadis/can4vscp_kelvin_ntc10k/issues).
